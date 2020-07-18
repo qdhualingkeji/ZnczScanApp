@@ -1,9 +1,13 @@
 package com.hualing.znczscanapp.activities;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.hualing.znczscanapp.activities.BaseActivity;
 import com.hualing.znczscanapp.R;
+import com.hualing.znczscanapp.util.IntentUtil;
+
+import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
 
@@ -30,5 +34,10 @@ public class MainActivity extends BaseActivity {
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_main;
+    }
+
+    @OnClick({R.id.scanBut})
+    public void onViewClicked(View v){
+        IntentUtil.openActivity(this, ScanActivity.class);
     }
 }
