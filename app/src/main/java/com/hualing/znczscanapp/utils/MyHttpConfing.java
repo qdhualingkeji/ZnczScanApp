@@ -8,12 +8,13 @@ public class MyHttpConfing {
 
     public static final String tag = "TAG-->";
 
+    public static final String ddxqMenuId="104107815608326";
     public static final String baseUrl = "http://121.196.184.205:96/hydrocarbon/";
 
     /* 用户登录 */
     public static final String login = baseUrl + "api2/auth/token";
-    /* 获得待抢单数据 */
-    public static final String getDaiQiangDan = baseUrl + "getDaiQiangDan";
+    /* 获得订单详情数据 */
+    public static final String getOrderDetail = baseUrl + "api2/entity/"+ddxqMenuId+"/detail/107919071434907656";
     /* 用户注册 */
     public static final String registered = baseUrl + "register";
     /* 确认抢单 */

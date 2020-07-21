@@ -54,6 +54,7 @@ public class AsynClient {
 //        params.put("Request-Time", new Date().getTime());
 //        params.put("Auth-Key", "p!I5G8xTD?");
         client.addHeader("Request-From", "SaApp");
+        client.addHeader("hydrocarbon-token","vYAysnxpQaK0fmXcgHpIlxIEq4AIRz1E");
     }
 
     /*private static String getAbsoluteUrl(String relativeUrl) {

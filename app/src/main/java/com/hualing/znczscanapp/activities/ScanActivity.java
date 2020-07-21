@@ -9,11 +9,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.util.AllActivitiesHolder;
 import com.hualing.znczscanapp.widget.TitleBar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -174,7 +178,19 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+        try {
+            Toast.makeText(this, "{'订单编码':'107928501035606018'}", Toast.LENGTH_LONG).show();
+            JSONObject jo = new JSONObject("{'订单编码':'107928501035606018'}");
+            String orderCode = jo.getString("订单编码");
+            Log.e("orderCode==",""+orderCode);
+            Intent intent = new Intent(ScanActivity.this, OrderDetailActivity.class);
+            intent.putExtra("orderCode",orderCode);
+            startActivity(intent);
+            AllActivitiesHolder.removeAct(ScanActivity.this);
+        } catch (JSONException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     @Override

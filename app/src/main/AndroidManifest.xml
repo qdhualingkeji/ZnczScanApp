@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hualing.znczscanapp">
 
-
     <!-- ****************一般权限，6.0以上系统不需要额外申请****************** -->
     <permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
 
@@ -56,6 +55,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.OrderDetailActivity"></activity>
     </application>
 
 </manifest>

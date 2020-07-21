@@ -16,6 +16,9 @@ import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -95,13 +98,24 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
-                Log.e("errorResponse======",""+errorResponse);
+                Log.e("rawJsonData======",""+rawJsonData);
             }
 
             @Override
             public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
                 Log.e("rawJsonResponse======",""+rawJsonResponse);
 
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String status=jo.getString("status");
+                    if("suc".equals(status)){
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        AllActivitiesHolder.removeAct(LoginActivity.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 /*
                 Gson gson = new Gson();
                 RiderEntity riderEntity = gson.fromJson(rawJsonResponse, RiderEntity.class);
