@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hualing.znczscanapp.R;
@@ -17,10 +18,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import butterknife.BindView;
+
 public class OrderDetailActivity extends BaseActivity {
 
     private String orderCode;
     private JSONObject columnsIdJO,ziDuanNameJO;
+    @BindView(R.id.ddh_tv)
+    TextView ddhTV;
+    @BindView(R.id.yzxzl_tv)
+    TextView yzxzlTV;
+    @BindView(R.id.lxlx_tv)
+    TextView lxlxTV;
+    @BindView(R.id.bjsj_tv)
+    TextView bjsjTV;
+    @BindView(R.id.sjzl_tv)
+    TextView sjzlTV;
+    @BindView(R.id.zlceb_tv)
+    TextView zlcebTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,13 +130,26 @@ public class OrderDetailActivity extends BaseActivity {
                         JSONObject entityJO = new JSONObject(entity);
                         String fieldMapStr = entityJO.getString("fieldMap");
                         JSONObject fieldMapJO = new JSONObject(fieldMapStr);
-                        Log.e("订单号===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("订单号字段"))));
-                        Log.e("预装卸重量===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("预装卸重量字段"))));
-                        Log.e("流向类型===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("流向类型字段"))));
-                        Log.e("编辑时间===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("编辑时间字段"))));
+                        String ddh = fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("订单号字段")));
+                        String yzxzl=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("预装卸重量字段")));
+                        String lxlx = fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("流向类型字段")));
+                        String bjsj=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("编辑时间字段")));
+                        String sjzl=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("实际重量字段")));
+                        String zlceb=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("重量差额比字段")));
+                        Log.e("订单号===",ddh);
+                        Log.e("预装卸重量===",yzxzl);
+                        Log.e("流向类型===",lxlx);
+                        Log.e("编辑时间===",bjsj);
                         Log.e("二维码===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("二维码字段"))));
-                        Log.e("实际重量===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("实际重量字段"))));
-                        Log.e("重量差额比===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("重量差额比字段"))));
+                        Log.e("实际重量===",sjzl);
+                        Log.e("重量差额比===",zlceb);
+
+                        ddhTV.setText("订单号:"+ddh);
+                        yzxzlTV.setText("预装卸重量:"+yzxzl);
+                        lxlxTV.setText("流向类型:"+lxlx);
+                        bjsjTV.setText("编辑时间:"+bjsj);
+                        sjzlTV.setText("实际重量:"+sjzl);
+                        zlcebTV.setText("重量差额比:"+zlceb);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
