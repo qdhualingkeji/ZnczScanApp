@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity {
         //IntentUtil.openActivity(this, ScanActivity.class);
 
         Intent intent = new Intent(MainActivity.this, OrderDetailActivity.class);
-        intent.putExtra("orderCode","107928501035606018");
+        intent.putExtra("orderCode","107919071434907656");
         startActivity(intent);
     }
 }

@@ -20,7 +20,7 @@ import org.json.JSONObject;
 public class OrderDetailActivity extends BaseActivity {
 
     private String orderCode;
-    private JSONObject columnsIdJO;
+    private JSONObject columnsIdJO,ziDuanNameJO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +29,13 @@ public class OrderDetailActivity extends BaseActivity {
 
     @Override
     protected void initLogic() {
-        orderCode = getIntent().getStringExtra("orderCode");
-        Toast.makeText(this, orderCode, Toast.LENGTH_LONG).show();
+        try {
+            orderCode = getIntent().getStringExtra("orderCode");
+            Toast.makeText(this, orderCode, Toast.LENGTH_LONG).show();
+            initZiDuanNameJO();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -76,12 +81,67 @@ public class OrderDetailActivity extends BaseActivity {
                         columnsIdJO.put(title,id);
                     }
                     Log.e("columnsIdJO===",columnsIdJO.toString());
+
+                    getOrderDetail();
                 } catch (JSONException e) {
                     Log.e("???????","???????");
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    private void getOrderDetail(){
+        RequestParams params = AsynClient.getRequestParams();
+        AsynClient.get(MyHttpConfing.getOrderDetail+orderCode, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("rawJsonData3======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("rawJsonResponse3======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String status = jo.getString("status");
+                    if("suc".equals(status)){
+                        String entity = jo.getString("entity");
+                        JSONObject entityJO = new JSONObject(entity);
+                        String fieldMapStr = entityJO.getString("fieldMap");
+                        JSONObject fieldMapJO = new JSONObject(fieldMapStr);
+                        Log.e("订单号===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("订单号字段"))));
+                        Log.e("预装卸重量===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("预装卸重量字段"))));
+                        Log.e("流向类型===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("流向类型字段"))));
+                        Log.e("编辑时间===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("编辑时间字段"))));
+                        Log.e("二维码===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("二维码字段"))));
+                        Log.e("实际重量===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("实际重量字段"))));
+                        Log.e("重量差额比===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("重量差额比字段"))));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /*
+    *设置字段键名称
+     */
+    private void initZiDuanNameJO() throws JSONException {
+        ziDuanNameJO=new JSONObject();
+        ziDuanNameJO.put("订单号字段","订单号");
+        ziDuanNameJO.put("预装卸重量字段","预装卸重量");
+        ziDuanNameJO.put("流向类型字段","流向类型");
+        ziDuanNameJO.put("编辑时间字段","编辑时间");
+        ziDuanNameJO.put("二维码字段","二维码");
+        ziDuanNameJO.put("实际重量字段","实际重量");
+        ziDuanNameJO.put("重量差额比字段","重量差额比");
     }
 
     @Override
