@@ -2,6 +2,7 @@ package com.hualing.znczscanapp.util;
 
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.hualing.znczscanapp.global.TheApplication;
 
@@ -33,6 +34,7 @@ public class SharedPreferenceUtil {
      */
     public static void rememberTokenName(String tokenName){
         SharedPreferences preferences = TheApplication.getSharedPreferences() ;
+        Log.e("获取的tokenName=",tokenName);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("tokenName",tokenName);
         editor.commit();
@@ -52,8 +54,9 @@ public class SharedPreferenceUtil {
      */
     public static String getTokenName(){
         SharedPreferences preferences = TheApplication.getSharedPreferences() ;
-        String hydrocarbonToken = preferences.getString("tokenName",null);
-        return hydrocarbonToken;
+        String tokenName = preferences.getString("tokenName",null);
+        Log.e("读取的tokenName=",tokenName);
+        return tokenName;
     }
 
     /**

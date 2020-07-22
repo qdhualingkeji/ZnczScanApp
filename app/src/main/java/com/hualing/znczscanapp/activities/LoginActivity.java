@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.util.AllActivitiesHolder;
+import com.hualing.znczscanapp.util.SharedPreferenceUtil;
 import com.hualing.znczscanapp.utils.AsynClient;
 import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
@@ -87,8 +88,8 @@ public class LoginActivity extends BaseActivity {
      */
     private void login(final String username, final String password){
         RequestParams params = AsynClient.getRequestParams();
-        params.put("username", username);
-        params.put("password", password);
+        //params.put("username", username);
+        //params.put("password", password);
 
         AsynClient.post(MyHttpConfing.login, this, params, new GsonHttpResponseHandler() {
             @Override
@@ -109,6 +110,8 @@ public class LoginActivity extends BaseActivity {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     String status=jo.getString("status");
                     if("suc".equals(status)){
+                        String token=jo.getString("token");
+                        SharedPreferenceUtil.rememberTokenName(token);
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         AllActivitiesHolder.removeAct(LoginActivity.this);
