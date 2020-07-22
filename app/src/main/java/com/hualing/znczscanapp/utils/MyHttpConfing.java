@@ -12,7 +12,8 @@ public class MyHttpConfing {
     public static final String baseUrl = "http://121.196.184.205:96/hydrocarbon/";
 
     /* 用户登录 */
-    public static final String login = baseUrl + "api2/auth/token?username=admin&password=123456";
+    public static final String login = baseUrl + "api2/auth/token";
+    public static final String dtmplNormalByMenuId= baseUrl + "api2/meta/tmpl/"+ddxqMenuId+"/dtmpl/normal/";
     /* 获得订单详情数据 */
     public static final String getOrderDetail = baseUrl + "api2/entity/"+ddxqMenuId+"/detail/107919071434907656";
     /* 用户注册 */

@@ -91,7 +91,8 @@ public class LoginActivity extends BaseActivity {
         //params.put("username", username);
         //params.put("password", password);
 
-        AsynClient.post(MyHttpConfing.login, this, params, new GsonHttpResponseHandler() {
+        String paramsStr="?username="+username+"&password="+password;
+        AsynClient.post(MyHttpConfing.login+paramsStr, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;

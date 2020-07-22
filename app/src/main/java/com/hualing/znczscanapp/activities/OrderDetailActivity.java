@@ -13,6 +13,7 @@ import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +35,7 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     protected void getDataFormWeb() {
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.getOrderDetail, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.dtmplNormalByMenuId, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -47,11 +48,19 @@ public class OrderDetailActivity extends BaseActivity {
 
             @Override
             public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
-                Log.e("rawJsonResponse======",""+rawJsonResponse);
+                Log.e("rawJsonResponse2======",""+rawJsonResponse);
 
                 try {
                     JSONObject jo = new JSONObject(rawJsonResponse);
+                    String config = jo.getString("config");
+                    JSONObject configJO = new JSONObject(config);
+                    String dtmpl = configJO.getString("dtmpl");
+                    JSONObject dtmplJO = new JSONObject(dtmpl);
+                    JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
+                    JSONObject groupsJO = (JSONObject)groupsJA.get(0);
+                    Log.e("groups===",""+groupsJO.toString());
                 } catch (JSONException e) {
+                    Log.e("???????","???????");
                     e.printStackTrace();
                 }
             }

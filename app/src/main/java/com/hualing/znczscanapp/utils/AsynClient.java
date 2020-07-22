@@ -23,21 +23,14 @@ public class AsynClient {
         //  addHeader();
         //params.put("role", "C");  // 区分是顾客端
         //params.put("token",  new UserInfoManager(context).getToken());
-        addTokenHeader();
+        addHeader();
         client.get(url, params, responseHandler);
     }
 
     public static void post(String url, Context context, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         //params.put("role", "C");  // 区分是顾客端
         //params.put("token", new UserInfoManager(context).getToken());
-        if(url.contains("api2/auth/token")) {
-            Log.e("11111","11111");
-            addHeader();
-        }
-        else {
-            Log.e("2222","22222");
-            addTokenHeader();
-        }
+        addHeader();
         client.setTimeout(20 * 1000);
         client.post(url, params, responseHandler);
 
@@ -63,11 +56,7 @@ public class AsynClient {
 //        params.put("Request-Time", new Date().getTime());
 //        params.put("Auth-Key", "p!I5G8xTD?");
         client.addHeader("Request-From", "SaApp");
-    }
-
-    private static void addTokenHeader() {
-        client.addHeader("Request-From", "SaApp");
-        client.addHeader("hydrocarbon-token", SharedPreferenceUtil.getTokenName());
+        client.addHeader("hydrocarbon-token", SharedPreferenceUtil.getTokenName()==null?"":SharedPreferenceUtil.getTokenName());
         //client.addHeader("hydrocarbon-token", "0IsdmI22CofyMLR6l0l7kc7hBDzVug0d");
     }
 
