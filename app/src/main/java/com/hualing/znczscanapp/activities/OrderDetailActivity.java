@@ -20,6 +20,7 @@ import org.json.JSONObject;
 public class OrderDetailActivity extends BaseActivity {
 
     private String orderCode;
+    private JSONObject columnsIdJO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,10 @@ public class OrderDetailActivity extends BaseActivity {
 
     @Override
     protected void getDataFormWeb() {
+        initColumnsId();
+    }
+
+    private void initColumnsId(){
         RequestParams params = AsynClient.getRequestParams();
         AsynClient.get(MyHttpConfing.dtmplNormalByMenuId, this, params, new GsonHttpResponseHandler() {
             @Override
@@ -57,8 +62,20 @@ public class OrderDetailActivity extends BaseActivity {
                     String dtmpl = configJO.getString("dtmpl");
                     JSONObject dtmplJO = new JSONObject(dtmpl);
                     JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
-                    JSONObject groupsJO = (JSONObject)groupsJA.get(0);
-                    Log.e("groups===",""+groupsJO.toString());
+                    JSONObject groupsJO = (JSONObject)groupsJA.get(1);
+                    //Log.e("group===",""+groupsJO.toString());
+                    String fields = groupsJO.getString("fields");
+                    JSONArray fieldsJA = new JSONArray(fields);
+
+                    columnsIdJO=new JSONObject();
+                    for (int i=0;i<fieldsJA.length();i++) {
+                        JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
+                        String title = fieldJO.getString("title");
+                        String id = fieldJO.getString("id");
+                        //Log.e("title===",""+title+",id==="+id);
+                        columnsIdJO.put(title,id);
+                    }
+                    Log.e("columnsIdJO===",columnsIdJO.toString());
                 } catch (JSONException e) {
                     Log.e("???????","???????");
                     e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.hualing.znczscanapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -38,6 +39,10 @@ public class MainActivity extends BaseActivity {
 
     @OnClick({R.id.scanBut})
     public void onViewClicked(View v){
-        IntentUtil.openActivity(this, ScanActivity.class);
+        //IntentUtil.openActivity(this, ScanActivity.class);
+
+        Intent intent = new Intent(MainActivity.this, OrderDetailActivity.class);
+        intent.putExtra("orderCode","107928501035606018");
+        startActivity(intent);
     }
 }
