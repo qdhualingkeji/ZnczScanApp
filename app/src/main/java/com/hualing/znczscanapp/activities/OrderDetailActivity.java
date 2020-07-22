@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class OrderDetailActivity extends BaseActivity {
 
@@ -170,6 +172,42 @@ public class OrderDetailActivity extends BaseActivity {
         ziDuanNameJO.put("二维码字段","二维码");
         ziDuanNameJO.put("实际重量字段","实际重量");
         ziDuanNameJO.put("重量差额比字段","重量差额比");
+    }
+
+    @OnClick({R.id.saveBtn})
+    public void onViewClicked(View v) {
+        switch (v.getId()){
+            case R.id.saveBtn:
+                saveZhiJianBaoGao();
+                break;
+        }
+    }
+
+    private void saveZhiJianBaoGao(){
+        RequestParams params = AsynClient.getRequestParams();
+        params.put("结论", "不合格");
+        params.put("%fuseMode%",false);
+        params.put("货运订单48[1].$$label$$","关联订单");
+        //data["货运订单48[1].唯一编码"]="337525032";
+        //data["货运订单48[1].重量差额比"]=1;
+        //data["%fuseMode%"]=false;
+        //data["货运订单48.$$flag$$"]=true;
+        AsynClient.post(MyHttpConfing.saveZhiJianBaoGao, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("rawJsonData4======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("rawJsonResponse4======",""+rawJsonResponse);
+            }
+        });
     }
 
     @Override

@@ -9,6 +9,7 @@ public class MyHttpConfing {
     public static final String tag = "TAG-->";
 
     public static final String ddxqMenuId="104107815608326";
+    public static final String zjbgMenuId="104985599549464";
     public static final String baseUrl = "http://121.196.184.205:96/hydrocarbon/";
 
     /* 用户登录 */
@@ -16,6 +17,7 @@ public class MyHttpConfing {
     public static final String dtmplNormalByMenuId= baseUrl + "api2/meta/tmpl/"+ddxqMenuId+"/dtmpl/normal/";
     /* 获得订单详情数据 */
     public static final String getOrderDetail = baseUrl + "api2/entity/"+ddxqMenuId+"/detail/";
+    public static final String saveZhiJianBaoGao = baseUrl + "api2/entity/"+zjbgMenuId+"/detail/normal";
     /* 用户注册 */
     public static final String registered = baseUrl + "register";
     /* 确认抢单 */
