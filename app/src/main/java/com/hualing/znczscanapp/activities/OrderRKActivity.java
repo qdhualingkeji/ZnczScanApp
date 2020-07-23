@@ -26,9 +26,7 @@ import butterknife.OnClick;
 public class OrderRKActivity extends BaseActivity {
 
     private String orderCode;
-    private String[] lxlxArr;
-    private static final String[] zxztArr={"编辑中","执行中","已完成"};
-    private static final String[] rkztArr={"未入库","待入库","已入库"};
+    private String[] lxlxArr,zxztArr,rkztArr;
     private JSONObject columnsIdJO,columnsFieldIdJO,ziDuanNameJO;
     private ArrayAdapter<String> lxlxAdapter;
     private ArrayAdapter<String> zxztAdapter;
@@ -165,8 +163,9 @@ public class OrderRKActivity extends BaseActivity {
                     }
                     Log.e("columnsFieldIdJO===",columnsFieldIdJO.toString());
 
-
-                    initLXLXArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("流向类型字段")));
+                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("流向类型字段")),lxlxArr,lxlxAdapter);
+                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("执行状态字段")),zxztArr,zxztAdapter);
+                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("入库状态字段")),rkztArr,rkztAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -174,7 +173,7 @@ public class OrderRKActivity extends BaseActivity {
         });
     }
 
-    private void initLXLXArr(final String fieldId){
+    private void initAdapterDataArr(final String fieldId, final String[] dataArr, final ArrayAdapter<String> adapter){
         RequestParams params = AsynClient.getRequestParams();
         params.put("fieldIds",fieldId);
         AsynClient.get(MyHttpConfing.initFieldOptions, this, params, new GsonHttpResponseHandler() {
@@ -199,9 +198,9 @@ public class OrderRKActivity extends BaseActivity {
                     JSONArray lxlxJA = new JSONArray(lxlxJAStr);
                     for(int i=0;i<lxlxJA.length();i++){
                         JSONObject lxlxJO=(JSONObject)lxlxJA.get(i);
-                        lxlxArr[i]=lxlxJO.getString("value");
+                        dataArr[i]=lxlxJO.getString("value");
                     }
-                    lxlxAdapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -299,6 +298,8 @@ public class OrderRKActivity extends BaseActivity {
     }
 
     private void  initZXZTSpinner(){
+        zxztArr=new String[3];
+        zxztArr[0]="";
         zxztAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,zxztArr);
         zxztSpinner.setAdapter(zxztAdapter);
         zxztSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -315,6 +316,8 @@ public class OrderRKActivity extends BaseActivity {
     }
 
     private void  initRKZTSpinner(){
+        rkztArr=new String[3];
+        rkztArr[0]="";
         rkztAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,rkztArr);
         rkztSpinner.setAdapter(rkztAdapter);
         rkztSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
