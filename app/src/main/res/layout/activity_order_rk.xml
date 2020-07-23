@@ -38,7 +38,7 @@
         android:layout_height="wrap_content" />
 
     <Spinner
-        android:id="@+id/lllx_spinner"
+        android:id="@+id/lxlx_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

@@ -26,14 +26,14 @@ import butterknife.OnClick;
 public class OrderRKActivity extends BaseActivity {
 
     private String orderCode;
-    private static final String[] lllxArr={"送运","取运"};
+    private String[] lxlxArr;
     private static final String[] zxztArr={"编辑中","执行中","已完成"};
     private static final String[] rkztArr={"未入库","待入库","已入库"};
     private JSONObject columnsIdJO,columnsFieldIdJO,ziDuanNameJO;
-    private ArrayAdapter<String> lllxAdapter;
+    private ArrayAdapter<String> lxlxAdapter;
     private ArrayAdapter<String> zxztAdapter;
     private ArrayAdapter<String> rkztAdapter;
-    private String lllx,zxzt,rkzt;
+    private String lxlx,zxzt,rkzt;
     @BindView(R.id.ddh_tv)
     TextView ddhTV;
     @BindView(R.id.yzxzl_tv)
@@ -46,8 +46,8 @@ public class OrderRKActivity extends BaseActivity {
     TextView sjzlTV;
     @BindView(R.id.zlceb_tv)
     TextView zlcebTV;
-    @BindView(R.id.lllx_spinner)
-    Spinner lllxSpinner;
+    @BindView(R.id.lxlx_spinner)
+    Spinner lxlxSpinner;
     @BindView(R.id.zxzt_spinner)
     Spinner zxztSpinner;
     @BindView(R.id.rkzt_spinner)
@@ -74,6 +74,7 @@ public class OrderRKActivity extends BaseActivity {
     @Override
     protected void getDataFormWeb() {
         initColumnsId();
+        initColumnsFieldId();
     }
 
     private void initColumnsId(){
@@ -100,8 +101,58 @@ public class OrderRKActivity extends BaseActivity {
                     String dtmpl = configJO.getString("dtmpl");
                     JSONObject dtmplJO = new JSONObject(dtmpl);
                     JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
+                    JSONObject groupsJO = (JSONObject)groupsJA.get(1);
+                    //Log.e("group===",""+groupsJO.toString());
+                    String fields = groupsJO.getString("fields");
+                    JSONArray fieldsJA = new JSONArray(fields);
+
+                    columnsIdJO=new JSONObject();
+                    for (int i=0;i<fieldsJA.length();i++) {
+                        JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
+                        String title = fieldJO.getString("title");
+                        String id = fieldJO.getString("id");
+                        //Log.e("title===",""+title+",id==="+id);
+                        columnsIdJO.put(title,id);
+                    }
+                    Log.e("columnsIdJO===",columnsIdJO.toString());
+
+                    getOrderDetail();
+                } catch (JSONException e) {
+                    Log.e("???????","???????");
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initColumnsFieldId(){
+        RequestParams params = AsynClient.getRequestParams();
+        AsynClient.get(MyHttpConfing.ddrkDtmplNormal, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("ddrkFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("ddrkSuccess======",""+rawJsonResponse);
+
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String config = jo.getString("config");
+                    JSONObject configJO = null;
+                        configJO = new JSONObject(config);
+                    String dtmpl = configJO.getString("dtmpl");
+                    JSONObject dtmplJO = new JSONObject(dtmpl);
+                    JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
                     JSONObject groupsJO0 = (JSONObject)groupsJA.get(0);
                     String fields0 = groupsJO0.getString("fields");
+                    Log.e("fields0===",fields0);
                     JSONArray fieldsJA0 = new JSONArray(fields0);
 
                     columnsFieldIdJO=new JSONObject();
@@ -114,24 +165,44 @@ public class OrderRKActivity extends BaseActivity {
                     }
                     Log.e("columnsFieldIdJO===",columnsFieldIdJO.toString());
 
-                    JSONObject groupsJO1 = (JSONObject)groupsJA.get(1);
-                    //Log.e("group===",""+groupsJO.toString());
-                    String fields1 = groupsJO1.getString("fields");
-                    JSONArray fieldsJA1 = new JSONArray(fields1);
 
-                    columnsIdJO=new JSONObject();
-                    for (int i=0;i<fieldsJA1.length();i++) {
-                        JSONObject fieldJO = (JSONObject)fieldsJA1.get(i);
-                        String title = fieldJO.getString("title");
-                        String id = fieldJO.getString("id");
-                        //Log.e("title===",""+title+",id==="+id);
-                        columnsIdJO.put(title,id);
-                    }
-                    Log.e("columnsIdJO===",columnsIdJO.toString());
-
-                    getOrderDetail();
+                    initLXLXArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("流向类型字段")));
                 } catch (JSONException e) {
-                    Log.e("???????","???????");
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initLXLXArr(final String fieldId){
+        RequestParams params = AsynClient.getRequestParams();
+        params.put("fieldIds",fieldId);
+        AsynClient.get(MyHttpConfing.initFieldOptions, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("FieldOptionsFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("FieldOptions======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String optionsMapStr = jo.getString("optionsMap");
+                    JSONObject optionsMapJO = new JSONObject(optionsMapStr);
+                    String lxlxJAStr = optionsMapJO.getString(fieldId);
+                    JSONArray lxlxJA = new JSONArray(lxlxJAStr);
+                    for(int i=0;i<lxlxJA.length();i++){
+                        JSONObject lxlxJO=(JSONObject)lxlxJA.get(i);
+                        lxlxArr[i]=lxlxJO.getString("value");
+                    }
+                    lxlxAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -210,12 +281,14 @@ public class OrderRKActivity extends BaseActivity {
     }
 
     private void  initLLLXSpinner(){
-        lllxAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,lllxArr);
-        lllxSpinner.setAdapter(lllxAdapter);
-        lllxSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        lxlxArr=new String[2];
+        lxlxArr[0]="";
+        lxlxAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,lxlxArr);
+        lxlxSpinner.setAdapter(lxlxAdapter);
+        lxlxSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                lllx=lllxArr[position];
+                lxlx=lxlxArr[position];
             }
 
             @Override
@@ -272,7 +345,7 @@ public class OrderRKActivity extends BaseActivity {
         params.put("预装卸重量", yzxzlTV.getText().toString());
         params.put("实际重量", sjzlTV.getText().toString());
         params.put("重量差额比", zlcebTV.getText().toString());
-        params.put("流向类型", lllx);
+        params.put("流向类型", lxlx);
         params.put("执行状态", zxzt);
         params.put("入库状态", rkzt);
         /*

@@ -16,11 +16,13 @@ public class MyHttpConfing {
     /* 用户登录 */
     public static final String login = baseUrl + "api2/auth/token";
     public static final String ddxqDtmplNormal= baseUrl + "api2/meta/tmpl/"+ddxqMenuId+"/dtmpl/normal/";
-    //public static final String ddrkDtmplNormal= baseUrl + "api2/meta/tmpl/"+ddrkMenuId+"/dtmpl/normal/";
+    public static final String ddrkDtmplNormal= baseUrl + "api2/meta/tmpl/"+ddrkMenuId+"/dtmpl/normal/";
     /* 获得订单详情数据 */
     public static final String getOrderDetail = baseUrl + "api2/entity/"+ddxqMenuId+"/detail/";
     public static final String saveZhiJianBaoGao = baseUrl + "api2/entity/"+zjbgMenuId+"/detail/normal";
     public static final String saveOrderRK = baseUrl + "api2/entity/"+ddrkMenuId+"/detail/normal";
+    public static final String initFieldOptions = baseUrl + "api2/meta/dict/field_options";
+
     /* 用户注册 */
     public static final String registered = baseUrl + "register";
     /* 确认抢单 */
