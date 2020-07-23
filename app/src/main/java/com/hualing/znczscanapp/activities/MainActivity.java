@@ -44,11 +44,12 @@ public class MainActivity extends BaseActivity {
         switch (v.getId()){
             case R.id.scanBut:
                 intent = new Intent(MainActivity.this, OrderDetailActivity.class);
-                intent.putExtra("orderCode","107930431623405571");
+                //intent.putExtra("orderCode","108477088618389511");
+                intent.putExtra("orderCode","108473798673440770");
                 break;
             case R.id.kgScanBut:
                 intent = new Intent(MainActivity.this, OrderRKActivity.class);
-                intent.putExtra("orderCode","107930371493863427");
+                intent.putExtra("orderCode","108473798673440770");
                 break;
         }
         startActivity(intent);

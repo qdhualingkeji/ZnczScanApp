@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.hualing.znczscanapp.R;
@@ -23,7 +26,14 @@ import butterknife.OnClick;
 public class OrderRKActivity extends BaseActivity {
 
     private String orderCode;
-    private JSONObject columnsIdJO,ziDuanNameJO;
+    private static final String[] lllxArr={"送运","取运"};
+    private static final String[] zxztArr={"编辑中","执行中","已完成"};
+    private static final String[] rkztArr={"未入库","待入库","已入库"};
+    private JSONObject columnsIdJO,columnsFieldIdJO,ziDuanNameJO;
+    private ArrayAdapter<String> lllxAdapter;
+    private ArrayAdapter<String> zxztAdapter;
+    private ArrayAdapter<String> rkztAdapter;
+    private String lllx,zxzt,rkzt;
     @BindView(R.id.ddh_tv)
     TextView ddhTV;
     @BindView(R.id.yzxzl_tv)
@@ -36,6 +46,12 @@ public class OrderRKActivity extends BaseActivity {
     TextView sjzlTV;
     @BindView(R.id.zlceb_tv)
     TextView zlcebTV;
+    @BindView(R.id.lllx_spinner)
+    Spinner lllxSpinner;
+    @BindView(R.id.zxzt_spinner)
+    Spinner zxztSpinner;
+    @BindView(R.id.rkzt_spinner)
+    Spinner rkztSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +63,9 @@ public class OrderRKActivity extends BaseActivity {
         try {
             orderCode = getIntent().getStringExtra("orderCode");
             initZiDuanNameJO();
+            initLLLXSpinner();
+            initZXZTSpinner();
+            initRKZTSpinner();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -81,14 +100,28 @@ public class OrderRKActivity extends BaseActivity {
                     String dtmpl = configJO.getString("dtmpl");
                     JSONObject dtmplJO = new JSONObject(dtmpl);
                     JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
-                    JSONObject groupsJO = (JSONObject)groupsJA.get(1);
+                    JSONObject groupsJO0 = (JSONObject)groupsJA.get(0);
+                    String fields0 = groupsJO0.getString("fields");
+                    JSONArray fieldsJA0 = new JSONArray(fields0);
+
+                    columnsFieldIdJO=new JSONObject();
+                    for (int i=0;i<fieldsJA0.length();i++) {
+                        JSONObject fieldJO = (JSONObject)fieldsJA0.get(i);
+                        String title = fieldJO.getString("title");
+                        String fieldId = fieldJO.getString("fieldId");
+                        Log.e("title===",""+title+",fieldId==="+fieldId);
+                        columnsFieldIdJO.put(title,fieldId);
+                    }
+                    Log.e("columnsFieldIdJO===",columnsFieldIdJO.toString());
+
+                    JSONObject groupsJO1 = (JSONObject)groupsJA.get(1);
                     //Log.e("group===",""+groupsJO.toString());
-                    String fields = groupsJO.getString("fields");
-                    JSONArray fieldsJA = new JSONArray(fields);
+                    String fields1 = groupsJO1.getString("fields");
+                    JSONArray fieldsJA1 = new JSONArray(fields1);
 
                     columnsIdJO=new JSONObject();
-                    for (int i=0;i<fieldsJA.length();i++) {
-                        JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
+                    for (int i=0;i<fieldsJA1.length();i++) {
+                        JSONObject fieldJO = (JSONObject)fieldsJA1.get(i);
                         String title = fieldJO.getString("title");
                         String id = fieldJO.getString("id");
                         //Log.e("title===",""+title+",id==="+id);
@@ -176,6 +209,54 @@ public class OrderRKActivity extends BaseActivity {
         ziDuanNameJO.put("二维码字段","二维码");
     }
 
+    private void  initLLLXSpinner(){
+        lllxAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,lllxArr);
+        lllxSpinner.setAdapter(lllxAdapter);
+        lllxSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                lllx=lllxArr[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void  initZXZTSpinner(){
+        zxztAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,zxztArr);
+        zxztSpinner.setAdapter(zxztAdapter);
+        zxztSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                zxzt=zxztArr[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void  initRKZTSpinner(){
+        rkztAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,rkztArr);
+        rkztSpinner.setAdapter(rkztAdapter);
+        rkztSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                rkzt=rkztArr[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
     @OnClick({R.id.saveBtn})
     public void onViewClicked(View v) {
         switch (v.getId()){
@@ -187,16 +268,14 @@ public class OrderRKActivity extends BaseActivity {
 
     private void saveOrderRK(){
         RequestParams params = AsynClient.getRequestParams();
-        //params.put("唯一编码", "107916685580574722");
-        params.put("订单号", "12345678");
+        params.put("唯一编码", "108473798673440770");
+        params.put("预装卸重量", yzxzlTV.getText().toString());
+        params.put("实际重量", sjzlTV.getText().toString());
+        params.put("重量差额比", zlcebTV.getText().toString());
+        params.put("流向类型", lllx);
+        params.put("执行状态", zxzt);
+        params.put("入库状态", rkzt);
         /*
-        params.put("预装卸重量", "");
-        params.put("流向类型", "");
-        params.put("编辑时间", "2020-07-20 16:31:39");
-        params.put("执行状态", "");
-        params.put("入库状态", "");
-        params.put("实际重量", "");
-        params.put("重量差额比", "");
         params.put("计划运输日期", "");
         params.put("出入库时间", "");
         params.put("二维码", "");

@@ -179,7 +179,7 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
     @Override
     public void onScanQRCodeSuccess(String result) {
         try {
-            Toast.makeText(this, "{'订单编码':'107928501035606018'}", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, result, Toast.LENGTH_LONG).show();
             JSONObject jo = new JSONObject("{'订单编码':'107928501035606018'}");
             String orderCode = jo.getString("订单编码");
             Log.e("orderCode==",""+orderCode);
