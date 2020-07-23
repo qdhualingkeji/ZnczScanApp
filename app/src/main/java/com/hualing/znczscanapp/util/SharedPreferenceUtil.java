@@ -55,7 +55,7 @@ public class SharedPreferenceUtil {
     public static String getTokenName(){
         SharedPreferences preferences = TheApplication.getSharedPreferences() ;
         String tokenName = preferences.getString("tokenName",null);
-        Log.e("读取的tokenName=",tokenName);
+        //Log.e("读取的tokenName=",tokenName);
         return tokenName;
     }
 

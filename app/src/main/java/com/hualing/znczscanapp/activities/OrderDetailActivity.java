@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +28,10 @@ import butterknife.OnClick;
 public class OrderDetailActivity extends BaseActivity {
 
     private String orderCode;
+    private static final String[] jieLunArr={"合格","不合格"};
     private JSONObject columnsIdJO,ziDuanNameJO;
+    private ArrayAdapter<String> jieLunAdapter;
+    private String jielun;
     @BindView(R.id.ddh_tv)
     TextView ddhTV;
     @BindView(R.id.yzxzl_tv)
@@ -38,6 +44,8 @@ public class OrderDetailActivity extends BaseActivity {
     TextView sjzlTV;
     @BindView(R.id.zlceb_tv)
     TextView zlcebTV;
+    @BindView(R.id.jieLun_spinner)
+    Spinner jieLunSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,7 @@ public class OrderDetailActivity extends BaseActivity {
             orderCode = getIntent().getStringExtra("orderCode");
             Toast.makeText(this, orderCode, Toast.LENGTH_LONG).show();
             initZiDuanNameJO();
+            initJieLunSpinner();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -174,6 +183,22 @@ public class OrderDetailActivity extends BaseActivity {
         ziDuanNameJO.put("重量差额比字段","重量差额比");
     }
 
+    private void  initJieLunSpinner(){
+        jieLunAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,jieLunArr);
+        jieLunSpinner.setAdapter(jieLunAdapter);
+        jieLunSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                jielun=jieLunArr[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
     @OnClick({R.id.saveBtn})
     public void onViewClicked(View v) {
         switch (v.getId()){
@@ -185,7 +210,7 @@ public class OrderDetailActivity extends BaseActivity {
 
     private void saveZhiJianBaoGao(){
         RequestParams params = AsynClient.getRequestParams();
-        params.put("结论", "不合格");
+        params.put("结论", jielun);
         params.put("%fuseMode%",false);
         params.put("货运订单48[1].$$label$$","关联订单");
         //data["货运订单48[1].唯一编码"]="337525032";
@@ -206,6 +231,17 @@ public class OrderDetailActivity extends BaseActivity {
             @Override
             public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
                 Log.e("rawJsonResponse4======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                String status=jo.getString("status");
+                    if("suc".equals(status)){
+                        Intent intent = new Intent(OrderDetailActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        AllActivitiesHolder.removeAct(OrderDetailActivity.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

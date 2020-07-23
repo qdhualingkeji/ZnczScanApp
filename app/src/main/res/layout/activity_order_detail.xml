@@ -37,6 +37,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <Spinner
+        android:id="@+id/jieLun_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <android.support.v7.widget.CardView
         android:id="@+id/saveBtn"
         android:layout_width="match_parent"
