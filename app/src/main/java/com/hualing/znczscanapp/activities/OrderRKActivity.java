@@ -1,15 +1,10 @@
 package com.hualing.znczscanapp.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.util.AllActivitiesHolder;
@@ -25,13 +20,10 @@ import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class OrderDetailActivity extends BaseActivity {
+public class OrderRKActivity extends BaseActivity {
 
     private String orderCode;
-    private static final String[] jieLunArr={"合格","不合格"};
     private JSONObject columnsIdJO,ziDuanNameJO;
-    private ArrayAdapter<String> jieLunAdapter;
-    private String jielun;
     @BindView(R.id.ddh_tv)
     TextView ddhTV;
     @BindView(R.id.yzxzl_tv)
@@ -44,8 +36,6 @@ public class OrderDetailActivity extends BaseActivity {
     TextView sjzlTV;
     @BindView(R.id.zlceb_tv)
     TextView zlcebTV;
-    @BindView(R.id.jieLun_spinner)
-    Spinner jieLunSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +46,7 @@ public class OrderDetailActivity extends BaseActivity {
     protected void initLogic() {
         try {
             orderCode = getIntent().getStringExtra("orderCode");
-            Toast.makeText(this, orderCode, Toast.LENGTH_LONG).show();
             initZiDuanNameJO();
-            initJieLunSpinner();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -79,12 +67,12 @@ public class OrderDetailActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
-                Log.e("rawJsonData2======",""+rawJsonData+","+errorResponse);
+                Log.e("rawJsonData5======",""+rawJsonData+","+errorResponse);
             }
 
             @Override
             public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
-                Log.e("rawJsonResponse2======",""+rawJsonResponse);
+                Log.e("rawJsonResponse5======",""+rawJsonResponse);
 
                 try {
                     JSONObject jo = new JSONObject(rawJsonResponse);
@@ -127,12 +115,12 @@ public class OrderDetailActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
-                Log.e("rawJsonData3======",""+rawJsonData+","+errorResponse);
+                Log.e("rawJsonData6======",""+rawJsonData+","+errorResponse);
             }
 
             @Override
             public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
-                Log.e("rawJsonResponse3======",""+rawJsonResponse);
+                Log.e("rawJsonResponse6======",""+rawJsonResponse);
                 try {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     String status = jo.getString("status");
@@ -163,6 +151,7 @@ public class OrderDetailActivity extends BaseActivity {
                         zlcebTV.setText("重量差额比:"+zlceb);
                     }
                 } catch (JSONException e) {
+                    Log.e("??????",""+e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -170,7 +159,7 @@ public class OrderDetailActivity extends BaseActivity {
     }
 
     /*
-    *设置字段键名称
+     *设置字段键名称
      */
     private void initZiDuanNameJO() throws JSONException {
         ziDuanNameJO=new JSONObject();
@@ -178,46 +167,47 @@ public class OrderDetailActivity extends BaseActivity {
         ziDuanNameJO.put("预装卸重量字段","预装卸重量");
         ziDuanNameJO.put("流向类型字段","流向类型");
         ziDuanNameJO.put("编辑时间字段","编辑时间");
-        ziDuanNameJO.put("二维码字段","二维码");
+        ziDuanNameJO.put("执行状态字段","执行状态");
+        ziDuanNameJO.put("入库状态字段","入库状态");
         ziDuanNameJO.put("实际重量字段","实际重量");
         ziDuanNameJO.put("重量差额比字段","重量差额比");
-    }
-
-    private void  initJieLunSpinner(){
-        jieLunAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,jieLunArr);
-        jieLunSpinner.setAdapter(jieLunAdapter);
-        jieLunSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                jielun=jieLunArr[position];
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        ziDuanNameJO.put("计划运输日期字段","计划运输日期");
+        ziDuanNameJO.put("出入库时间字段","出入库时间");
+        ziDuanNameJO.put("二维码字段","二维码");
     }
 
     @OnClick({R.id.saveBtn})
     public void onViewClicked(View v) {
         switch (v.getId()){
             case R.id.saveBtn:
-                saveZhiJianBaoGao();
+                saveOrderRK();
                 break;
         }
     }
 
-    private void saveZhiJianBaoGao(){
+    private void saveOrderRK(){
         RequestParams params = AsynClient.getRequestParams();
-        params.put("结论", jielun);
-        params.put("%fuseMode%",false);
-        params.put("货运订单48[1].$$label$$","关联订单");
-        //data["货运订单48[1].唯一编码"]="337525032";
-        //data["货运订单48[1].重量差额比"]=1;
-        //data["%fuseMode%"]=false;
-        //data["货运订单48.$$flag$$"]=true;
-        AsynClient.post(MyHttpConfing.saveZhiJianBaoGao, this, params, new GsonHttpResponseHandler() {
+        //params.put("唯一编码", "107916685580574722");
+        params.put("订单号", "12345678");
+        /*
+        params.put("预装卸重量", "");
+        params.put("流向类型", "");
+        params.put("编辑时间", "2020-07-20 16:31:39");
+        params.put("执行状态", "");
+        params.put("入库状态", "");
+        params.put("实际重量", "");
+        params.put("重量差额比", "");
+        params.put("计划运输日期", "");
+        params.put("出入库时间", "");
+        params.put("二维码", "");
+        params.put("企业客户信息37.$$flag$$", "true");
+        params.put("车辆管理63.$$flag$$", "true");
+        params.put("企业客户信息81.$$flag$$", "true");
+        params.put("司机信息43.$$flag$$", "true");
+        params.put("系统用户80.$$flag$$", "true");
+        params.put("系统用户74.$$flag$$", "true");
+        */
+        AsynClient.post(MyHttpConfing.saveOrderRK, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -225,19 +215,19 @@ public class OrderDetailActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
-                Log.e("rawJsonData4======",""+rawJsonData+","+errorResponse);
+                Log.e("rawJsonData7======",""+rawJsonData+","+errorResponse);
             }
 
             @Override
             public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
-                Log.e("rawJsonResponse4======",""+rawJsonResponse);
+                Log.e("rawJsonResponse7======",""+rawJsonResponse);
                 try {
                     JSONObject jo = new JSONObject(rawJsonResponse);
-                String status=jo.getString("status");
+                    String status=jo.getString("status");
                     if("suc".equals(status)){
-                        Intent intent = new Intent(OrderDetailActivity.this, MainActivity.class);
+                        Intent intent = new Intent(OrderRKActivity.this, MainActivity.class);
                         startActivity(intent);
-                        AllActivitiesHolder.removeAct(OrderDetailActivity.this);
+                        AllActivitiesHolder.removeAct(OrderRKActivity.this);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -253,6 +243,6 @@ public class OrderDetailActivity extends BaseActivity {
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_order_detail;
+        return R.layout.activity_order_rk;
     }
 }

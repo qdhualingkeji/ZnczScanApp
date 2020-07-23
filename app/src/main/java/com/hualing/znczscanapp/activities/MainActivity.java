@@ -37,12 +37,20 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
-    @OnClick({R.id.scanBut})
+    @OnClick({R.id.scanBut,R.id.kgScanBut})
     public void onViewClicked(View v){
         //IntentUtil.openActivity(this, ScanActivity.class);
-
-        Intent intent = new Intent(MainActivity.this, OrderDetailActivity.class);
-        intent.putExtra("orderCode","107919071434907656");
+        Intent intent = null;
+        switch (v.getId()){
+            case R.id.scanBut:
+                intent = new Intent(MainActivity.this, OrderDetailActivity.class);
+                intent.putExtra("orderCode","107930431623405571");
+                break;
+            case R.id.kgScanBut:
+                intent = new Intent(MainActivity.this, OrderRKActivity.class);
+                intent.putExtra("orderCode","107930371493863427");
+                break;
+        }
         startActivity(intent);
     }
 }

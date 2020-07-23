@@ -20,6 +20,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/scanBut"
-        android:text="扫码"/>
+        android:text="质检员扫码"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/kgScanBut"
+        android:text="库管扫码"/>
 
 </LinearLayout>
