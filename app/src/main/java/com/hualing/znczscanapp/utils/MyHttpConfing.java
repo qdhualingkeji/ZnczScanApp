@@ -16,6 +16,7 @@ public class MyHttpConfing {
     /* 用户登录 */
     public static final String login = baseUrl + "api2/auth/token";
     public static final String ddxqDtmplNormal= baseUrl + "api2/meta/tmpl/"+ddxqMenuId+"/dtmpl/normal/";
+    public static final String zjbgDtmplNormal= baseUrl + "api2/meta/tmpl/"+zjbgMenuId+"/dtmpl/normal/";
     public static final String ddrkDtmplNormal= baseUrl + "api2/meta/tmpl/"+ddrkMenuId+"/dtmpl/normal/";
     /* 获得订单详情数据 */
     public static final String getOrderDetail = baseUrl + "api2/entity/"+ddxqMenuId+"/detail/";

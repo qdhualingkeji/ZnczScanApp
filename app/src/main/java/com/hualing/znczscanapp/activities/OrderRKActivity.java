@@ -148,14 +148,14 @@ public class OrderRKActivity extends BaseActivity {
                     String dtmpl = configJO.getString("dtmpl");
                     JSONObject dtmplJO = new JSONObject(dtmpl);
                     JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
-                    JSONObject groupsJO0 = (JSONObject)groupsJA.get(0);
-                    String fields0 = groupsJO0.getString("fields");
-                    Log.e("fields0===",fields0);
-                    JSONArray fieldsJA0 = new JSONArray(fields0);
+                    JSONObject groupsJO = (JSONObject)groupsJA.get(0);
+                    String fields = groupsJO.getString("fields");
+                    Log.e("fields===",fields);
+                    JSONArray fieldsJA = new JSONArray(fields);
 
                     columnsFieldIdJO=new JSONObject();
-                    for (int i=0;i<fieldsJA0.length();i++) {
-                        JSONObject fieldJO = (JSONObject)fieldsJA0.get(i);
+                    for (int i=0;i<fieldsJA.length();i++) {
+                        JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
                         String title = fieldJO.getString("title");
                         String fieldId = fieldJO.getString("fieldId");
                         Log.e("title===",""+title+",fieldId==="+fieldId);

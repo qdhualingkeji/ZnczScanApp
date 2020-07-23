@@ -28,8 +28,8 @@ import butterknife.OnClick;
 public class OrderDetailActivity extends BaseActivity {
 
     private String orderCode;
-    private static final String[] jieLunArr={"合格","不合格"};
-    private JSONObject columnsIdJO,ziDuanNameJO;
+    private String[] jieLunArr;
+    private JSONObject columnsIdJO,columnsFieldIdJO,ziDuanNameJO;
     private ArrayAdapter<String> jieLunAdapter;
     private String jielun;
     @BindView(R.id.ddh_tv)
@@ -67,6 +67,7 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     protected void getDataFormWeb() {
         initColumnsId();
+        initColumnsFieldId();
     }
 
     private void initColumnsId(){
@@ -111,6 +112,89 @@ public class OrderDetailActivity extends BaseActivity {
                     getOrderDetail();
                 } catch (JSONException e) {
                     Log.e("???????","???????");
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initColumnsFieldId(){
+        RequestParams params = AsynClient.getRequestParams();
+        AsynClient.get(MyHttpConfing.zjbgDtmplNormal, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("zjbgFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("zjbgSuccess======",""+rawJsonResponse);
+
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String config = jo.getString("config");
+                    JSONObject configJO = null;
+                    configJO = new JSONObject(config);
+                    String dtmpl = configJO.getString("dtmpl");
+                    JSONObject dtmplJO = new JSONObject(dtmpl);
+                    JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
+                    JSONObject groupsJO = (JSONObject)groupsJA.get(0);
+                    String fields = groupsJO.getString("fields");
+                    Log.e("fields===",fields);
+                    JSONArray fieldsJA = new JSONArray(fields);
+
+                    columnsFieldIdJO=new JSONObject();
+                    for (int i=0;i<fieldsJA.length();i++) {
+                        JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
+                        String title = fieldJO.getString("title");
+                        String fieldId = fieldJO.getString("fieldId");
+                        Log.e("title===",""+title+",fieldId==="+fieldId);
+                        columnsFieldIdJO.put(title,fieldId);
+                    }
+                    Log.e("columnsFieldIdJO===",columnsFieldIdJO.toString());
+
+                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("结论字段")),jieLunArr,jieLunAdapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initAdapterDataArr(final String fieldId, final String[] dataArr, final ArrayAdapter<String> adapter){
+        RequestParams params = AsynClient.getRequestParams();
+        params.put("fieldIds",fieldId);
+        AsynClient.get(MyHttpConfing.initFieldOptions, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("FieldOptionsFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("FieldOptions======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String optionsMapStr = jo.getString("optionsMap");
+                    JSONObject optionsMapJO = new JSONObject(optionsMapStr);
+                    String lxlxJAStr = optionsMapJO.getString(fieldId);
+                    JSONArray lxlxJA = new JSONArray(lxlxJAStr);
+                    for(int i=0;i<lxlxJA.length();i++){
+                        JSONObject lxlxJO=(JSONObject)lxlxJA.get(i);
+                        dataArr[i]=lxlxJO.getString("value");
+                    }
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -181,9 +265,12 @@ public class OrderDetailActivity extends BaseActivity {
         ziDuanNameJO.put("二维码字段","二维码");
         ziDuanNameJO.put("实际重量字段","实际重量");
         ziDuanNameJO.put("重量差额比字段","重量差额比");
+        ziDuanNameJO.put("结论字段","结论");
     }
 
     private void  initJieLunSpinner(){
+        jieLunArr=new String[2];
+        jieLunArr[0]="";
         jieLunAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,jieLunArr);
         jieLunSpinner.setAdapter(jieLunAdapter);
         jieLunSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
