@@ -2,8 +2,10 @@ package com.hualing.znczscanapp.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 
 import com.hualing.znczscanapp.R;
+import com.hualing.znczscanapp.adapter.PaiDuiChaXunAdapter;
 import com.hualing.znczscanapp.utils.AsynClient;
 import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
@@ -13,9 +15,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+
 public class PaiDuiChaXunActivity extends BaseActivity {
 
     private JSONObject columnsIdJO,ziDuanNameJO;
+    @BindView(R.id.pdcx_lv)
+    ListView pdcxLV;
+    private PaiDuiChaXunAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +35,16 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     @Override
     protected void initLogic() {
         try {
+            initPDCXLV();
             initZiDuanNameJO();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void initPDCXLV() {
+        adapter=new PaiDuiChaXunAdapter(PaiDuiChaXunActivity.this);
+        pdcxLV.setAdapter(adapter);
     }
 
     /*
@@ -113,16 +129,27 @@ public class PaiDuiChaXunActivity extends BaseActivity {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     String entities = jo.getString("entities");
                     JSONArray entitiesJA = new JSONArray(entities);
+                    List<JSONObject> dataList=new ArrayList<JSONObject>();
+                    JSONObject dataJO=null;
                     for (int i=0;i<entitiesJA.length();i++){
+                        dataJO=new JSONObject();
                         JSONObject entityJO = (JSONObject)entitiesJA.get(i);
                         JSONObject cellMapJO = entityJO.getJSONObject("cellMap");
-                        Log.e("===",columnsIdJO.getString(ziDuanNameJO.getString("排队号字段")));
+                        String num = cellMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("号码字段")));
                         String pdh = cellMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("排队号字段")));
-                        //cellMapJO.getString("");
-                        //cellMapJO.getString("");
-                        //cellMapJO.getString("");
+                        String prsj = cellMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("排入时间字段")));
+                        String fenLei = cellMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("分类字段")));
+                        String state = cellMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("状态字段")));
                         Log.e("pdh===",pdh);
+                        dataJO.put("num",num);
+                        dataJO.put("pdh",pdh);
+                        dataJO.put("prsj",prsj);
+                        dataJO.put("fenLei",fenLei);
+                        dataJO.put("state",state);
+                        dataList.add(dataJO);
                     }
+                    adapter.setDataList(dataList);
+                    adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     Log.e("?????",e.getMessage());
                     e.printStackTrace();
