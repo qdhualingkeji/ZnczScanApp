@@ -54,16 +54,10 @@ public class PaiDuiChaXunAdapter extends BaseAdapter {
                 convertView = context.getLayoutInflater().inflate(R.layout.item_pai_dui_cha_xun,parent,false);
             }
             JSONObject dataJO = dataList.get(position);
-            TextView numTV = (TextView)convertView.findViewById(R.id.num_tv);
             TextView pdhTV = (TextView)convertView.findViewById(R.id.pdh_tv);
             TextView prsjTV = (TextView)convertView.findViewById(R.id.prsj_tv);
-            TextView fenLeiTV = (TextView)convertView.findViewById(R.id.fenLei_tv);
-            TextView stateTV = (TextView)convertView.findViewById(R.id.state_tv);
-            numTV.setText(dataJO.getString("num"));
             pdhTV.setText(dataJO.getString("pdh"));
             prsjTV.setText(dataJO.getString("prsj"));
-            fenLeiTV.setText(dataJO.getString("fenLei"));
-            stateTV.setText(dataJO.getString("state"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
