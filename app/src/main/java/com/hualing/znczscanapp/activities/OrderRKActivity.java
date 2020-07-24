@@ -246,12 +246,12 @@ public class OrderRKActivity extends BaseActivity {
                         Log.e("实际重量===",sjzl);
                         Log.e("重量差额比===",zlceb);
 
-                        ddhTV.setText("订单号:"+ddh);
-                        yzxzlTV.setText("预装卸重量:"+yzxzl);
-                        lxlxTV.setText("流向类型:"+lxlx);
-                        bjsjTV.setText("编辑时间:"+bjsj);
-                        sjzlTV.setText("实际重量:"+sjzl);
-                        zlcebTV.setText("重量差额比:"+zlceb);
+                        ddhTV.setText(ddh);
+                        yzxzlTV.setText(yzxzl);
+                        lxlxTV.setText(lxlx);
+                        bjsjTV.setText(bjsj);
+                        sjzlTV.setText(sjzl);
+                        zlcebTV.setText(zlceb);
                     }
                 } catch (JSONException e) {
                     Log.e("??????",""+e.getMessage());
