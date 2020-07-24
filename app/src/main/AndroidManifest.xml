@@ -57,7 +57,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.OrderDetailActivity" />
-        <activity android:name=".activities.OrderRKActivity"></activity>
+        <activity android:name=".activities.OrderRKActivity" />
+        <activity android:name=".activities.PaiDuiChaXunActivity"></activity>
     </application>
 
 </manifest>
