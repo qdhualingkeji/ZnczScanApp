@@ -1,7 +1,11 @@
 package com.hualing.znczscanapp.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -29,6 +33,11 @@ public class MainActivity extends BaseActivity {
     CardView kgScanBut;
     @BindView(R.id.pdcxBut)
     CardView pdcxBut;
+    @BindView(R.id.toolBar)
+    Toolbar mToolBar;
+    @BindView(R.id.drawerLayout)
+    DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +57,30 @@ public class MainActivity extends BaseActivity {
             scanBut.setLayoutParams(new LinearLayout.LayoutParams(width,height));
             kgScanBut.setLayoutParams(new LinearLayout.LayoutParams(width,height));
             pdcxBut.setLayoutParams(new LinearLayout.LayoutParams(width,height));
+
+            mToolBar.setTitle(getResources().getString(R.string.app_name));//设置Toolbar标题
+            //        mToolBar.setTitle("二维码追溯-员工模式");//设置Toolbar标题
+            mToolBar.setTitleTextColor(Color.parseColor("#ffffff")); //设置标题颜色
+            setSupportActionBar(mToolBar);
+            //        mToolBar.setOnMenuItemClickListener(onMenuItemClick);
+            getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            //创建返回键，并实现打开关/闭监听
+            mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolBar, R.string.open, R.string.close) {
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    Log.e("aaaaaaaaa","aaaaaaaaaa");
+                    super.onDrawerOpened(drawerView);
+                }
+
+                @Override
+                public void onDrawerClosed(View drawerView) {
+                    super.onDrawerClosed(drawerView);
+                }
+            };
+            mDrawerToggle.syncState();
+            mDrawerLayout.addDrawerListener(mDrawerToggle);
         } catch (JSONException e) {
             e.printStackTrace();
         }
