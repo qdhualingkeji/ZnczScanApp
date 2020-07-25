@@ -31,6 +31,8 @@ public class GlobalData {
 
     public static String trueName ;
 
+    public static String checkQXGroup ;
+
     //当前功能业务线
     public static int currentFunctionType = FunctionType.NON_SELECTED ;
 

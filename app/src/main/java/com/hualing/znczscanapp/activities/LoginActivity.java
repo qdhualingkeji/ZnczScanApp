@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.hualing.znczscanapp.R;
+import com.hualing.znczscanapp.global.GlobalData;
 import com.hualing.znczscanapp.util.AllActivitiesHolder;
 import com.hualing.znczscanapp.util.SharedPreferenceUtil;
 import com.hualing.znczscanapp.utils.AsynClient;
@@ -17,6 +18,7 @@ import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -113,6 +115,7 @@ public class LoginActivity extends BaseActivity {
                     if("suc".equals(status)){
                         String token=jo.getString("token");
                         SharedPreferenceUtil.rememberTokenName(token);
+                        getMenuBlocks();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         AllActivitiesHolder.removeAct(LoginActivity.this);
@@ -142,7 +145,41 @@ public class LoginActivity extends BaseActivity {
                 */
             }
         });
+    }
 
+    private void getMenuBlocks(){
+        RequestParams params = AsynClient.getRequestParams();
+
+        AsynClient.post(MyHttpConfing.getMenuBlocks, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("getBlocksFail======",""+rawJsonData);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("getBlocksSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    JSONArray blocksJA = jo.getJSONArray("blocks");
+                    String checkQXGroup="";
+                    for(int i=0;i<blocksJA.length();i++){
+                        JSONObject blockJO=(JSONObject)blocksJA.get(i);
+                        String title = blockJO.getString("title");
+                        Log.e("title===",title);
+                        checkQXGroup+=","+title;
+                    }
+                    GlobalData.checkQXGroup=checkQXGroup.substring(1);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void MyToast(String s) {
