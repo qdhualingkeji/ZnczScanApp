@@ -18,16 +18,25 @@
             android:padding="20dp"
             android:textColor="@color/black"
             android:textSize="@dimen/propertyNameText"
-            android:text="入场号"/>
+            android:text="您的序号是："/>
 
         <TextView
             android:id="@+id/pdh_tv"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:textColor="@color/divide_dark_gray_color"
-            android:textSize="16sp"
+            android:textSize="36sp"
             android:gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:padding="20dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/propertyNameText"
+            android:text="号"/>
 
     </LinearLayout>
 
@@ -47,7 +56,7 @@
             android:padding="20dp"
             android:textColor="@color/black"
             android:textSize="@dimen/propertyNameText"
-            android:text="入场时间"/>
+            android:text="您的入场时间是："/>
 
         <TextView
             android:id="@+id/prsj_tv"
@@ -57,6 +66,21 @@
             android:textColor="@color/divide_dark_gray_color"
             android:textSize="16sp"
             android:gravity="center_vertical" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:padding="20dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/propertyNameText"
+            android:text="您的车辆信息"/>
 
     </LinearLayout>
 

@@ -115,6 +115,7 @@ public class LoginActivity extends BaseActivity {
                     if("suc".equals(status)){
                         String token=jo.getString("token");
                         SharedPreferenceUtil.rememberTokenName(token);
+                        GlobalData.userName=username;
                         getMenuBlocks();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
@@ -171,7 +172,7 @@ public class LoginActivity extends BaseActivity {
                     for(int i=0;i<blocksJA.length();i++){
                         JSONObject blockJO=(JSONObject)blocksJA.get(i);
                         String title = blockJO.getString("title");
-                        Log.e("title===",title);
+                        //Log.e("title===",title);
                         checkQXGroup+=","+title;
                     }
                     GlobalData.checkQXGroup=checkQXGroup.substring(1);

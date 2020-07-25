@@ -29,7 +29,7 @@ public class GlobalData {
 
     public static String password ;
 
-    public static String trueName ;
+    public static String userName ;
 
     public static String checkQXGroup ;
 

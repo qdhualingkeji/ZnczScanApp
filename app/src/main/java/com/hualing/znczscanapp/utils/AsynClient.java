@@ -4,7 +4,6 @@ package com.hualing.znczscanapp.utils;
 import android.content.Context;
 import android.util.Log;
 
-import com.hualing.znczscanapp.model.UserInfoManager;
 import com.hualing.znczscanapp.util.SharedPreferenceUtil;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -37,9 +36,6 @@ public class AsynClient {
         Log.e("syl","url==>"+url);
         Log.e("syl","params==>"+params);
     }
-
-
-
 
     public static RequestParams getRequestParams() {
         RequestParams params = new RequestParams();

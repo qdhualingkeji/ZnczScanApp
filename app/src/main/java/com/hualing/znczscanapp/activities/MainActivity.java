@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hualing.znczscanapp.R;
@@ -17,6 +18,11 @@ import com.hualing.znczscanapp.global.GlobalData;
 import com.hualing.znczscanapp.global.TheApplication;
 import com.hualing.znczscanapp.model.FunctionType;
 import com.hualing.znczscanapp.util.IntentUtil;
+import com.hualing.znczscanapp.utils.AsynClient;
+import com.hualing.znczscanapp.utils.HttpUtil;
+import com.hualing.znczscanapp.utils.MyHttpConfing;
+import com.loopj.android.http.BaseJsonHttpResponseHandler;
+import com.loopj.android.http.ResponseHandlerInterface;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,12 +33,16 @@ import butterknife.OnClick;
 public class MainActivity extends BaseActivity {
 
     private JSONObject ziDuanNameJO;
+    @BindView(R.id.userName_tv)
+    TextView userNameTV;
     @BindView(R.id.scanBut)
     CardView scanBut;
     @BindView(R.id.kgScanBut)
     CardView kgScanBut;
     @BindView(R.id.pdcxBut)
     CardView pdcxBut;
+    @BindView(R.id.csewmBut)
+    CardView csewmBut;
     @BindView(R.id.toolBar)
     Toolbar mToolBar;
     @BindView(R.id.drawerLayout)
@@ -57,6 +67,7 @@ public class MainActivity extends BaseActivity {
             scanBut.setLayoutParams(new LinearLayout.LayoutParams(width,height));
             kgScanBut.setLayoutParams(new LinearLayout.LayoutParams(width,height));
             pdcxBut.setLayoutParams(new LinearLayout.LayoutParams(width,height));
+            csewmBut.setLayoutParams(new LinearLayout.LayoutParams(width,height));
 
             mToolBar.setTitle(getResources().getString(R.string.app_name));//设置Toolbar标题
             //        mToolBar.setTitle("二维码追溯-员工模式");//设置Toolbar标题
@@ -81,6 +92,8 @@ public class MainActivity extends BaseActivity {
             };
             mDrawerToggle.syncState();
             mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+            userNameTV.setText(GlobalData.userName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -114,7 +127,7 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
-    @OnClick({R.id.scanBut,R.id.kgScanBut,R.id.pdcxBut})
+    @OnClick({R.id.scanBut,R.id.kgScanBut,R.id.pdcxBut,R.id.csewmBut,R.id.exitBut})
     public void onViewClicked(View v){
         try {
             switch (v.getId()){
@@ -145,6 +158,17 @@ public class MainActivity extends BaseActivity {
                         MyToast("当前用户无此权限");
                     }
                     break;
+                case R.id.csewmBut:
+                    if(GlobalData.checkQXGroup.contains(ziDuanNameJO.getString("我是司机字段"))) {
+                        MyToast("此功能尚未开通");
+                    }
+                    else{
+                        MyToast("当前用户无此权限");
+                    }
+                    break;
+                case R.id.exitBut:
+                    loginout();
+                    break;
             }
 
             /*
@@ -168,6 +192,11 @@ public class MainActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loginout(){
+        String r = HttpUtil.doDelete(MyHttpConfing.login, "");
+        Log.e("result===",r+"");
     }
 
     public void MyToast(String s) {
