@@ -3,6 +3,7 @@ package com.hualing.znczscanapp.activities;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.adapter.PaiDuiChaXunAdapter;
@@ -22,10 +23,12 @@ import butterknife.BindView;
 
 public class PaiDuiChaXunActivity extends BaseActivity {
 
+    private String orderCode;
     private JSONObject columnsIdJO,criteriasIdJO,ziDuanNameJO;
-    @BindView(R.id.pdcx_lv)
-    ListView pdcxLV;
-    private PaiDuiChaXunAdapter adapter;
+    @BindView(R.id.pdh_tv)
+    TextView pdhTV;
+    @BindView(R.id.prsj_tv)
+    TextView prsjTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +38,11 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     @Override
     protected void initLogic() {
         try {
-            initPDCXLV();
+            orderCode = getIntent().getStringExtra("orderCode");
             initZiDuanNameJO();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    private void initPDCXLV() {
-        adapter=new PaiDuiChaXunAdapter(PaiDuiChaXunActivity.this);
-        pdcxLV.setAdapter(adapter);
     }
 
     /*
@@ -81,8 +79,12 @@ public class PaiDuiChaXunActivity extends BaseActivity {
                     JSONObject jo=new JSONObject(rawJsonResponse);
                     JSONObject ltmplJO = jo.getJSONObject("ltmpl");
                     JSONArray criteriasJA = ltmplJO.getJSONArray("criterias");
+
+                    JSONArray columnsJA = ltmplJO.getJSONArray("columns");
+
                     initCriteriasId(criteriasJA);
-                    initColumnsId();
+                    initColumnsId(columnsJA);
+                    initQueryKey();
                 } catch (JSONException e) {
                     Log.e("error===",e.getMessage());
                     e.printStackTrace();
@@ -97,8 +99,8 @@ public class PaiDuiChaXunActivity extends BaseActivity {
             JSONObject criteriaJO = (JSONObject)criteriasJA.get(i);
             String title = criteriaJO.getString("title");
             String id = criteriaJO.getString("id");
-            Log.e("title1===",title);
-            Log.e("id1===",id);
+            //Log.e("title1===",title);
+            //Log.e("id1===",id);
             criteriasIdJO.put(title,id);
         }
     }
@@ -108,13 +110,23 @@ public class PaiDuiChaXunActivity extends BaseActivity {
         initLtmplAttr();
     }
 
-    private void initColumnsId() throws JSONException {
+    private void initColumnsId(JSONArray columnsJA) throws JSONException {
+        columnsIdJO=new JSONObject();
+        for (int i=0;i<columnsJA.length();i++){
+            JSONObject columnJO = (JSONObject)columnsJA.get(i);
+            String title = columnJO.getString("title");
+            String id = columnJO.getString("id");
+            //Log.e("title===",""+title+",id==="+id);
+            columnsIdJO.put(title,id);
+        }
+        //Log.e("columnsIdJO===",columnsIdJO.toString());
+
+    }
+
+    private void initQueryKey() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
-        String o = ziDuanNameJO.getString("订单号字段");
-        Log.e("pppppppp",o);
-        String criteriasId=criteriasIdJO.getString(columnsIdJO.getString(o));
-        Log.e("criteriasId===",criteriasId);
-        params.put("criteria_"+criteriasId,"999");
+        String criteriasId=criteriasIdJO.getString(ziDuanNameJO.getString("订单号字段"));
+        params.put("criteria_"+criteriasId,orderCode);
         AsynClient.get(MyHttpConfing.pdcxEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
@@ -132,20 +144,6 @@ public class PaiDuiChaXunActivity extends BaseActivity {
                 try {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     String queryKey = jo.getString("queryKey");
-                    String ltmpl = jo.getString("ltmpl");
-                    JSONObject ltmplJO = new JSONObject(ltmpl);
-                    String columns = ltmplJO.getString("columns");
-                    JSONArray columnsJA=new JSONArray(columns);
-
-                    columnsIdJO=new JSONObject();
-                    for (int i=0;i<columnsJA.length();i++){
-                        JSONObject columnJO = (JSONObject)columnsJA.get(i);
-                        String title = columnJO.getString("title");
-                        String id = columnJO.getString("id");
-                        Log.e("title===",""+title+",id==="+id);
-                        columnsIdJO.put(title,id);
-                    }
-                    Log.e("columnsIdJO===",columnsIdJO.toString());
 
                     initListData(queryKey);
                 } catch (JSONException e) {
@@ -177,21 +175,12 @@ public class PaiDuiChaXunActivity extends BaseActivity {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     String entities = jo.getString("entities");
                     JSONArray entitiesJA = new JSONArray(entities);
-                    List<JSONObject> dataList=new ArrayList<JSONObject>();
-                    JSONObject dataJO=null;
-                    for (int i=0;i<entitiesJA.length();i++){
-                        dataJO=new JSONObject();
-                        JSONObject entityJO = (JSONObject)entitiesJA.get(i);
-                        JSONObject cellMapJO = entityJO.getJSONObject("cellMap");
-                        String pdh = cellMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("排队号字段")));
-                        String prsj = cellMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("排入时间字段")));
-                        Log.e("pdh===",pdh);
-                        dataJO.put("pdh",pdh);
-                        dataJO.put("prsj",prsj);
-                        dataList.add(dataJO);
-                    }
-                    adapter.setDataList(dataList);
-                    adapter.notifyDataSetChanged();
+                    JSONObject entityJO = (JSONObject)entitiesJA.get(0);
+                    JSONObject cellMapJO = entityJO.getJSONObject("cellMap");
+                    String pdh = cellMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("排队号字段")));
+                    String prsj = cellMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("排入时间字段")));
+                    pdhTV.setText(pdh);
+                    prsjTV.setText(prsj);
                 } catch (JSONException e) {
                     Log.e("?????",e.getMessage());
                     e.printStackTrace();

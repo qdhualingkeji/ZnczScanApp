@@ -52,6 +52,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.pdcxBut:
                 intent = new Intent(MainActivity.this, PaiDuiChaXunActivity.class);
+                intent.putExtra("orderCode","999999");
                 break;
         }
         startActivity(intent);

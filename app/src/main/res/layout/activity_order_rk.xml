@@ -298,9 +298,9 @@
     </ScrollView>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dividerHeight"
-        android:background="@color/divide_gray_color"/>
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dividerHeight"
+    android:background="@color/divide_gray_color"/>
 
     <android.support.v7.widget.CardView
         android:id="@+id/saveBtn"
