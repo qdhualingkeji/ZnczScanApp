@@ -80,12 +80,12 @@ public class OrderDetailActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
-                Log.e("rawJsonData2======",""+rawJsonData+","+errorResponse);
+                Log.e("ddxqDNFail======",""+rawJsonData+","+errorResponse);
             }
 
             @Override
             public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
-                Log.e("rawJsonResponse2======",""+rawJsonResponse);
+                Log.e("ddxqDNSuccess======",""+rawJsonResponse);
 
                 try {
                     JSONObject jo = new JSONObject(rawJsonResponse);
@@ -270,7 +270,7 @@ public class OrderDetailActivity extends BaseActivity {
 
     private void  initJieLunSpinner(){
         jieLunArr=new String[2];
-        jieLunArr[0]="";
+        jieLunArr[0]="合格";
         jieLunAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,jieLunArr);
         jieLunSpinner.setAdapter(jieLunAdapter);
         jieLunSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -300,6 +300,7 @@ public class OrderDetailActivity extends BaseActivity {
         params.put("结论", jielun);
         params.put("%fuseMode%",false);
         params.put("货运订单48[1].$$label$$","关联订单");
+        params.put("货运订单48[1].订单号",ddhTV.getText().toString());
         //data["货运订单48[1].唯一编码"]="337525032";
         //data["货运订单48[1].重量差额比"]=1;
         //data["%fuseMode%"]=false;
@@ -322,6 +323,7 @@ public class OrderDetailActivity extends BaseActivity {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                 String status=jo.getString("status");
                     if("suc".equals(status)){
+                        MyToast("质检完毕，"+jielun);
                         Intent intent = new Intent(OrderDetailActivity.this, MainActivity.class);
                         startActivity(intent);
                         AllActivitiesHolder.removeAct(OrderDetailActivity.this);
@@ -341,5 +343,9 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_order_detail;
+    }
+
+    public void MyToast(String s) {
+        Toast.makeText(OrderDetailActivity.this, s, Toast.LENGTH_SHORT).show();
     }
 }

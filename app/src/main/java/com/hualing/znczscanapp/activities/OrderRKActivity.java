@@ -10,6 +10,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.hualing.znczscanapp.R;
+import com.hualing.znczscanapp.adapter.SimpleAdapter;
 import com.hualing.znczscanapp.util.AllActivitiesHolder;
 import com.hualing.znczscanapp.utils.AsynClient;
 import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
@@ -20,17 +21,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
 public class OrderRKActivity extends BaseActivity {
 
     private String orderCode;
-    private String[] lxlxArr,zxztArr,rkztArr;
+    List<String> lxlxList,zxztList,rkztList;
     private JSONObject columnsIdJO,columnsFieldIdJO,ziDuanNameJO;
-    private ArrayAdapter<String> lxlxAdapter;
-    private ArrayAdapter<String> zxztAdapter;
-    private ArrayAdapter<String> rkztAdapter;
+    private SimpleAdapter lxlxAdapter,zxztAdapter,rkztAdapter;
     private String lxlx,zxzt,rkzt;
     @BindView(R.id.ddh_tv)
     TextView ddhTV;
@@ -163,9 +165,9 @@ public class OrderRKActivity extends BaseActivity {
                     }
                     Log.e("columnsFieldIdJO===",columnsFieldIdJO.toString());
 
-                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("流向类型字段")),lxlxArr,lxlxAdapter);
-                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("执行状态字段")),zxztArr,zxztAdapter);
-                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("入库状态字段")),rkztArr,rkztAdapter);
+                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("流向类型字段")),lxlxAdapter);
+                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("执行状态字段")),zxztAdapter);
+                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("入库状态字段")),rkztAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -173,7 +175,7 @@ public class OrderRKActivity extends BaseActivity {
         });
     }
 
-    private void initAdapterDataArr(final String fieldId, final String[] dataArr, final ArrayAdapter<String> adapter){
+    private void initAdapterDataArr(final String fieldId, final SimpleAdapter adapter){
         RequestParams params = AsynClient.getRequestParams();
         params.put("fieldIds",fieldId);
         AsynClient.get(MyHttpConfing.initFieldOptions, this, params, new GsonHttpResponseHandler() {
@@ -196,9 +198,11 @@ public class OrderRKActivity extends BaseActivity {
                     JSONObject optionsMapJO = new JSONObject(optionsMapStr);
                     String lxlxJAStr = optionsMapJO.getString(fieldId);
                     JSONArray lxlxJA = new JSONArray(lxlxJAStr);
+                    List<String> list = adapter.getList();
+                    list.clear();
                     for(int i=0;i<lxlxJA.length();i++){
                         JSONObject lxlxJO=(JSONObject)lxlxJA.get(i);
-                        dataArr[i]=lxlxJO.getString("value");
+                        list.add(lxlxJO.getString("value"));
                     }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -280,14 +284,14 @@ public class OrderRKActivity extends BaseActivity {
     }
 
     private void  initLLLXSpinner(){
-        lxlxArr=new String[2];
-        lxlxArr[0]="";
-        lxlxAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,lxlxArr);
+        lxlxList=new ArrayList<String>();
+        lxlxList.add("");
+        lxlxAdapter = new SimpleAdapter(OrderRKActivity.this);
         lxlxSpinner.setAdapter(lxlxAdapter);
         lxlxSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                lxlx=lxlxArr[position];
+                lxlx=lxlxAdapter.getList().get(position);
             }
 
             @Override
@@ -298,14 +302,14 @@ public class OrderRKActivity extends BaseActivity {
     }
 
     private void  initZXZTSpinner(){
-        zxztArr=new String[3];
-        zxztArr[0]="";
-        zxztAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,zxztArr);
+        zxztList=new ArrayList<String>();
+        zxztList.add("");
+        zxztAdapter = new SimpleAdapter(OrderRKActivity.this);
         zxztSpinner.setAdapter(zxztAdapter);
         zxztSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                zxzt=zxztArr[position];
+                zxzt=zxztAdapter.getList().get(position);
             }
 
             @Override
@@ -316,14 +320,14 @@ public class OrderRKActivity extends BaseActivity {
     }
 
     private void  initRKZTSpinner(){
-        rkztArr=new String[3];
-        rkztArr[0]="";
-        rkztAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,rkztArr);
+        rkztList=new ArrayList<String>();
+        rkztList.add("");
+        rkztAdapter =new SimpleAdapter(OrderRKActivity.this);
         rkztSpinner.setAdapter(rkztAdapter);
         rkztSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                rkzt=rkztArr[position];
+                rkzt=rkztAdapter.getList().get(position);
             }
 
             @Override
