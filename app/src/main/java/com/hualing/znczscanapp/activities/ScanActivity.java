@@ -13,6 +13,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.hualing.znczscanapp.R;
+import com.hualing.znczscanapp.global.GlobalData;
+import com.hualing.znczscanapp.model.FunctionType;
 import com.hualing.znczscanapp.util.AllActivitiesHolder;
 import com.hualing.znczscanapp.widget.TitleBar;
 
@@ -180,11 +182,23 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
     public void onScanQRCodeSuccess(String result) {
         try {
             Toast.makeText(this, result, Toast.LENGTH_LONG).show();
-            JSONObject jo = new JSONObject("{'订单编码':'107928501035606018'}");
-            String orderCode = jo.getString("订单编码");
-            Log.e("orderCode==",""+orderCode);
-            Intent intent = new Intent(ScanActivity.this, OrderDetailActivity.class);
-            intent.putExtra("orderCode",orderCode);
+            Intent intent = null;
+            //JSONObject jo = new JSONObject("{'订单编码':'108473798673440770','订单号':'999999','司机身份证':'12345678'}");
+            JSONObject jo = new JSONObject(result);
+            switch (GlobalData.currentFunctionType){
+                case FunctionType.ZHI_JIAN_YUAN:
+                    intent = new Intent(ScanActivity.this, OrderDetailActivity.class);
+                    intent.putExtra("orderCode",jo.getString("订单编码"));
+                    break;
+                case FunctionType.KU_GUAN:
+                    intent = new Intent(ScanActivity.this, OrderRKActivity.class);
+                    intent.putExtra("orderCode",jo.getString("订单编码"));
+                    break;
+                case FunctionType.PAI_DUI_CHA_XUN:
+                    intent = new Intent(ScanActivity.this, PaiDuiChaXunActivity.class);
+                    intent.putExtra("orderNum",jo.getString("订单号"));
+                    break;
+            }
             startActivity(intent);
             AllActivitiesHolder.removeAct(ScanActivity.this);
         } catch (JSONException e) {

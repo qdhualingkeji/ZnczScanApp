@@ -14,14 +14,14 @@ public class FunctionType {
     //未选择
     public static final int NON_SELECTED = -1;
 
-    //原料入库业务线
-    public static final int MATERIAL_IN = 30;
+    //质检员模块
+    public static final int ZHI_JIAN_YUAN = 30;
 
-    //原料出库业务线
-    public static final int MATERIAL_OUT = 31;
+    //库管模块
+    public static final int KU_GUAN = 31;
 
-    //半成品入库业务线
-    public static final int HALF_PRODUCT_IN = 32;
+    //排队查询
+    public static final int PAI_DUI_CHA_XUN = 32;
 
     //成品入库业务线
     public static final int PRODUCT_IN = 33;

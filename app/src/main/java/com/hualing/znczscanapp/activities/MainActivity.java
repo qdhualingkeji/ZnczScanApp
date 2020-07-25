@@ -6,6 +6,8 @@ import android.view.View;
 
 import com.hualing.znczscanapp.activities.BaseActivity;
 import com.hualing.znczscanapp.R;
+import com.hualing.znczscanapp.global.GlobalData;
+import com.hualing.znczscanapp.model.FunctionType;
 import com.hualing.znczscanapp.util.IntentUtil;
 
 import butterknife.OnClick;
@@ -39,8 +41,21 @@ public class MainActivity extends BaseActivity {
 
     @OnClick({R.id.scanBut,R.id.kgScanBut,R.id.pdcxBut})
     public void onViewClicked(View v){
-        //IntentUtil.openActivity(this, ScanActivity.class);
         Intent intent = null;
+        switch (v.getId()){
+            case R.id.scanBut:
+                GlobalData.currentFunctionType = FunctionType.ZHI_JIAN_YUAN;
+                break;
+            case R.id.kgScanBut:
+                GlobalData.currentFunctionType = FunctionType.KU_GUAN;
+                break;
+            case R.id.pdcxBut:
+                GlobalData.currentFunctionType = FunctionType.PAI_DUI_CHA_XUN;
+                break;
+        }
+        IntentUtil.openActivity(this, ScanActivity.class);
+
+        /*
         switch (v.getId()){
             case R.id.scanBut:
                 intent = new Intent(MainActivity.this, OrderDetailActivity.class);
@@ -52,9 +67,10 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.pdcxBut:
                 intent = new Intent(MainActivity.this, PaiDuiChaXunActivity.class);
-                intent.putExtra("orderCode","999999");
+                intent.putExtra("orderNum","999999");
                 break;
         }
         startActivity(intent);
+        */
     }
 }

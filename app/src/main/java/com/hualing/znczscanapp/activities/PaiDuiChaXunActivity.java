@@ -2,11 +2,9 @@ package com.hualing.znczscanapp.activities;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hualing.znczscanapp.R;
-import com.hualing.znczscanapp.adapter.PaiDuiChaXunAdapter;
 import com.hualing.znczscanapp.utils.AsynClient;
 import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
@@ -16,14 +14,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 
 public class PaiDuiChaXunActivity extends BaseActivity {
 
-    private String orderCode;
+    private String orderNum;
     private JSONObject columnsIdJO,criteriasIdJO,ziDuanNameJO;
     @BindView(R.id.pdh_tv)
     TextView pdhTV;
@@ -38,7 +33,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     @Override
     protected void initLogic() {
         try {
-            orderCode = getIntent().getStringExtra("orderCode");
+            orderNum = getIntent().getStringExtra("orderNum");
             initZiDuanNameJO();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -126,7 +121,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     private void initQueryKey() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
         String criteriasId=criteriasIdJO.getString(ziDuanNameJO.getString("订单号字段"));
-        params.put("criteria_"+criteriasId,orderCode);
+        params.put("criteria_"+criteriasId,orderNum);
         AsynClient.get(MyHttpConfing.pdcxEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
