@@ -21,7 +21,7 @@ public class FunctionType {
     public static final int KU_GUAN = 31;
 
     //排队查询
-    public static final int PAI_DUI_CHA_XUN = 32;
+    //public static final int PAI_DUI_CHA_XUN = 32;
 
     //成品入库业务线
     public static final int PRODUCT_IN = 33;

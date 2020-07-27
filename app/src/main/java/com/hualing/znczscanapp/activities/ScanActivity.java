@@ -194,10 +194,12 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
                     intent = new Intent(ScanActivity.this, OrderRKActivity.class);
                     intent.putExtra("orderCode",jo.getString("订单编码"));
                     break;
+                    /*
                 case FunctionType.PAI_DUI_CHA_XUN:
                     intent = new Intent(ScanActivity.this, PaiDuiChaXunActivity.class);
                     intent.putExtra("orderNum",jo.getString("订单号"));
                     break;
+                    */
             }
             startActivity(intent);
             AllActivitiesHolder.removeAct(ScanActivity.this);

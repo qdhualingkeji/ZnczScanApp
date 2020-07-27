@@ -58,7 +58,8 @@
         </activity>
         <activity android:name=".activities.OrderDetailActivity" />
         <activity android:name=".activities.OrderRKActivity" />
-        <activity android:name=".activities.PaiDuiChaXunActivity"></activity>
+        <activity android:name=".activities.PaiDuiChaXunActivity" />
+        <activity android:name=".activities.ShowQrcodeActivity"></activity>
     </application>
 
 </manifest>

@@ -11,7 +11,8 @@ public class MyHttpConfing {
     public static final String ddxqMenuId="104107815608326";
     public static final String zjbgMenuId="104985599549464";
     public static final String ddrkMenuId="104990439776282";
-    public static final String pdcxMenuId="104809539444749";
+    //public static final String pdcxMenuId="104809539444749";
+    public static final String dqphMenuId="104977020100626";
     public static final String baseUrl = "http://121.196.184.205:96/hydrocarbon/";
 
     /* 用户登录 */
@@ -20,7 +21,8 @@ public class MyHttpConfing {
     public static final String ddxqDtmplNormal= baseUrl + "api2/meta/tmpl/"+ddxqMenuId+"/dtmpl/normal/";
     public static final String zjbgDtmplNormal= baseUrl + "api2/meta/tmpl/"+zjbgMenuId+"/dtmpl/normal/";
     public static final String ddrkDtmplNormal= baseUrl + "api2/meta/tmpl/"+ddrkMenuId+"/dtmpl/normal/";
-    public static final String pdcxEntityListTmpl=baseUrl+"api2/entity/"+pdcxMenuId+"/list/tmpl";
+    //public static final String pdcxEntityListTmpl=baseUrl+"api2/entity/"+pdcxMenuId+"/list/tmpl";
+    public static final String dqphEntityListTmpl=baseUrl+"api2/entity/"+dqphMenuId+"/list/tmpl";
     /* 获得订单详情数据 */
     public static final String getOrderDetail = baseUrl + "api2/entity/"+ddxqMenuId+"/detail/";
     public static final String getEntityListData=baseUrl+"api2/entity/list/queryKey/data";

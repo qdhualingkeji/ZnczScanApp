@@ -151,8 +151,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case R.id.pdcxBut:
                     if(GlobalData.checkQXGroup.contains(ziDuanNameJO.getString("我是司机字段"))) {
-                        GlobalData.currentFunctionType = FunctionType.PAI_DUI_CHA_XUN;
-                        IntentUtil.openActivity(this, ScanActivity.class);
+                        IntentUtil.openActivity(this, PaiDuiChaXunActivity.class);
                     }
                     else{
                         MyToast("当前用户无此权限");

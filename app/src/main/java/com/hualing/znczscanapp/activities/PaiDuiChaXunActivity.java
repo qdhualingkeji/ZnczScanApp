@@ -18,7 +18,6 @@ import butterknife.BindView;
 
 public class PaiDuiChaXunActivity extends BaseActivity {
 
-    private String orderNum;
     private JSONObject columnsIdJO,criteriasIdJO,ziDuanNameJO;
     @BindView(R.id.pdh_tv)
     TextView pdhTV;
@@ -33,7 +32,6 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     @Override
     protected void initLogic() {
         try {
-            orderNum = getIntent().getStringExtra("orderNum");
             initZiDuanNameJO();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -56,7 +54,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
     private void initLtmplAttr(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.pdcxEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.dqphEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -120,9 +118,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
     private void initQueryKey() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
-        String criteriasId=criteriasIdJO.getString(ziDuanNameJO.getString("订单号字段"));
-        params.put("criteria_"+criteriasId,orderNum);
-        AsynClient.get(MyHttpConfing.pdcxEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.dqphEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -151,7 +147,6 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     private void initListData(String queryKey) {
         RequestParams params = AsynClient.getRequestParams();
         params.put("pageNo","1");
-        params.put("pageSize","100");
         AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
