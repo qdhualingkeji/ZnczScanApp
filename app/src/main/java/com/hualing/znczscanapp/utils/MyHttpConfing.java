@@ -8,7 +8,7 @@ public class MyHttpConfing {
 
     public static final String tag = "TAG-->";
 
-    public static final String ddxqMenuId="104107815608326";
+    public static final String ddxqMenuId="106298257317913";
     public static final String zjbgMenuId="104985599549464";
     public static final String ddrkMenuId="104990439776282";
     //public static final String pdcxMenuId="104809539444749";

@@ -94,7 +94,7 @@ public class OrderDetailActivity extends BaseActivity {
                     String dtmpl = configJO.getString("dtmpl");
                     JSONObject dtmplJO = new JSONObject(dtmpl);
                     JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
-                    JSONObject groupsJO = (JSONObject)groupsJA.get(1);
+                    JSONObject groupsJO = (JSONObject)groupsJA.get(0);
                     //Log.e("group===",""+groupsJO.toString());
                     String fields = groupsJO.getString("fields");
                     JSONArray fieldsJA = new JSONArray(fields);
@@ -247,6 +247,7 @@ public class OrderDetailActivity extends BaseActivity {
                         zlcebTV.setText(zlceb);
                     }
                 } catch (JSONException e) {
+                    Log.e("error===",""+e.getMessage());
                     e.printStackTrace();
                 }
             }

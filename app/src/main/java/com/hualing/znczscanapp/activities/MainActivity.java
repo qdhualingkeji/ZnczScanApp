@@ -159,7 +159,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case R.id.csewmBut:
                     if(GlobalData.checkQXGroup.contains(ziDuanNameJO.getString("我是司机字段"))) {
-                        MyToast("此功能尚未开通");
+                        IntentUtil.openActivity(this, ShowQrcodeActivity.class);
                     }
                     else{
                         MyToast("当前用户无此权限");
