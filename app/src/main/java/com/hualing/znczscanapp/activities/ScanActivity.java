@@ -188,7 +188,8 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
             switch (GlobalData.currentFunctionType){
                 case FunctionType.ZHI_JIAN_YUAN:
                     intent = new Intent(ScanActivity.this, OrderDetailActivity.class);
-                    intent.putExtra("orderCode",jo.getString("订单编码"));
+                    intent.putExtra("orderCode",jo.getString("订单编码"));//订单化验那边既要查询订单详情，也要根据订单号查询质检报告id，因此两个参数都要传过去
+                    intent.putExtra("orderNum",jo.getString("订单号"));
                     break;
                 case FunctionType.KU_GUAN:
                     intent = new Intent(ScanActivity.this, OrderRKActivity.class);

@@ -31,9 +31,9 @@ import butterknife.OnClick;
 
 public class OrderDetailActivity extends BaseActivity {
 
-    private String orderCode;
+    private String zjbgCode,orderCode,orderNum;
     private List<String>  jieLunList;
-    private JSONObject columnsIdJO,columnsFieldIdJO,columnsNameJO,ziDuanNameJO;
+    private JSONObject columnsIdJO,zjjeColumnsIdJO,columnsFieldIdJO,columnsNameJO,criteriasIdJO,ziDuanNameJO;
     private SimpleAdapter jieLunAdapter;
     private String jielun;
     @BindView(R.id.ddh_tv)
@@ -60,6 +60,7 @@ public class OrderDetailActivity extends BaseActivity {
     protected void initLogic() {
         try {
             orderCode = getIntent().getStringExtra("orderCode");
+            orderNum = getIntent().getStringExtra("orderNum");
             Toast.makeText(this, orderCode, Toast.LENGTH_LONG).show();
             initZiDuanNameJO();
             initJieLunSpinner();
@@ -70,8 +71,121 @@ public class OrderDetailActivity extends BaseActivity {
 
     @Override
     protected void getDataFormWeb() {
+        initCriteriaId();
         initColumnsId();
         initColumnsFieldId();
+    }
+
+    private void initCriteriaId(){
+        RequestParams params = AsynClient.getRequestParams();
+        AsynClient.get(MyHttpConfing.zjbgEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("criteriaIdFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("criteriaIdSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    JSONObject ltmplJO = jo.getJSONObject("ltmpl");
+                    JSONArray criteriasJA = ltmplJO.getJSONArray("criterias");
+                    criteriasIdJO=new JSONObject();
+                    for(int i=0;i<criteriasJA.length();i++){
+                        JSONObject criteriaJO = criteriasJA.getJSONObject(i);
+                        String title = criteriaJO.getString("title");
+                        String id = criteriaJO.getString("id");
+                        criteriasIdJO.put(title,id);
+                    }
+                    Log.e("criteriasIdJO===",""+criteriasIdJO.toString());
+
+
+                    JSONArray columnsJA = ltmplJO.getJSONArray("columns");
+                    zjjeColumnsIdJO=new JSONObject();
+                    for(int i=0;i<columnsJA.length();i++){
+                        JSONObject columnJO = columnsJA.getJSONObject(i);
+                        String title = columnJO.getString("title");
+                        String id = columnJO.getString("id");
+                        zjjeColumnsIdJO.put(title,id);
+                    }
+                    Log.e("zjjeColumnsIdJO===",""+criteriasIdJO.toString());
+                    initQueryKey();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initQueryKey() throws JSONException {
+        RequestParams params = AsynClient.getRequestParams();
+        //Log.e("criteriaId===",criteriasIdJO.getString(ziDuanNameJO.getString("订单号字段")));
+        //params.put("criteria_105935359844361","DD109221984123887616");
+        params.put("criteria_"+criteriasIdJO.getString(ziDuanNameJO.getString("订单号字段")),orderNum);
+        AsynClient.get(MyHttpConfing.zjbgEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("queryKeyFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("queryKeySuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String queryKey = jo.getString("queryKey");
+
+                    initZJBGId(queryKey);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initZJBGId(String queryKey){
+        RequestParams params = AsynClient.getRequestParams();
+        params.put("pageNo","1");
+        AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("initZJBGIdFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("initZJBGIdSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    JSONArray entitiesJA = jo.getJSONArray("entities");
+                    JSONObject entitieJO = entitiesJA.getJSONObject(0);
+                    JSONObject cellMapJO = entitieJO.getJSONObject("cellMap");
+                    jielun=cellMapJO.getString(zjjeColumnsIdJO.getString(ziDuanNameJO.getString("质检结果字段")));
+                    zjbgCode = entitieJO.getString("code");
+                    Log.e("jielun===",""+jielun);
+                } catch (JSONException e) {
+                    Log.e("error===",""+e.getMessage());
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 
     private void initColumnsId(){
@@ -256,7 +370,7 @@ public class OrderDetailActivity extends BaseActivity {
                         sjzlTV.setText(sjzl);
                         zlcebTV.setText(zlceb);
 
-                        jieLunSpinner.setSelection(getValueIndexInList(lxlx,jieLunAdapter.getList()));
+                        jieLunSpinner.setSelection(getValueIndexInList(jielun,jieLunAdapter.getList()));
                     }
                 } catch (JSONException e) {
                     Log.e("error===",""+e.getMessage());
@@ -290,6 +404,7 @@ public class OrderDetailActivity extends BaseActivity {
         ziDuanNameJO.put("实际重量字段","实际重量");
         ziDuanNameJO.put("重量差额比字段","重量差额比");
         ziDuanNameJO.put("结论字段","结论");
+        ziDuanNameJO.put("质检结果字段","质检结果");
     }
 
     private void  initJieLunSpinner(){
@@ -326,7 +441,7 @@ public class OrderDetailActivity extends BaseActivity {
 
     private void saveZhiJianBaoGao() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
-        params.put("唯一编码",orderCode);
+        params.put("唯一编码",zjbgCode);
         params.put(columnsNameJO.getString(ziDuanNameJO.getString("结论字段")), jielun);
         //params.put("%fuseMode%",false);
         //params.put("货运订单48[1].$$label$$","关联订单");
