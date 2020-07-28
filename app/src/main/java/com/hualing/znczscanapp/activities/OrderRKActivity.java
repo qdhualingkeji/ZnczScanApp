@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.zxing.common.StringUtils;
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.adapter.SimpleAdapter;
 import com.hualing.znczscanapp.util.AllActivitiesHolder;
@@ -43,8 +44,6 @@ public class OrderRKActivity extends BaseActivity {
     TextView ddhTV;
     @BindView(R.id.yzxzl_tv)
     TextView yzxzlTV;
-    @BindView(R.id.lxlx_tv)
-    TextView lxlxTV;
     @BindView(R.id.bjsj_tv)
     TextView bjsjTV;
     @BindView(R.id.sjzl_tv)
@@ -208,22 +207,39 @@ public class OrderRKActivity extends BaseActivity {
                         String yzxzl=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("预装卸重量字段")));
                         String lxlx = fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("流向类型字段")));
                         String bjsj=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("编辑时间字段")));
+                        String zxzt=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("执行状态字段")));
+                        String rkzt=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("入库状态字段")));
                         String sjzl=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("实际重量字段")));
                         String zlceb=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("重量差额比字段")));
+                        String jhysrq=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("计划运输日期字段")));
+                        String crksj=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("出入库时间字段")));
                         Log.e("订单号===",ddh);
                         Log.e("预装卸重量===",yzxzl);
                         Log.e("流向类型===",lxlx);
                         Log.e("编辑时间===",bjsj);
+                        Log.e("执行状态===",zxzt);
+                        Log.e("入库状态===",rkzt);
                         Log.e("二维码===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("二维码字段"))));
                         Log.e("实际重量===",sjzl);
                         Log.e("重量差额比===",zlceb);
+                        Log.e("出入库时间===",crksj);
 
                         ddhTV.setText(ddh);
                         yzxzlTV.setText(yzxzl);
-                        lxlxTV.setText(lxlx);
                         bjsjTV.setText(bjsj);
                         sjzlTV.setText(sjzl);
                         zlcebTV.setText(zlceb);
+
+                        lxlxSpinner.setSelection(getValueIndexInList(lxlx,lxlxAdapter.getList()));
+                        zxztSpinner.setSelection(getValueIndexInList(zxzt,zxztAdapter.getList()));
+                        rkztSpinner.setSelection(getValueIndexInList(rkzt,rkztAdapter.getList()));
+
+                        jhysrqTV.setText(jhysrq);
+                        if(crksj!=null) {
+                            String[] crksjArr = crksj.split(" ");
+                            crkrqTV.setText(crksjArr[0]);
+                            crksjTV.setText(crksjArr[1]);
+                        }
                     }
                 } catch (JSONException e) {
                     Log.e("??????",""+e.getMessage());
@@ -231,6 +247,17 @@ public class OrderRKActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    private int getValueIndexInList(String value,List<String> list){
+        int index=0;
+        for(int i=0;i<list.size();i++){
+            if(value.equals(list.get(i))){
+                index=i;
+                break;
+            }
+        }
+        return index;
     }
 
     /*
@@ -243,6 +270,7 @@ public class OrderRKActivity extends BaseActivity {
         ziDuanNameJO.put("流向类型字段","流向类型");
         ziDuanNameJO.put("编辑时间字段","编辑时间");
         ziDuanNameJO.put("执行状态字段","执行状态");
+        ziDuanNameJO.put("订单状态字段","订单状态");
         ziDuanNameJO.put("入库状态字段","入库状态");
         ziDuanNameJO.put("实际重量字段","实际重量");
         ziDuanNameJO.put("重量差额比字段","重量差额比");
@@ -305,7 +333,7 @@ public class OrderRKActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.jhysrq_tv,R.id.crkrq_tv,R.id.saveBtn})
+    @OnClick({R.id.jhysrq_tv,R.id.crkrq_tv,R.id.crksj_tv,R.id.saveBtn})
     public void onViewClicked(View v) {
         switch (v.getId()){
             case R.id.jhysrq_tv:
@@ -338,13 +366,13 @@ public class OrderRKActivity extends BaseActivity {
                 break;
             case R.id.crksj_tv:
                 View v1 = LayoutInflater.from(this).inflate(R.layout.time_select, null);
-                final TimePicker timePicker = v1.findViewById(R.id.timePicker);
-                timePicker.setIs24HourView(true);
+                final TimePicker crksjTP = v1.findViewById(R.id.timePicker);
+                crksjTP.setIs24HourView(true);
                 new AlertDialog.Builder(this).setView(v1)
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String dateStr = timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
+                                String dateStr = crksjTP.getCurrentHour() + ":" + crksjTP.getCurrentMinute()+":00";
                                 crksjTV.setText(dateStr);
                             }
                         })
@@ -359,16 +387,17 @@ public class OrderRKActivity extends BaseActivity {
 
     private void saveOrderRK(){
         RequestParams params = AsynClient.getRequestParams();
-        params.put("唯一编码", "109221979828920322");
+        //params.put("唯一编码", "109221979828920322");
+        params.put("唯一编码", orderCode);
         params.put("预装卸重量", yzxzlTV.getText().toString());
         params.put("实际重量", sjzlTV.getText().toString());
         params.put("重量差额比", zlcebTV.getText().toString());
         params.put("流向类型", lxlx);
         params.put("订单状态", zxzt);
         params.put("入库状态", rkzt);
+        params.put("计划运输日期", jhysrqTV.getText().toString());
+        params.put("出入库时间", crkrqTV.getText().toString()+" "+crksjTV.getText().toString());
         /*
-        params.put("计划运输日期", "");
-        params.put("出入库时间", "");
         params.put("二维码", "");
         params.put("企业客户信息37.$$flag$$", "true");
         params.put("车辆管理63.$$flag$$", "true");
