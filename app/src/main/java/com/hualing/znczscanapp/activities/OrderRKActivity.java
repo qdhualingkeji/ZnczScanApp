@@ -37,7 +37,7 @@ public class OrderRKActivity extends BaseActivity {
 
     private String orderCode;
     List<String> lxlxList,zxztList,rkztList;
-    private JSONObject columnsIdJO,columnsFieldIdJO,ziDuanNameJO;
+    private JSONObject columnsIdJO,columnsFieldIdJO,columnsNameJO,ziDuanNameJO;
     private SimpleAdapter lxlxAdapter,zxztAdapter,rkztAdapter;
     private String lxlx,zxzt,rkzt;
     @BindView(R.id.ddh_tv)
@@ -117,17 +117,21 @@ public class OrderRKActivity extends BaseActivity {
 
                     columnsIdJO=new JSONObject();
                     columnsFieldIdJO=new JSONObject();
+                    columnsNameJO=new JSONObject();
                     for (int i=0;i<fieldsJA.length();i++) {
                         JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
                         String title = fieldJO.getString("title");
                         String id = fieldJO.getString("id");
                         String fieldId = fieldJO.getString("fieldId");
+                        String name = fieldJO.getString("name");
                         Log.e("title===",""+title+",fieldId==="+fieldId+",id==="+id);
                         columnsIdJO.put(title,id);
                         columnsFieldIdJO.put(title,fieldId);
+                        columnsNameJO.put(title,name);
                     }
                     Log.e("columnsIdJO===",columnsIdJO.toString());
                     Log.e("columnsFieldIdJO===",columnsFieldIdJO.toString());
+                    Log.e("columnsNameJO===",columnsNameJO.toString());
 
                     initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("流向类型字段")),lxlxAdapter);
                     initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("执行状态字段")),zxztAdapter);
@@ -270,7 +274,6 @@ public class OrderRKActivity extends BaseActivity {
         ziDuanNameJO.put("流向类型字段","流向类型");
         ziDuanNameJO.put("编辑时间字段","编辑时间");
         ziDuanNameJO.put("执行状态字段","执行状态");
-        ziDuanNameJO.put("订单状态字段","订单状态");
         ziDuanNameJO.put("入库状态字段","入库状态");
         ziDuanNameJO.put("实际重量字段","实际重量");
         ziDuanNameJO.put("重量差额比字段","重量差额比");
@@ -380,23 +383,28 @@ public class OrderRKActivity extends BaseActivity {
                         .show();
                 break;
             case R.id.saveBtn:
-                saveOrderRK();
+                try {
+                    saveOrderRK();
+                } catch (JSONException e) {
+                    Log.e("error===",""+e.getMessage());
+                    e.printStackTrace();
+                }
                 break;
         }
     }
 
-    private void saveOrderRK(){
+    private void saveOrderRK() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
         //params.put("唯一编码", "109221979828920322");
         params.put("唯一编码", orderCode);
-        params.put("预装卸重量", yzxzlTV.getText().toString());
-        params.put("实际重量", sjzlTV.getText().toString());
-        params.put("重量差额比", zlcebTV.getText().toString());
-        params.put("流向类型", lxlx);
-        params.put("订单状态", zxzt);
-        params.put("入库状态", rkzt);
-        params.put("计划运输日期", jhysrqTV.getText().toString());
-        params.put("出入库时间", crkrqTV.getText().toString()+" "+crksjTV.getText().toString());
+        params.put(columnsNameJO.getString(ziDuanNameJO.getString("预装卸重量字段")), yzxzlTV.getText().toString());
+        params.put(columnsNameJO.getString(ziDuanNameJO.getString("实际重量字段")), sjzlTV.getText().toString());
+        params.put(columnsNameJO.getString(ziDuanNameJO.getString("重量差额比字段")), zlcebTV.getText().toString());
+        params.put(columnsNameJO.getString(ziDuanNameJO.getString("流向类型字段")), lxlx);
+        params.put(columnsNameJO.getString(ziDuanNameJO.getString("执行状态字段")), zxzt);
+        params.put(columnsNameJO.getString(ziDuanNameJO.getString("入库状态字段")), rkzt);
+        params.put(columnsNameJO.getString(ziDuanNameJO.getString("计划运输日期字段")), jhysrqTV.getText().toString());
+        params.put(columnsNameJO.getString(ziDuanNameJO.getString("出入库时间字段")), crkrqTV.getText().toString()+" "+crksjTV.getText().toString());
         /*
         params.put("二维码", "");
         params.put("企业客户信息37.$$flag$$", "true");
