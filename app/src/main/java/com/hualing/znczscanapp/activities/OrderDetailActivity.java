@@ -72,7 +72,7 @@ public class OrderDetailActivity extends BaseActivity {
 
     private void initColumnsId(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.ddxqDtmplNormal, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.zjddxqDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -203,7 +203,7 @@ public class OrderDetailActivity extends BaseActivity {
 
     private void getOrderDetail(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.getOrderDetail+orderCode, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getZJOrderDetail+orderCode, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;

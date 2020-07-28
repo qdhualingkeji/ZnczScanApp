@@ -74,58 +74,9 @@ public class OrderRKActivity extends BaseActivity {
     @Override
     protected void getDataFormWeb() {
         initColumnsId();
-        initColumnsFieldId();
     }
 
     private void initColumnsId(){
-        RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.ddxqDtmplNormal, this, params, new GsonHttpResponseHandler() {
-            @Override
-            protected Object parseResponse(String rawJsonData) throws Throwable {
-                return null;
-            }
-
-            @Override
-            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
-                Log.e("rawJsonData5======",""+rawJsonData+","+errorResponse);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
-                Log.e("rawJsonResponse5======",""+rawJsonResponse);
-
-                try {
-                    JSONObject jo = new JSONObject(rawJsonResponse);
-                    String config = jo.getString("config");
-                    JSONObject configJO = new JSONObject(config);
-                    String dtmpl = configJO.getString("dtmpl");
-                    JSONObject dtmplJO = new JSONObject(dtmpl);
-                    JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
-                    JSONObject groupsJO = (JSONObject)groupsJA.get(1);
-                    //Log.e("group===",""+groupsJO.toString());
-                    String fields = groupsJO.getString("fields");
-                    JSONArray fieldsJA = new JSONArray(fields);
-
-                    columnsIdJO=new JSONObject();
-                    for (int i=0;i<fieldsJA.length();i++) {
-                        JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
-                        String title = fieldJO.getString("title");
-                        String id = fieldJO.getString("id");
-                        //Log.e("title===",""+title+",id==="+id);
-                        columnsIdJO.put(title,id);
-                    }
-                    Log.e("columnsIdJO===",columnsIdJO.toString());
-
-                    getOrderDetail();
-                } catch (JSONException e) {
-                    Log.e("???????","???????");
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private void initColumnsFieldId(){
         RequestParams params = AsynClient.getRequestParams();
         AsynClient.get(MyHttpConfing.ddrkDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
@@ -145,30 +96,36 @@ public class OrderRKActivity extends BaseActivity {
                 try {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     String config = jo.getString("config");
-                    JSONObject configJO = null;
-                        configJO = new JSONObject(config);
+                    JSONObject configJO = new JSONObject(config);
                     String dtmpl = configJO.getString("dtmpl");
                     JSONObject dtmplJO = new JSONObject(dtmpl);
                     JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
                     JSONObject groupsJO = (JSONObject)groupsJA.get(0);
+                    //Log.e("group===",""+groupsJO.toString());
                     String fields = groupsJO.getString("fields");
-                    Log.e("fields===",fields);
                     JSONArray fieldsJA = new JSONArray(fields);
 
+                    columnsIdJO=new JSONObject();
                     columnsFieldIdJO=new JSONObject();
                     for (int i=0;i<fieldsJA.length();i++) {
                         JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
                         String title = fieldJO.getString("title");
+                        String id = fieldJO.getString("id");
                         String fieldId = fieldJO.getString("fieldId");
-                        Log.e("title===",""+title+",fieldId==="+fieldId);
+                        Log.e("title===",""+title+",fieldId==="+fieldId+",id==="+id);
+                        columnsIdJO.put(title,id);
                         columnsFieldIdJO.put(title,fieldId);
                     }
+                    Log.e("columnsIdJO===",columnsIdJO.toString());
                     Log.e("columnsFieldIdJO===",columnsFieldIdJO.toString());
 
                     initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("流向类型字段")),lxlxAdapter);
                     initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("执行状态字段")),zxztAdapter);
                     initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("入库状态字段")),rkztAdapter);
+
+                    getOrderDetail();
                 } catch (JSONException e) {
+                    Log.e("???????","???????");
                     e.printStackTrace();
                 }
             }
@@ -214,7 +171,7 @@ public class OrderRKActivity extends BaseActivity {
 
     private void getOrderDetail(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.getOrderDetail+orderCode, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getRKOrderDetail+orderCode, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;

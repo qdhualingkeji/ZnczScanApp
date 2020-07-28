@@ -74,7 +74,6 @@ public class ShowQrcodeActivity extends BaseActivity {
     private Handler handler=new Handler(){
         public void handleMessage(Message message) {
             //Bitmap bitmap = (Bitmap) message.obj;
-            Log.e("ppppppp","pppppppp");
             Bitmap bm=(Bitmap)message.obj;
             qrcodeIV.setImageBitmap(bm);
         }

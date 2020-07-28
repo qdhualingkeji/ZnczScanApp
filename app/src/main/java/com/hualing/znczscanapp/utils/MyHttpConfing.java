@@ -8,7 +8,7 @@ public class MyHttpConfing {
 
     public static final String tag = "TAG-->";
 
-    public static final String ddxqMenuId="106298257317913";
+    public static final String zjddxqMenuId="106298257317913";
     public static final String zjbgMenuId="104985599549464";
     public static final String ddrkMenuId="104990439776282";
     //public static final String pdcxMenuId="104809539444749";
@@ -18,13 +18,14 @@ public class MyHttpConfing {
     /* 用户登录 */
     public static final String login = baseUrl + "api2/auth/token";
     public static final String getMenuBlocks = baseUrl + "api2/meta/menu/get_blocks";
-    public static final String ddxqDtmplNormal= baseUrl + "api2/meta/tmpl/"+ddxqMenuId+"/dtmpl/normal/";
-    public static final String zjbgDtmplNormal= baseUrl + "api2/meta/tmpl/"+zjbgMenuId+"/dtmpl/normal/";
+    public static final String zjddxqDtmplNormal= baseUrl + "api2/meta/tmpl/"+zjddxqMenuId+"/dtmpl/normal/";
     public static final String ddrkDtmplNormal= baseUrl + "api2/meta/tmpl/"+ddrkMenuId+"/dtmpl/normal/";
+    public static final String zjbgDtmplNormal= baseUrl + "api2/meta/tmpl/"+zjbgMenuId+"/dtmpl/normal/";
     //public static final String pdcxEntityListTmpl=baseUrl+"api2/entity/"+pdcxMenuId+"/list/tmpl";
     public static final String dqphEntityListTmpl=baseUrl+"api2/entity/"+dqphMenuId+"/list/tmpl";
     /* 获得订单详情数据 */
-    public static final String getOrderDetail = baseUrl + "api2/entity/"+ddxqMenuId+"/detail/";
+    public static final String getZJOrderDetail = baseUrl + "api2/entity/"+zjddxqMenuId+"/detail/";
+    public static final String getRKOrderDetail = baseUrl + "api2/entity/"+ddrkMenuId+"/detail/";
     public static final String getEntityListData=baseUrl+"api2/entity/list/queryKey/data";
     public static final String saveZhiJianBaoGao = baseUrl + "api2/entity/"+zjbgMenuId+"/detail/normal";
     public static final String saveOrderRK = baseUrl + "api2/entity/"+ddrkMenuId+"/detail/normal";
