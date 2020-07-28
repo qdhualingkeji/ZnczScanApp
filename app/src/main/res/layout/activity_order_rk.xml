@@ -292,6 +292,86 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="20dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/propertyNameText"
+                android:text="计划运输日期："
+                />
+
+            <TextView
+                android:id="@+id/jhysrq_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:text="请选择计划运输日期"
+                android:textColor="@color/divide_dark_gray_color"
+                android:textSize="16sp"
+                android:gravity="center_vertical" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="20dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/propertyNameText"
+                android:text="出入库日期："
+                />
+
+            <TextView
+                android:id="@+id/crkrq_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:text="请选择出入库日期"
+                android:textColor="@color/divide_dark_gray_color"
+                android:textSize="16sp"
+                android:gravity="center_vertical" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="20dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/propertyNameText"
+                android:text="出入库日期："
+                />
+
+            <TextView
+                android:id="@+id/crksj_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:text="请选择出入库时间"
+                android:textColor="@color/divide_dark_gray_color"
+                android:textSize="16sp"
+                android:gravity="center_vertical" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

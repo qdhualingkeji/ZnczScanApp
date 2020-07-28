@@ -1,13 +1,18 @@
 package com.hualing.znczscanapp.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.adapter.SimpleAdapter;
@@ -52,6 +57,12 @@ public class OrderRKActivity extends BaseActivity {
     Spinner zxztSpinner;
     @BindView(R.id.rkzt_spinner)
     Spinner rkztSpinner;
+    @BindView(R.id.jhysrq_tv)
+    TextView jhysrqTV;
+    @BindView(R.id.crkrq_tv)
+    TextView crkrqTV;
+    @BindView(R.id.crksj_tv)
+    TextView crksjTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -294,9 +305,52 @@ public class OrderRKActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.saveBtn})
+    @OnClick({R.id.jhysrq_tv,R.id.crkrq_tv,R.id.saveBtn})
     public void onViewClicked(View v) {
         switch (v.getId()){
+            case R.id.jhysrq_tv:
+                View jhysrqVI = LayoutInflater.from(this).inflate(R.layout.date_select, null);
+                final DatePicker jhysrqDP = jhysrqVI.findViewById(R.id.datePicker);
+                new AlertDialog.Builder(this).setView(jhysrqVI)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String dateStr = jhysrqDP.getYear() + "-" + (jhysrqDP.getMonth() + 1) + "-" + jhysrqDP.getDayOfMonth();
+                                jhysrqTV.setText(dateStr);
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .show();
+                break;
+            case R.id.crkrq_tv:
+                View crkrqVI = LayoutInflater.from(this).inflate(R.layout.date_select,null);
+                final DatePicker crkrqDP = crkrqVI.findViewById(R.id.datePicker);
+                new AlertDialog.Builder(this).setView(crkrqVI)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String dateStr = crkrqDP.getYear() + "-" + (crkrqDP.getMonth() + 1) + "-" + crkrqDP.getDayOfMonth();
+                                crkrqTV.setText(dateStr);
+                            }
+                        })
+                        .setNegativeButton("取消",null)
+                        .show();
+                break;
+            case R.id.crksj_tv:
+                View v1 = LayoutInflater.from(this).inflate(R.layout.time_select, null);
+                final TimePicker timePicker = v1.findViewById(R.id.timePicker);
+                timePicker.setIs24HourView(true);
+                new AlertDialog.Builder(this).setView(v1)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String dateStr = timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
+                                crksjTV.setText(dateStr);
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .show();
+                break;
             case R.id.saveBtn:
                 saveOrderRK();
                 break;
@@ -305,12 +359,12 @@ public class OrderRKActivity extends BaseActivity {
 
     private void saveOrderRK(){
         RequestParams params = AsynClient.getRequestParams();
-        params.put("唯一编码", "108473798673440770");
+        params.put("唯一编码", "109221979828920322");
         params.put("预装卸重量", yzxzlTV.getText().toString());
         params.put("实际重量", sjzlTV.getText().toString());
         params.put("重量差额比", zlcebTV.getText().toString());
         params.put("流向类型", lxlx);
-        params.put("执行状态", zxzt);
+        params.put("订单状态", zxzt);
         params.put("入库状态", rkzt);
         /*
         params.put("计划运输日期", "");
