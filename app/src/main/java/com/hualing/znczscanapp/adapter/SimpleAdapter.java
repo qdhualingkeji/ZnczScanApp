@@ -6,6 +6,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.hualing.znczscanapp.R;
+import com.hualing.znczscanapp.activities.BaseActivity;
 import com.hualing.znczscanapp.activities.OrderRKActivity;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class SimpleAdapter extends BaseAdapter {
 
-    private OrderRKActivity context;
+    private BaseActivity context;
     private List<String> list;
 
     public List<String> getList() {
@@ -24,7 +25,7 @@ public class SimpleAdapter extends BaseAdapter {
         this.list = list;
     }
 
-    public SimpleAdapter(OrderRKActivity context){
+    public SimpleAdapter(BaseActivity context){
         this.context=context;
         this.list=new ArrayList<String>();
         this.list.add("");

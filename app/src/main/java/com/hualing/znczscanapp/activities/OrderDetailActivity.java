@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hualing.znczscanapp.R;
+import com.hualing.znczscanapp.adapter.SimpleAdapter;
 import com.hualing.znczscanapp.util.AllActivitiesHolder;
 import com.hualing.znczscanapp.utils.AsynClient;
 import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
@@ -22,15 +23,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
 public class OrderDetailActivity extends BaseActivity {
 
     private String orderCode;
-    private String[] jieLunArr;
-    private JSONObject columnsIdJO,columnsFieldIdJO,ziDuanNameJO;
-    private ArrayAdapter<String> jieLunAdapter;
+    private List<String>  jieLunList;
+    private JSONObject columnsIdJO,columnsFieldIdJO,columnsNameJO,ziDuanNameJO;
+    private SimpleAdapter jieLunAdapter;
     private String jielun;
     @BindView(R.id.ddh_tv)
     TextView ddhTV;
@@ -149,16 +153,20 @@ public class OrderDetailActivity extends BaseActivity {
                     JSONArray fieldsJA = new JSONArray(fields);
 
                     columnsFieldIdJO=new JSONObject();
+                    columnsNameJO=new JSONObject();
                     for (int i=0;i<fieldsJA.length();i++) {
                         JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
                         String title = fieldJO.getString("title");
                         String fieldId = fieldJO.getString("fieldId");
                         Log.e("title===",""+title+",fieldId==="+fieldId);
+                        String name = fieldJO.getString("name");
                         columnsFieldIdJO.put(title,fieldId);
+                        columnsNameJO.put(title,name);
                     }
                     Log.e("columnsFieldIdJO===",columnsFieldIdJO.toString());
+                    Log.e("columnsNameJO===",columnsNameJO.toString());
 
-                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("结论字段")),jieLunArr,jieLunAdapter);
+                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("结论字段")),jieLunAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -166,7 +174,7 @@ public class OrderDetailActivity extends BaseActivity {
         });
     }
 
-    private void initAdapterDataArr(final String fieldId, final String[] dataArr, final ArrayAdapter<String> adapter){
+    private void initAdapterDataArr(final String fieldId, final SimpleAdapter adapter){
         RequestParams params = AsynClient.getRequestParams();
         params.put("fieldIds",fieldId);
         AsynClient.get(MyHttpConfing.initFieldOptions, this, params, new GsonHttpResponseHandler() {
@@ -189,9 +197,11 @@ public class OrderDetailActivity extends BaseActivity {
                     JSONObject optionsMapJO = new JSONObject(optionsMapStr);
                     String lxlxJAStr = optionsMapJO.getString(fieldId);
                     JSONArray lxlxJA = new JSONArray(lxlxJAStr);
+                    List<String> list = adapter.getList();
+                    list.clear();
                     for(int i=0;i<lxlxJA.length();i++){
                         JSONObject lxlxJO=(JSONObject)lxlxJA.get(i);
-                        dataArr[i]=lxlxJO.getString("value");
+                        list.add(lxlxJO.getString("value"));
                     }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -245,6 +255,8 @@ public class OrderDetailActivity extends BaseActivity {
                         bjsjTV.setText(bjsj);
                         sjzlTV.setText(sjzl);
                         zlcebTV.setText(zlceb);
+
+                        jieLunSpinner.setSelection(getValueIndexInList(lxlx,jieLunAdapter.getList()));
                     }
                 } catch (JSONException e) {
                     Log.e("error===",""+e.getMessage());
@@ -252,6 +264,17 @@ public class OrderDetailActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    private int getValueIndexInList(String value,List<String> list){
+        int index=0;
+        for(int i=0;i<list.size();i++){
+            if(value.equals(list.get(i))){
+                index=i;
+                break;
+            }
+        }
+        return index;
     }
 
     /*
@@ -270,14 +293,14 @@ public class OrderDetailActivity extends BaseActivity {
     }
 
     private void  initJieLunSpinner(){
-        jieLunArr=new String[2];
-        jieLunArr[0]="合格";
-        jieLunAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,jieLunArr);
+        jieLunList=new ArrayList<String>();
+        jieLunList.add("");
+        jieLunAdapter = new SimpleAdapter(OrderDetailActivity.this);
         jieLunSpinner.setAdapter(jieLunAdapter);
         jieLunSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                jielun=jieLunArr[position];
+                jielun=jieLunAdapter.getList().get(position);
             }
 
             @Override
@@ -291,17 +314,23 @@ public class OrderDetailActivity extends BaseActivity {
     public void onViewClicked(View v) {
         switch (v.getId()){
             case R.id.saveBtn:
-                saveZhiJianBaoGao();
+                try {
+                    saveZhiJianBaoGao();
+                } catch (JSONException e) {
+                    Log.e("error===",""+e.getMessage());
+                    e.printStackTrace();
+                }
                 break;
         }
     }
 
-    private void saveZhiJianBaoGao(){
+    private void saveZhiJianBaoGao() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
-        params.put("结论", jielun);
-        params.put("%fuseMode%",false);
-        params.put("货运订单48[1].$$label$$","关联订单");
-        params.put("货运订单48[1].订单号",ddhTV.getText().toString());
+        params.put("唯一编码",orderCode);
+        params.put(columnsNameJO.getString(ziDuanNameJO.getString("结论字段")), jielun);
+        //params.put("%fuseMode%",false);
+        //params.put("货运订单48[1].$$label$$","关联订单");
+        //params.put("货运订单48[1].订单号",ddhTV.getText().toString());
         //data["货运订单48[1].唯一编码"]="337525032";
         //data["货运订单48[1].重量差额比"]=1;
         //data["%fuseMode%"]=false;
