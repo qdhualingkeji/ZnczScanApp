@@ -35,10 +35,10 @@ public class MainActivity extends BaseActivity {
     private JSONObject ziDuanNameJO;
     @BindView(R.id.userName_tv)
     TextView userNameTV;
-    @BindView(R.id.scanBut)
-    CardView scanBut;
-    @BindView(R.id.kgScanBut)
-    CardView kgScanBut;
+    @BindView(R.id.zhiJian_cv)
+    CardView zhiJianCV;
+    @BindView(R.id.ruKu_cv)
+    CardView ruKuCV;
     @BindView(R.id.pdcxBut)
     CardView pdcxBut;
     @BindView(R.id.csewmBut)
@@ -64,8 +64,8 @@ public class MainActivity extends BaseActivity {
             int height=width+10;
             //Log.e("width===",""+width);
             //Log.e("height===",""+height);
-            scanBut.setLayoutParams(new LinearLayout.LayoutParams(width,height));
-            kgScanBut.setLayoutParams(new LinearLayout.LayoutParams(width,height));
+            zhiJianCV.setLayoutParams(new LinearLayout.LayoutParams(width,height));
+            ruKuCV.setLayoutParams(new LinearLayout.LayoutParams(width,height));
             pdcxBut.setLayoutParams(new LinearLayout.LayoutParams(width,height));
             csewmBut.setLayoutParams(new LinearLayout.LayoutParams(width,height));
 
@@ -127,23 +127,25 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
-    @OnClick({R.id.scanBut,R.id.kgScanBut,R.id.pdcxBut,R.id.csewmBut,R.id.exitBut})
+    @OnClick({R.id.zhiJian_cv,R.id.ruKu_cv,R.id.pdcxBut,R.id.csewmBut,R.id.exitBut})
     public void onViewClicked(View v){
         try {
             switch (v.getId()){
-                case R.id.scanBut:
+                case R.id.zhiJian_cv:
                     if(GlobalData.checkQXGroup.contains(ziDuanNameJO.getString("质检管理字段"))) {
                         GlobalData.currentFunctionType = FunctionType.ZHI_JIAN_YUAN;
-                        IntentUtil.openActivity(this, ScanActivity.class);
+                        //IntentUtil.openActivity(this, ScanActivity.class);
+                        IntentUtil.openActivity(this, SelectTypeActivity.class);
                     }
                     else{
                         MyToast("当前用户无此权限");
                     }
                     break;
-                case R.id.kgScanBut:
+                case R.id.ruKu_cv:
                     if(GlobalData.checkQXGroup.contains(ziDuanNameJO.getString("入库管理字段"))) {
                         GlobalData.currentFunctionType = FunctionType.KU_GUAN;
-                        IntentUtil.openActivity(this, ScanActivity.class);
+                        //IntentUtil.openActivity(this, ScanActivity.class);
+                        IntentUtil.openActivity(this, SelectTypeActivity.class);
                     }
                     else{
                         MyToast("当前用户无此权限");

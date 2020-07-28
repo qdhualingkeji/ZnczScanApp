@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.SelectTypeActivity">
+
+    <com.hualing.znczscanapp.widget.TitleBar
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/titleBar_Height"
+        app:background_color="@color/colorPrimary"
+        app:leftButton_size="20dp"
+        app:left_img="@drawable/last"
+        app:rightButton_size="20dp"
+        app:text_content="请选择查看订单方式"
+        app:title_textColor="@color/titleBar_textColor"
+        app:title_textSize="@dimen/titleBar_textSize">
+    </com.hualing.znczscanapp.widget.TitleBar>
+
+    <LinearLayout
+        android:id="@+id/scanBut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@android:color/white"
+        android:padding="15dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/big"
+            android:layout_marginRight="15dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="扫码查询"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cphcxBut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@android:color/white"
+        android:padding="15dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/big"
+            android:layout_marginRight="15dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="根据车牌号查询"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
