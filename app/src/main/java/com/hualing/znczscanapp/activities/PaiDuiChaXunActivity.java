@@ -18,12 +18,22 @@ import butterknife.BindView;
 
 public class PaiDuiChaXunActivity extends BaseActivity {
 
-    private String zyddCode;
-    private JSONObject columnsIdJO,criteriasIdJO,zyddGroupsIdJO,ziDuanNameJO;
+    private String zyddCode,cyclCode;
+    private JSONObject columnsIdJO,criteriasIdJO,zyddGroupsIdJO,cyclFieldsIdJO,ziDuanNameJO;
     @BindView(R.id.pdh_tv)
     TextView pdhTV;
     @BindView(R.id.prsj_tv)
     TextView prsjTV;
+    @BindView(R.id.chePaiHao_tv)
+    TextView chePaiHaoTV;
+    @BindView(R.id.cheZhuXinXi_tv)
+    TextView cheZhuXinXiTV;
+    @BindView(R.id.piZhong_tv)
+    TextView piZhongTV;
+    @BindView(R.id.cheLiangLeiXing_tv)
+    TextView cheLiangLeiXingTV;
+    @BindView(R.id.zhaoPian_tv)
+    TextView zhaoPianTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +62,11 @@ public class PaiDuiChaXunActivity extends BaseActivity {
         ziDuanNameJO.put("分类字段","分类");
         ziDuanNameJO.put("状态字段","状态");
         ziDuanNameJO.put("承运车辆字段","承运车辆");
+        ziDuanNameJO.put("车牌号字段","车牌号");
+        ziDuanNameJO.put("车主信息字段","车主信息");
+        ziDuanNameJO.put("皮重字段","皮重");
+        ziDuanNameJO.put("车辆类型字段","车辆类型");
+        ziDuanNameJO.put("照片字段","照片");
     }
 
     private void initLtmplAttr(){
@@ -229,10 +244,103 @@ public class PaiDuiChaXunActivity extends BaseActivity {
                     JSONObject arrayMapJO = entityJO.getJSONObject("arrayMap");
                     JSONArray cyclJA = arrayMapJO.getJSONArray(zyddGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段")));
                     JSONObject cyclJO = cyclJA.getJSONObject(0);
-                    String code = cyclJO.getString("code");
-                    Log.e("code===",""+code);
+                    cyclCode = cyclJO.getString("code");
+                    Log.e("cyclCode===",""+cyclCode);
+                    initCYCLFieldsIdJO();
                 } catch (JSONException e) {
                     Log.e("error===",""+e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initCYCLFieldsIdJO() throws JSONException {
+        RequestParams params = AsynClient.getRequestParams();
+        String groupId=zyddGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段"));
+        AsynClient.get(MyHttpConfing.zyddDtmplRabc+groupId, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("zyddRabcFail======", "" + rawJsonData + "," + errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("zyddRabcSuccess======", "" + rawJsonResponse);
+
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String config = jo.getString("config");
+                    JSONObject configJO = null;
+                    configJO = new JSONObject(config);
+                    String dtmpl = configJO.getString("dtmpl");
+                    JSONObject dtmplJO = new JSONObject(dtmpl);
+                    JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
+                    JSONObject groupJO = groupsJA.getJSONObject(0);
+                    JSONArray fieldsJA = groupJO.getJSONArray("fields");
+
+                    cyclFieldsIdJO=new JSONObject();
+                    for (int i=0;i<fieldsJA.length();i++) {
+                        JSONObject fieldJO = fieldsJA.getJSONObject(i);
+                        String title = fieldJO.getString("title");
+                        String id = fieldJO.getString("id");
+                        //Log.e("title===",""+title+",id==="+id);
+                        cyclFieldsIdJO.put(title,id);
+                    }
+                    Log.e("cyclFieldsIdJO===",cyclFieldsIdJO.toString());
+                    getCheLiangDetail();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getCheLiangDetail() throws JSONException {
+        RequestParams params = AsynClient.getRequestParams();
+        String groupId=zyddGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段"));
+        Log.e("cyclCode===",""+cyclCode);
+        params.put("fieldGroupId",groupId);
+        AsynClient.get(MyHttpConfing.getZYDDDetail+cyclCode, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("clDetailFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("clDetailSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    JSONObject entityJO = jo.getJSONObject("entity");
+                    JSONObject fieldMapJO = entityJO.getJSONObject("fieldMap");
+                    String cph = fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("车牌号字段")));
+                    String czxx = fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("车主信息字段")));
+                    String piZhong = fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("皮重字段")));
+                    String cllx = fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("车辆类型字段")));
+                    String zhaoPian = fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("照片字段")));
+                    Log.e("车牌号===",""+cph);
+                    Log.e("车主信息===",""+czxx);
+                    Log.e("皮重===",""+piZhong);
+                    Log.e("车辆类型===",""+cllx);
+                    Log.e("照片===",""+zhaoPian);
+
+                    chePaiHaoTV.setText(cph);
+                    cheZhuXinXiTV.setText(czxx);
+                    piZhongTV.setText(piZhong);
+                    cheLiangLeiXingTV.setText(cllx);
+                    zhaoPianTV.setText(zhaoPian);
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
