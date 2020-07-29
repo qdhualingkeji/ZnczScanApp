@@ -61,7 +61,8 @@
         <activity android:name=".activities.DDRKScanActivity" />
         <activity android:name=".activities.PaiDuiChaXunActivity" />
         <activity android:name=".activities.ShowQrcodeActivity" />
-        <activity android:name=".activities.SelectTypeActivity"></activity>
+        <activity android:name=".activities.SelectTypeActivity" />
+        <activity android:name=".activities.DDXQCPHActivity"></activity>
     </application>
 
 </manifest>
