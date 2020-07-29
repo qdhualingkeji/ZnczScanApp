@@ -18,7 +18,8 @@ import butterknife.BindView;
 
 public class PaiDuiChaXunActivity extends BaseActivity {
 
-    private JSONObject columnsIdJO,criteriasIdJO,ziDuanNameJO;
+    private String zyddCode;
+    private JSONObject columnsIdJO,criteriasIdJO,zyddGroupsIdJO,ziDuanNameJO;
     @BindView(R.id.pdh_tv)
     TextView pdhTV;
     @BindView(R.id.prsj_tv)
@@ -50,6 +51,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
         ziDuanNameJO.put("排入时间字段","排入时间");
         ziDuanNameJO.put("分类字段","分类");
         ziDuanNameJO.put("状态字段","状态");
+        ziDuanNameJO.put("承运车辆字段","承运车辆");
     }
 
     private void initLtmplAttr(){
@@ -101,6 +103,140 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     @Override
     protected void getDataFormWeb() {
         initLtmplAttr();
+        initZYDDQueryKey();
+    }
+
+    private void initZYDDQueryKey(){
+        RequestParams params = AsynClient.getRequestParams();
+        AsynClient.get(MyHttpConfing.zyddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("zyddELTFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("zyddELTSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String queryKey = jo.getString("queryKey");
+                    initZYDDCode(queryKey);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initZYDDCode(String queryKey){
+        RequestParams params = AsynClient.getRequestParams();
+        params.put("pageNo","1");
+        AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("zYDDCodeFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("zYDDCodeSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    JSONArray entitiesJA = jo.getJSONArray("entities");
+                    JSONObject entitieJO = entitiesJA.getJSONObject(0);
+                    zyddCode = entitieJO.getString("code");
+                    Log.e("zyddCode===",""+zyddCode);
+                    initZYDDGroupsFieldId();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initZYDDGroupsFieldId() {
+        RequestParams params = AsynClient.getRequestParams();
+        AsynClient.get(MyHttpConfing.zyddDtmplNormal, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("zyddFail======", "" + rawJsonData + "," + errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("zyddSuccess======", "" + rawJsonResponse);
+
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String config = jo.getString("config");
+                    JSONObject configJO = null;
+                    configJO = new JSONObject(config);
+                    String dtmpl = configJO.getString("dtmpl");
+                    JSONObject dtmplJO = new JSONObject(dtmpl);
+                    JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
+
+                    zyddGroupsIdJO=new JSONObject();
+                    for (int i=0;i<groupsJA.length();i++) {
+                        JSONObject groupJO = groupsJA.getJSONObject(i);
+                        String title = groupJO.getString("title");
+                        String id = groupJO.getString("id");
+                        Log.e("title===",""+title+",id==="+id);
+                        zyddGroupsIdJO.put(title,id);
+                    }
+                    Log.e("zyddGroupsIdJO===",zyddGroupsIdJO.toString());
+                    initCYCLCode();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initCYCLCode(){
+        RequestParams params = AsynClient.getRequestParams();
+        AsynClient.get(MyHttpConfing.getZYDDDetail+zyddCode, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("zyddDetailFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("zyddDetailSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    JSONObject entityJO = jo.getJSONObject("entity");
+                    JSONObject arrayMapJO = entityJO.getJSONObject("arrayMap");
+                    JSONArray cyclJA = arrayMapJO.getJSONArray(zyddGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段")));
+                    JSONObject cyclJO = cyclJA.getJSONObject(0);
+                    String code = cyclJO.getString("code");
+                    Log.e("code===",""+code);
+                } catch (JSONException e) {
+                    Log.e("error===",""+e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void initColumnsId(JSONArray columnsJA) throws JSONException {
