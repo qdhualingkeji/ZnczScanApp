@@ -1,12 +1,10 @@
 package com.hualing.znczscanapp.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class OrderDetailActivity extends BaseActivity {
+public class DDXQScanActivity extends BaseActivity {
 
     private String zjbgCode,orderCode,orderNum;
     private List<String>  jieLunList;
@@ -410,7 +408,7 @@ public class OrderDetailActivity extends BaseActivity {
     private void  initJieLunSpinner(){
         jieLunList=new ArrayList<String>();
         jieLunList.add("");
-        jieLunAdapter = new SimpleAdapter(OrderDetailActivity.this);
+        jieLunAdapter = new SimpleAdapter(DDXQScanActivity.this);
         jieLunSpinner.setAdapter(jieLunAdapter);
         jieLunSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -469,9 +467,9 @@ public class OrderDetailActivity extends BaseActivity {
                 String status=jo.getString("status");
                     if("suc".equals(status)){
                         MyToast("质检完毕，"+jielun);
-                        Intent intent = new Intent(OrderDetailActivity.this, MainActivity.class);
+                        Intent intent = new Intent(DDXQScanActivity.this, MainActivity.class);
                         startActivity(intent);
-                        AllActivitiesHolder.removeAct(OrderDetailActivity.this);
+                        AllActivitiesHolder.removeAct(DDXQScanActivity.this);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -487,10 +485,10 @@ public class OrderDetailActivity extends BaseActivity {
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_order_detail;
+        return R.layout.activity_ddxq_scan;
     }
 
     public void MyToast(String s) {
-        Toast.makeText(OrderDetailActivity.this, s, Toast.LENGTH_SHORT).show();
+        Toast.makeText(DDXQScanActivity.this, s, Toast.LENGTH_SHORT).show();
     }
 }

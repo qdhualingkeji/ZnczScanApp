@@ -8,13 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.google.zxing.common.StringUtils;
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.adapter.SimpleAdapter;
 import com.hualing.znczscanapp.util.AllActivitiesHolder;
@@ -33,7 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class OrderRKActivity extends BaseActivity {
+public class DDRKScanActivity extends BaseActivity {
 
     private String orderCode;
     List<String> lxlxList,zxztList,rkztList;
@@ -285,7 +283,7 @@ public class OrderRKActivity extends BaseActivity {
     private void  initLLLXSpinner(){
         lxlxList=new ArrayList<String>();
         lxlxList.add("");
-        lxlxAdapter = new SimpleAdapter(OrderRKActivity.this);
+        lxlxAdapter = new SimpleAdapter(DDRKScanActivity.this);
         lxlxSpinner.setAdapter(lxlxAdapter);
         lxlxSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -303,7 +301,7 @@ public class OrderRKActivity extends BaseActivity {
     private void  initZXZTSpinner(){
         zxztList=new ArrayList<String>();
         zxztList.add("");
-        zxztAdapter = new SimpleAdapter(OrderRKActivity.this);
+        zxztAdapter = new SimpleAdapter(DDRKScanActivity.this);
         zxztSpinner.setAdapter(zxztAdapter);
         zxztSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -321,7 +319,7 @@ public class OrderRKActivity extends BaseActivity {
     private void  initRKZTSpinner(){
         rkztList=new ArrayList<String>();
         rkztList.add("");
-        rkztAdapter =new SimpleAdapter(OrderRKActivity.this);
+        rkztAdapter =new SimpleAdapter(DDRKScanActivity.this);
         rkztSpinner.setAdapter(rkztAdapter);
         rkztSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -432,9 +430,9 @@ public class OrderRKActivity extends BaseActivity {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     String status=jo.getString("status");
                     if("suc".equals(status)){
-                        Intent intent = new Intent(OrderRKActivity.this, MainActivity.class);
+                        Intent intent = new Intent(DDRKScanActivity.this, MainActivity.class);
                         startActivity(intent);
-                        AllActivitiesHolder.removeAct(OrderRKActivity.this);
+                        AllActivitiesHolder.removeAct(DDRKScanActivity.this);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -450,6 +448,6 @@ public class OrderRKActivity extends BaseActivity {
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_order_rk;
+        return R.layout.activity_ddrk_scan;
     }
 }

@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.activities.BaseActivity;
-import com.hualing.znczscanapp.activities.OrderRKActivity;
 
 import java.util.ArrayList;
 import java.util.List;

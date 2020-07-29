@@ -1,6 +1,5 @@
 package com.hualing.znczscanapp.activities;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.hualing.znczscanapp.R;
@@ -187,12 +185,12 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
             JSONObject jo = new JSONObject(result);
             switch (GlobalData.currentFunctionType){
                 case FunctionType.ZHI_JIAN_YUAN:
-                    intent = new Intent(ScanActivity.this, OrderDetailActivity.class);
+                    intent = new Intent(ScanActivity.this, DDXQScanActivity.class);
                     intent.putExtra("orderCode",jo.getString("订单编码"));//订单化验那边既要查询订单详情，也要根据订单号查询质检报告id，因此两个参数都要传过去
                     intent.putExtra("orderNum",jo.getString("订单号"));
                     break;
                 case FunctionType.KU_GUAN:
-                    intent = new Intent(ScanActivity.this, OrderRKActivity.class);
+                    intent = new Intent(ScanActivity.this, DDRKScanActivity.class);
                     intent.putExtra("orderCode",jo.getString("订单编码"));
                     break;
                     /*
