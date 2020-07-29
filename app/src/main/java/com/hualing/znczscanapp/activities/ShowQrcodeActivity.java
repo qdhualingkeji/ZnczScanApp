@@ -7,19 +7,29 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.hualing.znczscanapp.R;
+import com.hualing.znczscanapp.global.TheApplication;
+import com.hualing.znczscanapp.utils.AsynClient;
+import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
+import com.hualing.znczscanapp.utils.MyHttpConfing;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import butterknife.BindView;
 
 public class ShowQrcodeActivity extends BaseActivity {
 
+    private String dqphCode;
+    private JSONObject dqphGroupsFieldIdJO,ziDuanNameJO;
     @BindView(R.id.qrcode_iv)
     ImageView qrcodeIV;
 
@@ -30,35 +40,185 @@ public class ShowQrcodeActivity extends BaseActivity {
 
     @Override
     protected void initLogic() {
+        try {
+            initZiDuanNameJO();
+            int width = (int)(TheApplication.getScreenWidth()/1.3);
+            int height=width;
+            qrcodeIV.setLayoutParams(new RelativeLayout.LayoutParams(width,height));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
+    /*
+     *设置字段键名称
+     */
+    private void initZiDuanNameJO() throws JSONException {
+        ziDuanNameJO=new JSONObject();
+        ziDuanNameJO.put("二维码字段","二维码");
     }
 
     @Override
     protected void getDataFormWeb() {
+        initQueryKey();
+    }
+
+    private void initQueryKey(){
+        RequestParams params = AsynClient.getRequestParams();
+        AsynClient.get(MyHttpConfing.dqphEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("initLtmplFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("initLtmplSuccess======",""+rawJsonResponse);
+
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String queryKey = jo.getString("queryKey");
+                    initDQPHCode(queryKey);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initDQPHCode(String queryKey){
+        RequestParams params = AsynClient.getRequestParams();
+        params.put("pageNo","1");
+        AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("dQPHCodeFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("dQPHCodeSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    JSONArray entitiesJA = jo.getJSONArray("entities");
+                    JSONObject entityJO = (JSONObject)entitiesJA.get(0);
+                    dqphCode = entityJO.getString("code");
+                    Log.e("dqphCode===",""+dqphCode);
+
+                    initDQPHGroupsFieldId();
+                } catch (JSONException e) {
+                    Log.e("?????",e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initDQPHGroupsFieldId(){
+        RequestParams params = AsynClient.getRequestParams();
+        AsynClient.get(MyHttpConfing.dqphDtmplNormal, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("dqphFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("dqphSuccess======",""+rawJsonResponse);
+
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String config = jo.getString("config");
+                    JSONObject configJO = null;
+                    configJO = new JSONObject(config);
+                    String dtmpl = configJO.getString("dtmpl");
+                    JSONObject dtmplJO = new JSONObject(dtmpl);
+                    JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
+                    JSONObject groupsJO = (JSONObject)groupsJA.get(0);
+                    String fields = groupsJO.getString("fields");
+                    Log.e("fields===",fields);
+                    JSONArray fieldsJA = new JSONArray(fields);
+
+                    dqphGroupsFieldIdJO=new JSONObject();
+                    for (int i=0;i<fieldsJA.length();i++) {
+                        JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
+                        String title = fieldJO.getString("title");
+                        String id = fieldJO.getString("id");
+                        Log.e("title===",""+title+",id==="+id);
+                        dqphGroupsFieldIdJO.put(title,id);
+                    }
+                    Log.e("dqphGroupsFieldIdJO===",dqphGroupsFieldIdJO.toString());
+                    getDQPHDetail();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getDQPHDetail(){
+        RequestParams params = AsynClient.getRequestParams();
+        AsynClient.get(MyHttpConfing.getDQPHDetail+dqphCode, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("dqphDetailFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("dqphDetailSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    JSONObject entityJO = jo.getJSONObject("entity");
+                    JSONObject fieldMapJO = entityJO.getJSONObject("fieldMap");
+                    //String qrcodeUrl = fieldMapJO.getString(dqphGroupsFieldIdJO.getString(ziDuanNameJO.getString("二维码字段")));
+                    String qrcodeUrl = "http://121.196.184.205:96/hydrocarbon/download-files/6687ea57675e0d5246f1175edc8845d2/DD109221984123887616.png";
+                    Log.e("qrcodeUrl===",""+qrcodeUrl);
+                    initQrcode(qrcodeUrl);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initQrcode(final String url){
         new Thread(new Runnable(){
 
             @Override
             public void run() {
                 try {
-                Log.e("ooooooooo","ooooooooooo");
-                //URL url = new URL("http://121.196.184.205:96/hydrocarbon/download-files/88036c76dd44e7ecf1a014b2995b97ab/二维码文件.png");
-                URL url = null;
-                    url = new URL("https://dss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=527074007,3636349827&fm=58&app=83&f=JPEG?w=200&h=200&s=F063B1546F9C31EBB6AD4FDD03001006");
-                //Bitmap bitmap = BitmapFactory.decodeFile("https://himg.bdimg.com/sys/portraitn/item/e63a68616e646f6e6771696e677875650b09");
-
-                    HttpURLConnection conn = (HttpURLConnection) new URL("https://himg.bdimg.com/sys/portraitn/item/e63a68616e646f6e6771696e677875650b09").openConnection();
-
-// 设置请求方式和超时时间
+                    HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+                    // 设置请求方式和超时时间
                     conn.setRequestMethod("GET");
                     conn.setConnectTimeout(1000 * 10);
                     conn.connect();
-
                     int code = conn.getResponseCode();
                     if (code == 200) {
                         InputStream is = conn.getInputStream();
                         Bitmap bitmap = BitmapFactory.decodeStream(is);
 
-//利用消息的方式把数据传送给handler
+                        //利用消息的方式把数据传送给handler
                         Message msg = handler.obtainMessage();
                         msg.obj = bitmap;
                         handler.sendMessage(msg);

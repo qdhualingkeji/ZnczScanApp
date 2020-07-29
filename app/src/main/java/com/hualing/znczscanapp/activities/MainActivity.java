@@ -81,7 +81,6 @@ public class MainActivity extends BaseActivity {
             mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolBar, R.string.open, R.string.close) {
                 @Override
                 public void onDrawerOpened(View drawerView) {
-                    Log.e("aaaaaaaaa","aaaaaaaaaa");
                     super.onDrawerOpened(drawerView);
                 }
 

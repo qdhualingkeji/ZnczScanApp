@@ -21,12 +21,13 @@ public class MyHttpConfing {
     public static final String zjddxqDtmplNormal= baseUrl + "api2/meta/tmpl/"+zjddxqMenuId+"/dtmpl/normal/";
     public static final String ddrkDtmplNormal= baseUrl + "api2/meta/tmpl/"+ddrkMenuId+"/dtmpl/normal/";
     public static final String zjbgDtmplNormal= baseUrl + "api2/meta/tmpl/"+zjbgMenuId+"/dtmpl/normal/";
-    //public static final String pdcxEntityListTmpl=baseUrl+"api2/entity/"+pdcxMenuId+"/list/tmpl";
+    public static final String dqphDtmplNormal=baseUrl + "api2/meta/tmpl/"+dqphMenuId+"/dtmpl/normal/";
     public static final String dqphEntityListTmpl=baseUrl+"api2/entity/"+dqphMenuId+"/list/tmpl";
     public static final String zjbgEntityListTmpl=baseUrl+"api2/entity/"+zjbgMenuId+"/list/tmpl";
     /* 获得订单详情数据 */
     public static final String getZJOrderDetail = baseUrl + "api2/entity/"+zjddxqMenuId+"/detail/";
     public static final String getRKOrderDetail = baseUrl + "api2/entity/"+ddrkMenuId+"/detail/";
+    public static final String getDQPHDetail = baseUrl + "api2/entity/"+dqphMenuId+"/detail/";
     public static final String getEntityListData=baseUrl+"api2/entity/list/queryKey/data";
     public static final String saveZhiJianBaoGao = baseUrl + "api2/entity/"+zjbgMenuId+"/detail/normal";
     public static final String saveOrderRK = baseUrl + "api2/entity/"+ddrkMenuId+"/detail/normal";
