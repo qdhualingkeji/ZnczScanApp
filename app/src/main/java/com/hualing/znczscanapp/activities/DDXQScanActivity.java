@@ -189,7 +189,7 @@ public class DDXQScanActivity extends BaseActivity {
 
     private void initColumnsId(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.zjddxqDtmplNormal, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.zjddDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
