@@ -42,6 +42,7 @@
                     android:layout_alignParentRight="true"/>
 
                 <EditText
+                    android:id="@+id/cph_et"
                     android:layout_toRightOf="@id/cph_tv"
                     android:layout_toLeftOf="@id/cxdd_but"
                     android:layout_width="match_parent"

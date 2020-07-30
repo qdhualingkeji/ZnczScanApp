@@ -8,7 +8,7 @@ public class MyHttpConfing {
 
     public static final String tag = "TAG-->";
 
-    public static final String zjddxqMenuId="106298257317913";
+    public static final String zjddMenuId="106298257317913";
     public static final String zjbgMenuId="104985599549464";
     public static final String ddrkMenuId="104990439776282";
     //public static final String pdcxMenuId="104809539444749";
@@ -19,7 +19,7 @@ public class MyHttpConfing {
     /* 用户登录 */
     public static final String login = baseUrl + "api2/auth/token";
     public static final String getMenuBlocks = baseUrl + "api2/meta/menu/get_blocks";
-    public static final String zjddxqDtmplNormal= baseUrl + "api2/meta/tmpl/"+zjddxqMenuId+"/dtmpl/normal/";
+    public static final String zjddDtmplNormal= baseUrl + "api2/meta/tmpl/"+zjddMenuId+"/dtmpl/normal/";
     public static final String ddrkDtmplNormal= baseUrl + "api2/meta/tmpl/"+ddrkMenuId+"/dtmpl/normal/";
     public static final String zjbgDtmplNormal= baseUrl + "api2/meta/tmpl/"+zjbgMenuId+"/dtmpl/normal/";
     public static final String dqphDtmplNormal=baseUrl + "api2/meta/tmpl/"+dqphMenuId+"/dtmpl/normal/";
@@ -28,8 +28,9 @@ public class MyHttpConfing {
     public static final String dqphEntityListTmpl=baseUrl+"api2/entity/"+dqphMenuId+"/list/tmpl";
     public static final String zjbgEntityListTmpl=baseUrl+"api2/entity/"+zjbgMenuId+"/list/tmpl";
     public static final String zyddEntityListTmpl=baseUrl+"api2/entity/"+zyddMenuId+"/list/tmpl";
+    public static final String zjddEntityListTmpl=baseUrl+"api2/entity/"+zjddMenuId+"/list/tmpl";
     /* 获得订单详情数据 */
-    public static final String getZJOrderDetail = baseUrl + "api2/entity/"+zjddxqMenuId+"/detail/";
+    public static final String getZJOrderDetail = baseUrl + "api2/entity/"+zjddMenuId+"/detail/";
     public static final String getRKOrderDetail = baseUrl + "api2/entity/"+ddrkMenuId+"/detail/";
     public static final String getDQPHDetail = baseUrl + "api2/entity/"+dqphMenuId+"/detail/";
     public static final String getZYDDDetail = baseUrl + "api2/entity/"+zyddMenuId+"/detail/";
