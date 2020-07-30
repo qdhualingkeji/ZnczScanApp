@@ -113,7 +113,7 @@ public class DDXQScanActivity extends BaseActivity {
                         String id = columnJO.getString("id");
                         zjjeColumnsIdJO.put(title,id);
                     }
-                    Log.e("zjjeColumnsIdJO===",""+criteriasIdJO.toString());
+                    Log.e("zjjeColumnsIdJO===",""+zjjeColumnsIdJO.toString());
                     initQueryKey();
                 } catch (JSONException e) {
                     e.printStackTrace();

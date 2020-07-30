@@ -27,9 +27,9 @@ import butterknife.OnClick;
 
 public class DDXQCPHActivity extends BaseActivity {
 
-    private String zjddCode;
+    private String zjbgCode,zjddCode;
     private List<String> jieLunList;
-    private JSONObject groupsFieldsJO,zjjeColumnsIdJO,columnsFieldIdJO,columnsNameJO,criteriasIdJO,ziDuanNameJO;
+    private JSONObject groupsFieldsJO,zjjeColumnsIdJO,columnsFieldIdJO,columnsNameJO,zjbgCriteriasIdJO,zjddCriteriasIdJO,ziDuanNameJO;
     private SimpleAdapter jieLunAdapter;
     private String jielun;
     @BindView(R.id.cph_et)
@@ -66,8 +66,121 @@ public class DDXQCPHActivity extends BaseActivity {
 
     @Override
     protected void getDataFormWeb() {
+        initZJBGCriteriaId();
         initZJDDCriteriaId();
         initColumnsFieldId();
+    }
+
+    private void initZJBGCriteriaId(){
+        RequestParams params = AsynClient.getRequestParams();
+        AsynClient.get(MyHttpConfing.zjbgEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("criteriaIdFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("criteriaIdSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    JSONObject ltmplJO = jo.getJSONObject("ltmpl");
+                    JSONArray criteriasJA = ltmplJO.getJSONArray("criterias");
+                    zjbgCriteriasIdJO=new JSONObject();
+                    for(int i=0;i<criteriasJA.length();i++){
+                        JSONObject criteriaJO = criteriasJA.getJSONObject(i);
+                        String title = criteriaJO.getString("title");
+                        String id = criteriaJO.getString("id");
+                        zjbgCriteriasIdJO.put(title,id);
+                    }
+                    Log.e("zjbgCriteriasIdJO===",""+zjbgCriteriasIdJO.toString());
+
+
+                    JSONArray columnsJA = ltmplJO.getJSONArray("columns");
+                    zjjeColumnsIdJO=new JSONObject();
+                    for(int i=0;i<columnsJA.length();i++){
+                        JSONObject columnJO = columnsJA.getJSONObject(i);
+                        String title = columnJO.getString("title");
+                        String id = columnJO.getString("id");
+                        zjjeColumnsIdJO.put(title,id);
+                    }
+                    Log.e("zjjeColumnsIdJO===",""+zjjeColumnsIdJO.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initZJBGQueryKey() throws JSONException {
+        RequestParams params = AsynClient.getRequestParams();
+        String cph=cphET.getText().toString();
+        params.put("criteria_"+zjbgCriteriasIdJO.getString(ziDuanNameJO.getString("执行状态字段")),"运输中");
+        params.put("criteria_"+zjbgCriteriasIdJO.getString(ziDuanNameJO.getString("车牌号字段")),cph);
+        AsynClient.get(MyHttpConfing.zjbgEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("queryKeyFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("queryKeySuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String queryKey = jo.getString("queryKey");
+
+                    initZJBGCode(queryKey);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initZJBGCode(String queryKey){
+        RequestParams params = AsynClient.getRequestParams();
+        params.put("pageNo","1");
+        AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("ZJBGCodeFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("ZJBGCodeSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    JSONArray entitiesJA = jo.getJSONArray("entities");
+                    JSONObject entitieJO = entitiesJA.getJSONObject(0);
+                    JSONObject cellMapJO = entitieJO.getJSONObject("cellMap");
+                    jielun=cellMapJO.getString(zjjeColumnsIdJO.getString(ziDuanNameJO.getString("质检结果字段")));
+                    zjbgCode = entitieJO.getString("code");
+                    Log.e("jielun===",""+jielun);
+                    Log.e("zjbgCode===",""+zjbgCode);
+                } catch (JSONException e) {
+                    Log.e("error===",""+e.getMessage());
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 
     private void initZJDDCriteriaId(){
@@ -90,14 +203,14 @@ public class DDXQCPHActivity extends BaseActivity {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     JSONObject ltmplJO = jo.getJSONObject("ltmpl");
                     JSONArray criteriasJA = ltmplJO.getJSONArray("criterias");
-                    criteriasIdJO=new JSONObject();
+                    zjddCriteriasIdJO=new JSONObject();
                     for(int i=0;i<criteriasJA.length();i++){
                         JSONObject criteriaJO = criteriasJA.getJSONObject(i);
                         String title = criteriaJO.getString("title");
                         String id = criteriaJO.getString("id");
-                        criteriasIdJO.put(title,id);
+                        zjddCriteriasIdJO.put(title,id);
                     }
-                    Log.e("criteriasIdJO===",""+criteriasIdJO.toString());
+                    Log.e("zjddCriteriasIdJO===",""+zjddCriteriasIdJO.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -108,8 +221,8 @@ public class DDXQCPHActivity extends BaseActivity {
     private void initZJDDQueryKey() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
         String cph=cphET.getText().toString();
-        params.put("criteria_"+criteriasIdJO.getString(ziDuanNameJO.getString("车牌号字段")),cph);
-        params.put("criteria_"+criteriasIdJO.getString(ziDuanNameJO.getString("订单状态字段")),"运输中");
+        params.put("criteria_"+zjddCriteriasIdJO.getString(ziDuanNameJO.getString("车牌号字段")),cph);
+        params.put("criteria_"+zjddCriteriasIdJO.getString(ziDuanNameJO.getString("订单状态字段")),"运输中");
         AsynClient.get(MyHttpConfing.zjddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
@@ -389,6 +502,7 @@ public class DDXQCPHActivity extends BaseActivity {
         ziDuanNameJO.put("质检结果字段","质检结果");
         ziDuanNameJO.put("车牌号字段","车牌号");
         ziDuanNameJO.put("订单状态字段","订单状态");
+        ziDuanNameJO.put("执行状态字段","执行状态");
     }
 
     private void  initJieLunSpinner(){
@@ -424,10 +538,13 @@ public class DDXQCPHActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.cxdd_but:
                 try {
+                    initZJBGQueryKey();
                     initZJDDQueryKey();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                break;
+            case R.id.saveBtn:
                 break;
         }
     }
