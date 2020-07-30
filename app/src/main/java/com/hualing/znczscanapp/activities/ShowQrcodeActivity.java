@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import butterknife.BindView;
 
@@ -191,8 +192,8 @@ public class ShowQrcodeActivity extends BaseActivity {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     JSONObject entityJO = jo.getJSONObject("entity");
                     JSONObject fieldMapJO = entityJO.getJSONObject("fieldMap");
-                    //String qrcodeUrl = fieldMapJO.getString(dqphGroupsFieldIdJO.getString(ziDuanNameJO.getString("二维码字段")));
-                    String qrcodeUrl = "http://121.196.184.205:96/hydrocarbon/download-files/6687ea57675e0d5246f1175edc8845d2/DD109221984123887616.png";
+                    String qrcodeUrl = toURLString(fieldMapJO.getString(dqphGroupsFieldIdJO.getString(ziDuanNameJO.getString("二维码字段"))));
+                    //String qrcodeUrl = toURLString("http://121.196.184.205:96/hydrocarbon/./download-files/bbe2cac353fab4605a1d9f47b4d342bf/二维码图片_司机订单.png");
                     Log.e("qrcodeUrl===",""+qrcodeUrl);
                     initQrcode(qrcodeUrl);
                 } catch (JSONException e) {
@@ -200,6 +201,24 @@ public class ShowQrcodeActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    public String toURLString(String s) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c >= 0 && c <= 255) {
+                sb.append(c);
+            } else {
+                try {
+                    sb.append(URLEncoder.encode(String.valueOf(c), "utf-8"));
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        return sb.toString();
     }
 
     private void initQrcode(final String url){
