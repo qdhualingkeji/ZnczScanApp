@@ -1,15 +1,20 @@
 package com.hualing.znczscanapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.zxing.common.StringUtils;
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.adapter.SimpleAdapter;
+import com.hualing.znczscanapp.util.AllActivitiesHolder;
 import com.hualing.znczscanapp.utils.AsynClient;
 import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
@@ -29,7 +34,7 @@ public class DDXQCPHActivity extends BaseActivity {
 
     private String zjbgCode,zjddCode;
     private List<String> jieLunList;
-    private JSONObject groupsFieldsJO,zjjeColumnsIdJO,columnsFieldIdJO,columnsNameJO,zjbgCriteriasIdJO,zjddCriteriasIdJO,ziDuanNameJO;
+    private JSONObject groupsFieldsJO,zjjeColumnsIdJO,groupsFieldFieldIdJO,groupsFieldNameJO,zjbgCriteriasIdJO,zjddCriteriasIdJO,ziDuanNameJO;
     private SimpleAdapter jieLunAdapter;
     private String jielun;
     @BindView(R.id.cph_et)
@@ -427,21 +432,21 @@ public class DDXQCPHActivity extends BaseActivity {
                     Log.e("fields===",fields);
                     JSONArray fieldsJA = new JSONArray(fields);
 
-                    columnsFieldIdJO=new JSONObject();
-                    columnsNameJO=new JSONObject();
+                    groupsFieldFieldIdJO=new JSONObject();
+                    groupsFieldNameJO=new JSONObject();
                     for (int i=0;i<fieldsJA.length();i++) {
                         JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
                         String title = fieldJO.getString("title");
                         String fieldId = fieldJO.getString("fieldId");
                         Log.e("title===",""+title+",fieldId==="+fieldId);
                         String name = fieldJO.getString("name");
-                        columnsFieldIdJO.put(title,fieldId);
-                        columnsNameJO.put(title,name);
+                        groupsFieldFieldIdJO.put(title,fieldId);
+                        groupsFieldNameJO.put(title,name);
                     }
-                    Log.e("columnsFieldIdJO===",columnsFieldIdJO.toString());
-                    Log.e("columnsNameJO===",columnsNameJO.toString());
+                    Log.e("groupsFieldFieldIdJO===",groupsFieldFieldIdJO.toString());
+                    Log.e("groupsFieldNameJO===",groupsFieldNameJO.toString());
 
-                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("结论字段")),jieLunAdapter);
+                    initAdapterDataArr(groupsFieldFieldIdJO.getString(ziDuanNameJO.getString("结论字段")),jieLunAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -533,19 +538,96 @@ public class DDXQCPHActivity extends BaseActivity {
         return R.layout.activity_ddxqcph;
     }
 
-    @OnClick({R.id.cxdd_but})
+    @OnClick({R.id.cxdd_but,R.id.saveBtn})
     public void onViewClicked(View v){
         switch (v.getId()) {
             case R.id.cxdd_but:
                 try {
-                    initZJBGQueryKey();
-                    initZJDDQueryKey();
+                    if(checkCPHValue()) {
+                        initZJBGQueryKey();
+                        initZJDDQueryKey();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 break;
             case R.id.saveBtn:
+                try {
+                    if(checkDDHValue()) {
+                        saveZhiJianBaoGao();
+                    }
+                } catch (JSONException e) {
+                    Log.e("error===",""+e.getMessage());
+                    e.printStackTrace();
+                }
                 break;
         }
+    }
+
+    private boolean checkCPHValue(){
+        String cph=cphET.getText().toString();
+        if(TextUtils.isEmpty(cph)){
+            MyToast("请输入车牌号");
+            return false;
+        }
+        else
+            return true;
+    }
+
+    private boolean checkDDHValue(){
+        String ddh=ddhTV.getText().toString();
+        if(TextUtils.isEmpty(ddh)){
+            MyToast("请输入订单号");
+            return false;
+        }
+        else
+            return true;
+    }
+
+    private void saveZhiJianBaoGao() throws JSONException {
+        RequestParams params = AsynClient.getRequestParams();
+        //Log.e("唯一编码===",""+zjbgCode);
+        //Log.e("jielun===",""+jielun);
+        params.put("唯一编码",zjbgCode);
+        params.put(groupsFieldNameJO.getString(ziDuanNameJO.getString("结论字段")), jielun);
+        //params.put("%fuseMode%",false);
+        //params.put("货运订单48[1].$$label$$","关联订单");
+        //params.put("货运订单48[1].订单号",ddhTV.getText().toString());
+        //data["货运订单48[1].唯一编码"]="337525032";
+        //data["货运订单48[1].重量差额比"]=1;
+        //data["%fuseMode%"]=false;
+        //data["货运订单48.$$flag$$"]=true;
+        AsynClient.post(MyHttpConfing.saveZhiJianBaoGao, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("rawJsonData4======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("rawJsonResponse4======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String status=jo.getString("status");
+                    if("suc".equals(status)){
+                        MyToast("质检完毕，"+jielun);
+                        Intent intent = new Intent(DDXQCPHActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        AllActivitiesHolder.removeAct(DDXQCPHActivity.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void MyToast(String s) {
+        Toast.makeText(DDXQCPHActivity.this, s, Toast.LENGTH_SHORT).show();
     }
 }
