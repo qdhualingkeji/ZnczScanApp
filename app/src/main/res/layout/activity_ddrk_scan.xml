@@ -192,7 +192,6 @@
                 android:id="@+id/lxlx_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/transparent"
                 android:textColor="@color/divide_dark_gray_color"
                 android:textSize="16sp"
                 android:gravity="center_vertical" />
@@ -223,7 +222,6 @@
                 android:id="@+id/zxzt_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/transparent"
                 android:textColor="@color/divide_dark_gray_color"
                 android:textSize="16sp"
                 android:gravity="center_vertical" />
@@ -254,12 +252,16 @@
                 android:id="@+id/rkzt_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/transparent"
                 android:textColor="@color/divide_dark_gray_color"
                 android:textSize="16sp"
                 android:gravity="center_vertical" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dividerHeight"
+            android:background="@color/divide_gray_color"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -288,6 +290,11 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dividerHeight"
+            android:background="@color/divide_gray_color"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -314,6 +321,11 @@
                 android:gravity="center_vertical" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dividerHeight"
+            android:background="@color/divide_gray_color"/>
 
         <LinearLayout
             android:layout_width="match_parent"

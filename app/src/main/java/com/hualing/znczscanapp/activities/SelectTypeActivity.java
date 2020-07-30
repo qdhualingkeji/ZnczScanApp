@@ -49,6 +49,7 @@ public class SelectTypeActivity extends BaseActivity {
                         IntentUtil.openActivity(this, DDXQCPHActivity.class);
                         break;
                     case FunctionType.KU_GUAN:
+                        IntentUtil.openActivity(this, DDRKCPHActivity.class);
                         break;
                 }
                 break;

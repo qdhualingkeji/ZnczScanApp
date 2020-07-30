@@ -29,6 +29,7 @@ public class MyHttpConfing {
     public static final String zjbgEntityListTmpl=baseUrl+"api2/entity/"+zjbgMenuId+"/list/tmpl";
     public static final String zyddEntityListTmpl=baseUrl+"api2/entity/"+zyddMenuId+"/list/tmpl";
     public static final String zjddEntityListTmpl=baseUrl+"api2/entity/"+zjddMenuId+"/list/tmpl";
+    public static final String ddrkEntityListTmpl=baseUrl+"api2/entity/"+ddrkMenuId+"/list/tmpl";
     /* 获得订单详情数据 */
     public static final String getZJOrderDetail = baseUrl + "api2/entity/"+zjddMenuId+"/detail/";
     public static final String getRKOrderDetail = baseUrl + "api2/entity/"+ddrkMenuId+"/detail/";

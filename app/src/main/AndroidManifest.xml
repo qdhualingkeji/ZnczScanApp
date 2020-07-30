@@ -62,7 +62,8 @@
         <activity android:name=".activities.PaiDuiChaXunActivity" />
         <activity android:name=".activities.ShowQrcodeActivity" />
         <activity android:name=".activities.SelectTypeActivity" />
-        <activity android:name=".activities.DDXQCPHActivity"></activity>
+        <activity android:name=".activities.DDXQCPHActivity" />
+        <activity android:name=".activities.DDRKCPHActivity"></activity>
     </application>
 
 </manifest>

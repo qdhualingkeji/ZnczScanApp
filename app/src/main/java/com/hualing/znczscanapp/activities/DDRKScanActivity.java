@@ -35,7 +35,7 @@ public class DDRKScanActivity extends BaseActivity {
 
     private String orderCode;
     List<String> lxlxList,zxztList,rkztList;
-    private JSONObject columnsIdJO,columnsFieldIdJO,columnsNameJO,ziDuanNameJO;
+    private JSONObject groupsFieldsIdJO,groupsFieldsFieldIdJO,groupsFieldsNameJO,ziDuanNameJO;
     private SimpleAdapter lxlxAdapter,zxztAdapter,rkztAdapter;
     private String lxlx,zxzt,rkzt;
     @BindView(R.id.ddh_tv)
@@ -81,10 +81,10 @@ public class DDRKScanActivity extends BaseActivity {
 
     @Override
     protected void getDataFormWeb() {
-        initColumnsId();
+        initGroupsFieldsAttr();
     }
 
-    private void initColumnsId(){
+    private void initGroupsFieldsAttr(){
         RequestParams params = AsynClient.getRequestParams();
         AsynClient.get(MyHttpConfing.ddrkDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
@@ -113,9 +113,9 @@ public class DDRKScanActivity extends BaseActivity {
                     String fields = groupsJO.getString("fields");
                     JSONArray fieldsJA = new JSONArray(fields);
 
-                    columnsIdJO=new JSONObject();
-                    columnsFieldIdJO=new JSONObject();
-                    columnsNameJO=new JSONObject();
+                    groupsFieldsIdJO=new JSONObject();
+                    groupsFieldsFieldIdJO=new JSONObject();
+                    groupsFieldsNameJO=new JSONObject();
                     for (int i=0;i<fieldsJA.length();i++) {
                         JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
                         String title = fieldJO.getString("title");
@@ -123,17 +123,17 @@ public class DDRKScanActivity extends BaseActivity {
                         String fieldId = fieldJO.getString("fieldId");
                         String name = fieldJO.getString("name");
                         Log.e("title===",""+title+",fieldId==="+fieldId+",id==="+id);
-                        columnsIdJO.put(title,id);
-                        columnsFieldIdJO.put(title,fieldId);
-                        columnsNameJO.put(title,name);
+                        groupsFieldsIdJO.put(title,id);
+                        groupsFieldsFieldIdJO.put(title,fieldId);
+                        groupsFieldsNameJO.put(title,name);
                     }
-                    Log.e("columnsIdJO===",columnsIdJO.toString());
-                    Log.e("columnsFieldIdJO===",columnsFieldIdJO.toString());
-                    Log.e("columnsNameJO===",columnsNameJO.toString());
+                    Log.e("groupsFieldsIdJO===",groupsFieldsIdJO.toString());
+                    Log.e("groupsFFIdJO===",groupsFieldsFieldIdJO.toString());
+                    Log.e("groupsFieldsNameJO===",groupsFieldsNameJO.toString());
 
-                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("流向类型字段")),lxlxAdapter);
-                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("执行状态字段")),zxztAdapter);
-                    initAdapterDataArr(columnsFieldIdJO.getString(ziDuanNameJO.getString("入库状态字段")),rkztAdapter);
+                    initAdapterDataArr(groupsFieldsFieldIdJO.getString(ziDuanNameJO.getString("流向类型字段")),lxlxAdapter);
+                    initAdapterDataArr(groupsFieldsFieldIdJO.getString(ziDuanNameJO.getString("执行状态字段")),zxztAdapter);
+                    initAdapterDataArr(groupsFieldsFieldIdJO.getString(ziDuanNameJO.getString("入库状态字段")),rkztAdapter);
 
                     getOrderDetail();
                 } catch (JSONException e) {
@@ -205,23 +205,23 @@ public class DDRKScanActivity extends BaseActivity {
                         JSONObject entityJO = new JSONObject(entity);
                         String fieldMapStr = entityJO.getString("fieldMap");
                         JSONObject fieldMapJO = new JSONObject(fieldMapStr);
-                        String ddh = fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("订单号字段")));
-                        String yzxzl=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("预装卸重量字段")));
-                        String lxlx = fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("流向类型字段")));
-                        String bjsj=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("编辑时间字段")));
-                        String zxzt=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("执行状态字段")));
-                        String rkzt=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("入库状态字段")));
-                        String sjzl=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("实际重量字段")));
-                        String zlceb=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("重量差额比字段")));
-                        String jhysrq=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("计划运输日期字段")));
-                        String crksj=fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("出入库时间字段")));
+                        String ddh = fieldMapJO.getString(groupsFieldsIdJO.getString(ziDuanNameJO.getString("订单号字段")));
+                        String yzxzl=fieldMapJO.getString(groupsFieldsIdJO.getString(ziDuanNameJO.getString("预装卸重量字段")));
+                        String lxlx = fieldMapJO.getString(groupsFieldsIdJO.getString(ziDuanNameJO.getString("流向类型字段")));
+                        String bjsj=fieldMapJO.getString(groupsFieldsIdJO.getString(ziDuanNameJO.getString("编辑时间字段")));
+                        String zxzt=fieldMapJO.getString(groupsFieldsIdJO.getString(ziDuanNameJO.getString("执行状态字段")));
+                        String rkzt=fieldMapJO.getString(groupsFieldsIdJO.getString(ziDuanNameJO.getString("入库状态字段")));
+                        String sjzl=fieldMapJO.getString(groupsFieldsIdJO.getString(ziDuanNameJO.getString("实际重量字段")));
+                        String zlceb=fieldMapJO.getString(groupsFieldsIdJO.getString(ziDuanNameJO.getString("重量差额比字段")));
+                        String jhysrq=fieldMapJO.getString(groupsFieldsIdJO.getString(ziDuanNameJO.getString("计划运输日期字段")));
+                        String crksj=fieldMapJO.getString(groupsFieldsIdJO.getString(ziDuanNameJO.getString("出入库时间字段")));
                         Log.e("订单号===",ddh);
                         Log.e("预装卸重量===",yzxzl);
                         Log.e("流向类型===",lxlx);
                         Log.e("编辑时间===",bjsj);
                         Log.e("执行状态===",zxzt);
                         Log.e("入库状态===",rkzt);
-                        Log.e("二维码===",fieldMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("二维码字段"))));
+                        Log.e("二维码===",fieldMapJO.getString(groupsFieldsIdJO.getString(ziDuanNameJO.getString("二维码字段"))));
                         Log.e("实际重量===",sjzl);
                         Log.e("重量差额比===",zlceb);
                         Log.e("出入库时间===",crksj);
@@ -395,14 +395,14 @@ public class DDRKScanActivity extends BaseActivity {
         RequestParams params = AsynClient.getRequestParams();
         //params.put("唯一编码", "109221979828920322");
         params.put("唯一编码", orderCode);
-        params.put(columnsNameJO.getString(ziDuanNameJO.getString("预装卸重量字段")), yzxzlTV.getText().toString());
-        params.put(columnsNameJO.getString(ziDuanNameJO.getString("实际重量字段")), sjzlTV.getText().toString());
-        params.put(columnsNameJO.getString(ziDuanNameJO.getString("重量差额比字段")), zlcebTV.getText().toString());
-        params.put(columnsNameJO.getString(ziDuanNameJO.getString("流向类型字段")), lxlx);
-        params.put(columnsNameJO.getString(ziDuanNameJO.getString("执行状态字段")), zxzt);
-        params.put(columnsNameJO.getString(ziDuanNameJO.getString("入库状态字段")), rkzt);
-        params.put(columnsNameJO.getString(ziDuanNameJO.getString("计划运输日期字段")), jhysrqTV.getText().toString());
-        params.put(columnsNameJO.getString(ziDuanNameJO.getString("出入库时间字段")), crkrqTV.getText().toString()+" "+crksjTV.getText().toString());
+        params.put(groupsFieldsNameJO.getString(ziDuanNameJO.getString("预装卸重量字段")), yzxzlTV.getText().toString());
+        params.put(groupsFieldsNameJO.getString(ziDuanNameJO.getString("实际重量字段")), sjzlTV.getText().toString());
+        params.put(groupsFieldsNameJO.getString(ziDuanNameJO.getString("重量差额比字段")), zlcebTV.getText().toString());
+        params.put(groupsFieldsNameJO.getString(ziDuanNameJO.getString("流向类型字段")), lxlx);
+        params.put(groupsFieldsNameJO.getString(ziDuanNameJO.getString("执行状态字段")), zxzt);
+        params.put(groupsFieldsNameJO.getString(ziDuanNameJO.getString("入库状态字段")), rkzt);
+        params.put(groupsFieldsNameJO.getString(ziDuanNameJO.getString("计划运输日期字段")), jhysrqTV.getText().toString());
+        params.put(groupsFieldsNameJO.getString(ziDuanNameJO.getString("出入库时间字段")), crkrqTV.getText().toString()+" "+crksjTV.getText().toString());
         /*
         params.put("二维码", "");
         params.put("企业客户信息37.$$flag$$", "true");
