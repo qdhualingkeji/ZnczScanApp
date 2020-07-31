@@ -34,7 +34,7 @@ public class DDXQCPHActivity extends BaseActivity {
 
     private String zjbgCode,zjddCode;
     private List<String> jieLunList;
-    private JSONObject groupsFieldsJO,zjjeColumnsIdJO,groupsFieldFieldIdJO,groupsFieldNameJO,zjbgCriteriasIdJO,zjddCriteriasIdJO,ziDuanNameJO;
+    private JSONObject zjddGroupsFieldsJO,zjjeColumnsIdJO,zjbgGroupsIdJO,zjddGroupsIdJO,zjbgGroupsFieldFieldIdJO,zjbgGroupsFieldNameJO,zjbgCriteriasIdJO,zjddCriteriasIdJO,ziDuanNameJO;
     private SimpleAdapter jieLunAdapter;
     private String jielun;
     @BindView(R.id.cph_et)
@@ -73,7 +73,7 @@ public class DDXQCPHActivity extends BaseActivity {
     protected void getDataFormWeb() {
         initZJBGCriteriaId();
         initZJDDCriteriaId();
-        initColumnsFieldId();
+        initZJBGGroupsFieldId();
     }
 
     private void initZJBGCriteriaId(){
@@ -278,7 +278,7 @@ public class DDXQCPHActivity extends BaseActivity {
                     zjddCode = entitieJO.getString("code");
                     Log.e("zjddCode===",""+zjddCode);
 
-                    initGroupsFieldsId();
+                    initZJDDGroupsFieldsId();
                 } catch (JSONException e) {
                     Log.e("error===",""+e.getMessage());
                     e.printStackTrace();
@@ -288,7 +288,7 @@ public class DDXQCPHActivity extends BaseActivity {
         });
     }
 
-    private void initGroupsFieldsId(){
+    private void initZJDDGroupsFieldsId(){
         RequestParams params = AsynClient.getRequestParams();
         AsynClient.get(MyHttpConfing.zjddDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
@@ -312,20 +312,36 @@ public class DDXQCPHActivity extends BaseActivity {
                     String dtmpl = configJO.getString("dtmpl");
                     JSONObject dtmplJO = new JSONObject(dtmpl);
                     JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
-                    JSONObject groupsJO = (JSONObject)groupsJA.get(0);
-                    //Log.e("group===",""+groupsJO.toString());
+
+                    zjddGroupsIdJO=new JSONObject();
+                    for (int i=0;i<groupsJA.length();i++) {
+                        JSONObject groupJO = groupsJA.getJSONObject(i);
+                        String title = groupJO.getString("title");
+                        String id = groupJO.getString("id");
+                        Log.e("title===",""+title+",id==="+id);
+                        zjddGroupsIdJO.put(title,id);
+                    }
+                    Log.e("zjddGroupsIdJO===",zjddGroupsIdJO.toString());
+
+                    JSONObject groupsJO = null;
+                    for (int i=0;i<groupsJA.length();i++){
+                        if(groupsJA.getJSONObject(i).getString("id").equals(zjddGroupsIdJO.getString(ziDuanNameJO.getString("基本信息字段")))){
+                            groupsJO=groupsJA.getJSONObject(i);
+                            break;
+                        }
+                    }
                     String fields = groupsJO.getString("fields");
                     JSONArray fieldsJA = new JSONArray(fields);
 
-                    groupsFieldsJO=new JSONObject();
+                    zjddGroupsFieldsJO=new JSONObject();
                     for (int i=0;i<fieldsJA.length();i++) {
                         JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
                         String title = fieldJO.getString("title");
                         String id = fieldJO.getString("id");
                         //Log.e("title===",""+title+",id==="+id);
-                        groupsFieldsJO.put(title,id);
+                        zjddGroupsFieldsJO.put(title,id);
                     }
-                    Log.e("groupsFieldsJO===",groupsFieldsJO.toString());
+                    Log.e("zjddGroupsFieldsJO===",zjddGroupsFieldsJO.toString());
 
                     getOrderDetail();
                 } catch (JSONException e) {
@@ -360,17 +376,17 @@ public class DDXQCPHActivity extends BaseActivity {
                         JSONObject entityJO = new JSONObject(entity);
                         String fieldMapStr = entityJO.getString("fieldMap");
                         JSONObject fieldMapJO = new JSONObject(fieldMapStr);
-                        String ddh = fieldMapJO.getString(groupsFieldsJO.getString(ziDuanNameJO.getString("订单号字段")));
-                        String yzxzl=fieldMapJO.getString(groupsFieldsJO.getString(ziDuanNameJO.getString("预装卸重量字段")));
-                        String lxlx = fieldMapJO.getString(groupsFieldsJO.getString(ziDuanNameJO.getString("流向类型字段")));
-                        String bjsj=fieldMapJO.getString(groupsFieldsJO.getString(ziDuanNameJO.getString("编辑时间字段")));
-                        String sjzl=fieldMapJO.getString(groupsFieldsJO.getString(ziDuanNameJO.getString("实际重量字段")));
-                        String zlceb=fieldMapJO.getString(groupsFieldsJO.getString(ziDuanNameJO.getString("重量差额比字段")));
+                        String ddh = fieldMapJO.getString(zjddGroupsFieldsJO.getString(ziDuanNameJO.getString("订单号字段")));
+                        String yzxzl=fieldMapJO.getString(zjddGroupsFieldsJO.getString(ziDuanNameJO.getString("预装卸重量字段")));
+                        String lxlx = fieldMapJO.getString(zjddGroupsFieldsJO.getString(ziDuanNameJO.getString("流向类型字段")));
+                        String bjsj=fieldMapJO.getString(zjddGroupsFieldsJO.getString(ziDuanNameJO.getString("编辑时间字段")));
+                        String sjzl=fieldMapJO.getString(zjddGroupsFieldsJO.getString(ziDuanNameJO.getString("实际重量字段")));
+                        String zlceb=fieldMapJO.getString(zjddGroupsFieldsJO.getString(ziDuanNameJO.getString("重量差额比字段")));
                         Log.e("订单号===",ddh);
                         Log.e("预装卸重量===",yzxzl);
                         Log.e("流向类型===",lxlx);
                         Log.e("编辑时间===",bjsj);
-                        Log.e("二维码===",fieldMapJO.getString(groupsFieldsJO.getString(ziDuanNameJO.getString("二维码字段"))));
+                        Log.e("二维码===",fieldMapJO.getString(zjddGroupsFieldsJO.getString(ziDuanNameJO.getString("二维码字段"))));
                         Log.e("实际重量===",sjzl);
                         Log.e("重量差额比===",zlceb);
 
@@ -402,7 +418,7 @@ public class DDXQCPHActivity extends BaseActivity {
         return index;
     }
 
-    private void initColumnsFieldId(){
+    private void initZJBGGroupsFieldId(){
         RequestParams params = AsynClient.getRequestParams();
         AsynClient.get(MyHttpConfing.zjbgDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
@@ -427,26 +443,43 @@ public class DDXQCPHActivity extends BaseActivity {
                     String dtmpl = configJO.getString("dtmpl");
                     JSONObject dtmplJO = new JSONObject(dtmpl);
                     JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
-                    JSONObject groupsJO = (JSONObject)groupsJA.get(0);
+
+                    zjbgGroupsIdJO=new JSONObject();
+                    for (int i=0;i<groupsJA.length();i++) {
+                        JSONObject groupJO = groupsJA.getJSONObject(i);
+                        String title = groupJO.getString("title");
+                        String id = groupJO.getString("id");
+                        Log.e("title===",""+title+",id==="+id);
+                        zjbgGroupsIdJO.put(title,id);
+                    }
+                    Log.e("zjbgGroupsIdJO===",zjbgGroupsIdJO.toString());
+
+                    JSONObject groupsJO = null;
+                    for (int i=0;i<groupsJA.length();i++){
+                        if(groupsJA.getJSONObject(i).getString("id").equals(zjbgGroupsIdJO.getString(ziDuanNameJO.getString("基本属性组字段")))){
+                            groupsJO=groupsJA.getJSONObject(i);
+                            break;
+                        }
+                    }
                     String fields = groupsJO.getString("fields");
                     Log.e("fields===",fields);
                     JSONArray fieldsJA = new JSONArray(fields);
 
-                    groupsFieldFieldIdJO=new JSONObject();
-                    groupsFieldNameJO=new JSONObject();
+                    zjbgGroupsFieldFieldIdJO=new JSONObject();
+                    zjbgGroupsFieldNameJO=new JSONObject();
                     for (int i=0;i<fieldsJA.length();i++) {
                         JSONObject fieldJO = (JSONObject)fieldsJA.get(i);
                         String title = fieldJO.getString("title");
                         String fieldId = fieldJO.getString("fieldId");
                         Log.e("title===",""+title+",fieldId==="+fieldId);
                         String name = fieldJO.getString("name");
-                        groupsFieldFieldIdJO.put(title,fieldId);
-                        groupsFieldNameJO.put(title,name);
+                        zjbgGroupsFieldFieldIdJO.put(title,fieldId);
+                        zjbgGroupsFieldNameJO.put(title,name);
                     }
-                    Log.e("groupsFieldFieldIdJO===",groupsFieldFieldIdJO.toString());
-                    Log.e("groupsFieldNameJO===",groupsFieldNameJO.toString());
+                    Log.e("zjbgGFFIdJO===",zjbgGroupsFieldFieldIdJO.toString());
+                    Log.e("zjbgGFNJO===",zjbgGroupsFieldNameJO.toString());
 
-                    initAdapterDataArr(groupsFieldFieldIdJO.getString(ziDuanNameJO.getString("结论字段")),jieLunAdapter);
+                    initAdapterDataArr(zjbgGroupsFieldFieldIdJO.getString(ziDuanNameJO.getString("结论字段")),jieLunAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -508,6 +541,8 @@ public class DDXQCPHActivity extends BaseActivity {
         ziDuanNameJO.put("车牌号字段","车牌号");
         ziDuanNameJO.put("订单状态字段","订单状态");
         ziDuanNameJO.put("执行状态字段","执行状态");
+        ziDuanNameJO.put("基本属性组字段","基本属性组");
+        ziDuanNameJO.put("基本信息字段","基本信息");
     }
 
     private void  initJieLunSpinner(){
@@ -589,7 +624,7 @@ public class DDXQCPHActivity extends BaseActivity {
         //Log.e("唯一编码===",""+zjbgCode);
         //Log.e("jielun===",""+jielun);
         params.put("唯一编码",zjbgCode);
-        params.put(groupsFieldNameJO.getString(ziDuanNameJO.getString("结论字段")), jielun);
+        params.put(zjbgGroupsFieldNameJO.getString(ziDuanNameJO.getString("结论字段")), jielun);
         //params.put("%fuseMode%",false);
         //params.put("货运订单48[1].$$label$$","关联订单");
         //params.put("货运订单48[1].订单号",ddhTV.getText().toString());
