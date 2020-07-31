@@ -32,17 +32,21 @@ public class SharedPreferenceUtil {
      * 记住用户名、密码
      * @param tokenName
      */
-    public static void rememberTokenName(String tokenName){
+    public static void rememberUser(String tokenName,String username,String password){
         SharedPreferences preferences = TheApplication.getSharedPreferences() ;
         Log.e("获取的tokenName=",tokenName);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("tokenName",tokenName);
+        editor.putString("username",username);
+        editor.putString("password",password);
         editor.commit();
     }
 
-    public static boolean ifHasLocalRiderInfo(){
+    public static boolean ifHasLocalUser(){
         SharedPreferences preferences = TheApplication.getSharedPreferences() ;
-        if (TextUtils.isEmpty(preferences.getString("phone",null))||TextUtils.isEmpty(preferences.getString("password",null))) {
+        if (TextUtils.isEmpty(preferences.getString("tokenName",null))
+                ||TextUtils.isEmpty(preferences.getString("username",null))
+                ||TextUtils.isEmpty(preferences.getString("password",null))) {
             return false;
         }
         return true;
@@ -52,11 +56,13 @@ public class SharedPreferenceUtil {
      * 获取上次登陆的用户信息
      * @return
      */
-    public static String getTokenName(){
+    public static String[] getUser(){
         SharedPreferences preferences = TheApplication.getSharedPreferences() ;
         String tokenName = preferences.getString("tokenName",null);
+        String username = preferences.getString("username",null);
+        String password = preferences.getString("password",null);
         //Log.e("读取的tokenName=",tokenName);
-        return tokenName;
+        return new String[]{tokenName,username,password};
     }
 
     /**
@@ -65,7 +71,8 @@ public class SharedPreferenceUtil {
     public static void logout(){
         SharedPreferences preferences = TheApplication.getSharedPreferences() ;
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("phone","");
+        editor.putString("tokenName","");
+        editor.putString("username","");
         editor.putString("password","");
         editor.commit();
     }

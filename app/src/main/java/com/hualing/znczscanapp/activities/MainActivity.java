@@ -17,7 +17,9 @@ import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.global.GlobalData;
 import com.hualing.znczscanapp.global.TheApplication;
 import com.hualing.znczscanapp.model.FunctionType;
+import com.hualing.znczscanapp.util.AllActivitiesHolder;
 import com.hualing.znczscanapp.util.IntentUtil;
+import com.hualing.znczscanapp.util.SharedPreferenceUtil;
 import com.hualing.znczscanapp.utils.AsynClient;
 import com.hualing.znczscanapp.utils.HttpUtil;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
@@ -197,6 +199,9 @@ public class MainActivity extends BaseActivity {
     private void loginout(){
         String r = HttpUtil.doDelete(MyHttpConfing.login, "");
         Log.e("result===",r+"");
+        SharedPreferenceUtil.logout();
+        IntentUtil.openActivity(MainActivity.this,LoginActivity.class);
+        AllActivitiesHolder.removeAct(MainActivity.this);
     }
 
     public void MyToast(String s) {

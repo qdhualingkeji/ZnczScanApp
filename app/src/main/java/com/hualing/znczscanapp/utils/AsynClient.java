@@ -52,7 +52,8 @@ public class AsynClient {
 //        params.put("Request-Time", new Date().getTime());
 //        params.put("Auth-Key", "p!I5G8xTD?");
         client.addHeader("Request-From", "SaApp");
-        client.addHeader("hydrocarbon-token", SharedPreferenceUtil.getTokenName()==null?"":SharedPreferenceUtil.getTokenName());
+        String tokenName = SharedPreferenceUtil.getUser()[0];
+        client.addHeader("hydrocarbon-token", tokenName==null?"":tokenName);
         //client.addHeader("hydrocarbon-token", "0IsdmI22CofyMLR6l0l7kc7hBDzVug0d");
     }
 

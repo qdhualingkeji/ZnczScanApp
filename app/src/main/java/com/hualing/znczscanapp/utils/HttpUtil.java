@@ -21,8 +21,10 @@ public class HttpUtil {
             URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setReadTimeout(5000);
+            conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
             conn.setRequestMethod("DELETE");
-            conn.setRequestProperty("hydrocarbon-token", SharedPreferenceUtil.getTokenName()==null?"":SharedPreferenceUtil.getTokenName());
+            String tokenName = SharedPreferenceUtil.getUser()[0];
+            conn.setRequestProperty("hydrocarbon-token", tokenName==null?"":tokenName);
 
             //获得一个输出流，向服务器写入数据
             OutputStream outputStream = conn.getOutputStream();
