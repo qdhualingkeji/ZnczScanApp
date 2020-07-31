@@ -35,7 +35,7 @@ public class DDRKScanActivity extends BaseActivity {
 
     private String orderCode;
     List<String> lxlxList,zxztList,rkztList;
-    private JSONObject groupsFieldsIdJO,groupsFieldsFieldIdJO,groupsFieldsNameJO,ziDuanNameJO;
+    private JSONObject groupsIdJO,groupsFieldsIdJO,groupsFieldsFieldIdJO,groupsFieldsNameJO,ziDuanNameJO;
     private SimpleAdapter lxlxAdapter,zxztAdapter,rkztAdapter;
     private String lxlx,zxzt,rkzt;
     @BindView(R.id.ddh_tv)
@@ -108,8 +108,24 @@ public class DDRKScanActivity extends BaseActivity {
                     String dtmpl = configJO.getString("dtmpl");
                     JSONObject dtmplJO = new JSONObject(dtmpl);
                     JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
-                    JSONObject groupsJO = (JSONObject)groupsJA.get(0);
-                    //Log.e("group===",""+groupsJO.toString());
+
+                    groupsIdJO=new JSONObject();
+                    for (int i=0;i<groupsJA.length();i++) {
+                        JSONObject groupJO = groupsJA.getJSONObject(i);
+                        String title = groupJO.getString("title");
+                        String id = groupJO.getString("id");
+                        Log.e("title===",""+title+",id==="+id);
+                        groupsIdJO.put(title,id);
+                    }
+                    Log.e("groupsIdJO===",groupsIdJO.toString());
+
+                    JSONObject groupsJO = null;
+                    for (int i=0;i<groupsJA.length();i++){
+                        if(groupsJA.getJSONObject(i).getString("id").equals(groupsIdJO.getString(ziDuanNameJO.getString("基本信息字段")))){
+                            groupsJO=groupsJA.getJSONObject(i);
+                            break;
+                        }
+                    }
                     String fields = groupsJO.getString("fields");
                     JSONArray fieldsJA = new JSONArray(fields);
 
@@ -278,6 +294,7 @@ public class DDRKScanActivity extends BaseActivity {
         ziDuanNameJO.put("计划运输日期字段","计划运输日期");
         ziDuanNameJO.put("出入库时间字段","出入库时间");
         ziDuanNameJO.put("二维码字段","二维码");
+        ziDuanNameJO.put("基本信息字段","基本信息");
     }
 
     private void  initLLLXSpinner(){

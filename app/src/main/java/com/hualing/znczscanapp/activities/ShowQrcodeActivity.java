@@ -30,7 +30,7 @@ import butterknife.BindView;
 public class ShowQrcodeActivity extends BaseActivity {
 
     private String dqphCode;
-    private JSONObject dqphGroupsFieldIdJO,ziDuanNameJO;
+    private JSONObject dqphGroupsIdJO,dqphGroupsFieldIdJO,ziDuanNameJO;
     @BindView(R.id.qrcode_iv)
     ImageView qrcodeIV;
 
@@ -45,7 +45,9 @@ public class ShowQrcodeActivity extends BaseActivity {
             initZiDuanNameJO();
             int width = (int)(TheApplication.getScreenWidth()/1.3);
             int height=width;
-            qrcodeIV.setLayoutParams(new RelativeLayout.LayoutParams(width,height));
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(width, height);
+            layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+            qrcodeIV.setLayoutParams(layoutParams);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -57,6 +59,7 @@ public class ShowQrcodeActivity extends BaseActivity {
     private void initZiDuanNameJO() throws JSONException {
         ziDuanNameJO=new JSONObject();
         ziDuanNameJO.put("二维码字段","二维码");
+        ziDuanNameJO.put("新字段组字段","新字段组");
     }
 
     @Override
@@ -150,7 +153,24 @@ public class ShowQrcodeActivity extends BaseActivity {
                     String dtmpl = configJO.getString("dtmpl");
                     JSONObject dtmplJO = new JSONObject(dtmpl);
                     JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
-                    JSONObject groupsJO = (JSONObject)groupsJA.get(0);
+
+                    dqphGroupsIdJO=new JSONObject();
+                    for (int i=0;i<groupsJA.length();i++) {
+                        JSONObject groupJO = groupsJA.getJSONObject(i);
+                        String title = groupJO.getString("title");
+                        String id = groupJO.getString("id");
+                        Log.e("title===",""+title+",id==="+id);
+                        dqphGroupsIdJO.put(title,id);
+                    }
+                    Log.e("dqphGroupsIdJO===",dqphGroupsIdJO.toString());
+
+                    JSONObject groupsJO = null;
+                    for (int i=0;i<groupsJA.length();i++){
+                        if(groupsJA.getJSONObject(i).getString("id").equals(dqphGroupsIdJO.getString(ziDuanNameJO.getString("新字段组字段")))){
+                            groupsJO=groupsJA.getJSONObject(i);
+                            break;
+                        }
+                    }
                     String fields = groupsJO.getString("fields");
                     Log.e("fields===",fields);
                     JSONArray fieldsJA = new JSONArray(fields);
@@ -192,7 +212,7 @@ public class ShowQrcodeActivity extends BaseActivity {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     JSONObject entityJO = jo.getJSONObject("entity");
                     JSONObject fieldMapJO = entityJO.getJSONObject("fieldMap");
-                    String qrcodeUrl = toURLString(fieldMapJO.getString(dqphGroupsFieldIdJO.getString(ziDuanNameJO.getString("二维码字段"))));
+                    String qrcodeUrl = toURLString(MyHttpConfing.baseUrl+fieldMapJO.getString(dqphGroupsFieldIdJO.getString(ziDuanNameJO.getString("二维码字段"))));
                     //String qrcodeUrl = toURLString("http://121.196.184.205:96/hydrocarbon/./download-files/bbe2cac353fab4605a1d9f47b4d342bf/二维码图片_司机订单.png");
                     Log.e("qrcodeUrl===",""+qrcodeUrl);
                     initQrcode(qrcodeUrl);
