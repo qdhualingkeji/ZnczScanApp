@@ -33,7 +33,6 @@ import butterknife.OnClick;
 public class DDXQCPHActivity extends BaseActivity {
 
     private String zjbgCode,zjddCode;
-    private List<String> jieLunList;
     private JSONObject zjddGroupsFieldsJO,zjjeColumnsIdJO,zjbgGroupsIdJO,zjddGroupsIdJO,zjbgGroupsFieldFieldIdJO,zjbgGroupsFieldNameJO,zjbgCriteriasIdJO,zjddCriteriasIdJO,ziDuanNameJO;
     private SimpleAdapter jieLunAdapter;
     private String jielun;
@@ -511,7 +510,7 @@ public class DDXQCPHActivity extends BaseActivity {
                     String fieldIdJAStr = optionsMapJO.getString(fieldId);
                     JSONArray fieldIdJA = new JSONArray(fieldIdJAStr);
                     List<String> list = adapter.getList();
-                    list.clear();
+                    //list.clear();
                     for(int i=0;i<fieldIdJA.length();i++){
                         JSONObject fieldIdJO=(JSONObject)fieldIdJA.get(i);
                         list.add(fieldIdJO.getString("value"));
@@ -546,8 +545,6 @@ public class DDXQCPHActivity extends BaseActivity {
     }
 
     private void  initJieLunSpinner(){
-        jieLunList=new ArrayList<String>();
-        jieLunList.add("");
         jieLunAdapter = new SimpleAdapter(DDXQCPHActivity.this);
         jieLunSpinner.setAdapter(jieLunAdapter);
         jieLunSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -589,7 +586,9 @@ public class DDXQCPHActivity extends BaseActivity {
             case R.id.saveBtn:
                 try {
                     if(checkDDHValue()) {
-                        saveZhiJianBaoGao();
+                        if(checkJieLunValue()) {
+                            saveZhiJianBaoGao();
+                        }
                     }
                 } catch (JSONException e) {
                     Log.e("error===",""+e.getMessage());
@@ -613,6 +612,15 @@ public class DDXQCPHActivity extends BaseActivity {
         String ddh=ddhTV.getText().toString();
         if(TextUtils.isEmpty(ddh)){
             MyToast("请输入订单号");
+            return false;
+        }
+        else
+            return true;
+    }
+
+    private boolean checkJieLunValue(){
+        if(TextUtils.isEmpty(jielun)||jieLunAdapter.NO_SELECTED.equals(jielun)){
+            MyToast("请选择结论");
             return false;
         }
         else

@@ -36,7 +36,6 @@ import butterknife.OnClick;
 public class DDRKScanActivity extends BaseActivity {
 
     private String orderCode;
-    List<String> lxlxList,zxztList,rkztList;
     private JSONObject groupsIdJO,groupsFieldsIdJO,groupsFieldsFieldIdJO,groupsFieldsNameJO,ziDuanNameJO;
     private SimpleAdapter lxlxAdapter,zxztAdapter,rkztAdapter;
     private String lxlx,zxzt,rkzt;
@@ -186,7 +185,7 @@ public class DDRKScanActivity extends BaseActivity {
                     String lxlxJAStr = optionsMapJO.getString(fieldId);
                     JSONArray lxlxJA = new JSONArray(lxlxJAStr);
                     List<String> list = adapter.getList();
-                    list.clear();
+                    //list.clear();
                     for(int i=0;i<lxlxJA.length();i++){
                         JSONObject lxlxJO=(JSONObject)lxlxJA.get(i);
                         list.add(lxlxJO.getString("value"));
@@ -300,8 +299,6 @@ public class DDRKScanActivity extends BaseActivity {
     }
 
     private void  initLLLXSpinner(){
-        lxlxList=new ArrayList<String>();
-        lxlxList.add("");
         lxlxAdapter = new SimpleAdapter(DDRKScanActivity.this);
         lxlxSpinner.setAdapter(lxlxAdapter);
         lxlxSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -318,8 +315,6 @@ public class DDRKScanActivity extends BaseActivity {
     }
 
     private void  initZXZTSpinner(){
-        zxztList=new ArrayList<String>();
-        zxztList.add("");
         zxztAdapter = new SimpleAdapter(DDRKScanActivity.this);
         zxztSpinner.setAdapter(zxztAdapter);
         zxztSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -336,8 +331,6 @@ public class DDRKScanActivity extends BaseActivity {
     }
 
     private void  initRKZTSpinner(){
-        rkztList=new ArrayList<String>();
-        rkztList.add("");
         rkztAdapter =new SimpleAdapter(DDRKScanActivity.this);
         rkztSpinner.setAdapter(rkztAdapter);
         rkztSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -402,7 +395,19 @@ public class DDRKScanActivity extends BaseActivity {
             case R.id.saveBtn:
                 try {
                     if(checkDDHValue()) {
-                        saveOrderRK();
+                        if(checkLLLXValue()) {
+                            if(checkZXZTValue()) {
+                                if(checkRKZTValue()) {
+                                    if(checkJHYSRQValue()) {
+                                        if(checkCRKRQValue()) {
+                                            if(checkCRKSJValue()) {
+                                                saveOrderRK();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 } catch (JSONException e) {
                     Log.e("error===",""+e.getMessage());
@@ -451,6 +456,7 @@ public class DDRKScanActivity extends BaseActivity {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     String status=jo.getString("status");
                     if("suc".equals(status)){
+                        MyToast("审核完毕");
                         Intent intent = new Intent(DDRKScanActivity.this, MainActivity.class);
                         startActivity(intent);
                         AllActivitiesHolder.removeAct(DDRKScanActivity.this);
@@ -476,6 +482,63 @@ public class DDRKScanActivity extends BaseActivity {
         String ddh=ddhTV.getText().toString();
         if(TextUtils.isEmpty(ddh)){
             MyToast("请输入订单号");
+            return false;
+        }
+        else
+            return true;
+    }
+
+    private boolean checkLLLXValue(){
+        if(TextUtils.isEmpty(lxlx)||lxlxAdapter.NO_SELECTED.equals(lxlx)){
+            MyToast("请选择流向类型");
+            return false;
+        }
+        else
+            return true;
+    }
+
+    private boolean checkZXZTValue(){
+        if(TextUtils.isEmpty(zxzt)||zxztAdapter.NO_SELECTED.equals(zxzt)){
+            MyToast("请选择执行状态");
+            return false;
+        }
+        else
+            return true;
+    }
+
+    private boolean checkRKZTValue(){
+        if(TextUtils.isEmpty(rkzt)||rkztAdapter.NO_SELECTED.equals(rkzt)){
+            MyToast("请选择入库状态");
+            return false;
+        }
+        else
+            return true;
+    }
+    
+    private boolean checkJHYSRQValue(){
+        String jhysrq = jhysrqTV.getText().toString();
+        if(TextUtils.isEmpty(jhysrq)||"null".equals(jhysrq)||"请选择计划运输日期".equals(jhysrq)){
+            MyToast("请选择计划运输日期");
+            return false;
+        }
+        else
+            return true;
+    }
+
+    private boolean checkCRKRQValue(){
+        String crkrq = crkrqTV.getText().toString();
+        if(TextUtils.isEmpty(crkrq)||"null".equals(crkrq)||"请选择出入库日期".equals(crkrq)){
+            MyToast("请选择出入库日期");
+            return false;
+        }
+        else
+            return true;
+    }
+
+    private boolean checkCRKSJValue(){
+        String crksj = crksjTV.getText().toString();
+        if(TextUtils.isEmpty(crksj)||"null".equals(crksj)||"请选择出入库时间".equals(crksj)){
+            MyToast("请选择出入库时间");
             return false;
         }
         else

@@ -73,13 +73,14 @@ public class LoginActivity extends BaseActivity {
                 }
                 login(username,pwd);
                 break;
-                /*
             case R.id.registerBtn:
+                MyToast("此模块未开放");
+                /*
                 Intent intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
                 AllActivitiesHolder.removeAct(this);
-                break;
                 */
+                break;
         }
     }
 

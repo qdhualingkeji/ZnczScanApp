@@ -2,6 +2,7 @@ package com.hualing.znczscanapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,7 +32,6 @@ import butterknife.OnClick;
 public class DDXQScanActivity extends BaseActivity {
 
     private String zjbgCode,orderCode,orderNum;
-    private List<String>  jieLunList;
     private JSONObject zjddGroupsFieldsIdJO,zjjeColumnsIdJO,zjbgGroupsIdJO,zjddGroupsIdJO,columnsFieldIdJO,columnsNameJO,criteriasIdJO,ziDuanNameJO;
     private SimpleAdapter jieLunAdapter;
     private String jielun;
@@ -177,7 +177,6 @@ public class DDXQScanActivity extends BaseActivity {
                     JSONObject cellMapJO = entitieJO.getJSONObject("cellMap");
                     jielun=cellMapJO.getString(zjjeColumnsIdJO.getString(ziDuanNameJO.getString("质检结果字段")));
                     zjbgCode = entitieJO.getString("code");
-                    Log.e("jielun===",""+jielun);
                 } catch (JSONException e) {
                     Log.e("error===",""+e.getMessage());
                     e.printStackTrace();
@@ -345,7 +344,7 @@ public class DDXQScanActivity extends BaseActivity {
                     String lxlxJAStr = optionsMapJO.getString(fieldId);
                     JSONArray lxlxJA = new JSONArray(lxlxJAStr);
                     List<String> list = adapter.getList();
-                    list.clear();
+                    //list.clear();
                     for(int i=0;i<lxlxJA.length();i++){
                         JSONObject lxlxJO=(JSONObject)lxlxJA.get(i);
                         list.add(lxlxJO.getString("value"));
@@ -403,7 +402,7 @@ public class DDXQScanActivity extends BaseActivity {
                         sjzlTV.setText(sjzl);
                         zlcebTV.setText(zlceb);
 
-                        jieLunSpinner.setSelection(getValueIndexInList(jielun,jieLunAdapter.getList()));
+                        jieLunSpinner.setSelection(getValueIndexInList(jielun,jieLunAdapter.getList()),true);
                     }
                 } catch (JSONException e) {
                     Log.e("error===",""+e.getMessage());
@@ -443,8 +442,6 @@ public class DDXQScanActivity extends BaseActivity {
     }
 
     private void  initJieLunSpinner(){
-        jieLunList=new ArrayList<String>();
-        jieLunList.add("");
         jieLunAdapter = new SimpleAdapter(DDXQScanActivity.this);
         jieLunSpinner.setAdapter(jieLunAdapter);
         jieLunSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -465,13 +462,24 @@ public class DDXQScanActivity extends BaseActivity {
         switch (v.getId()){
             case R.id.saveBtn:
                 try {
-                    saveZhiJianBaoGao();
+                    if(checkJieLunValue()) {
+                        saveZhiJianBaoGao();
+                    }
                 } catch (JSONException e) {
                     Log.e("error===",""+e.getMessage());
                     e.printStackTrace();
                 }
                 break;
         }
+    }
+
+    private boolean checkJieLunValue(){
+        if(TextUtils.isEmpty(jielun)||jieLunAdapter.NO_SELECTED.equals(jielun)){
+            MyToast("请选择结论");
+            return false;
+        }
+        else
+            return true;
     }
 
     private void saveZhiJianBaoGao() throws JSONException {

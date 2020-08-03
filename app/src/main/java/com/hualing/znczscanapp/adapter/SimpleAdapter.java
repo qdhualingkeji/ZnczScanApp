@@ -13,6 +13,7 @@ import java.util.List;
 
 public class SimpleAdapter extends BaseAdapter {
 
+    public static final String NO_SELECTED="请选择";
     private BaseActivity context;
     private List<String> list;
 
@@ -27,7 +28,7 @@ public class SimpleAdapter extends BaseAdapter {
     public SimpleAdapter(BaseActivity context){
         this.context=context;
         this.list=new ArrayList<String>();
-        this.list.add("");
+        this.list.add(NO_SELECTED);
     }
 
     @Override
