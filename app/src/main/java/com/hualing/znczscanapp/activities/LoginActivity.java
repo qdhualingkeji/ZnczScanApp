@@ -64,7 +64,7 @@ public class LoginActivity extends BaseActivity {
                 String username = usernameET.getText().toString();
                 String pwd = pwdET.getText().toString();
                 if(TextUtils.isEmpty(username)){
-                    MyToast("请输入手机号");
+                    MyToast("请输入用户名");
                     return;
                 }
                 if(TextUtils.isEmpty(pwd)){

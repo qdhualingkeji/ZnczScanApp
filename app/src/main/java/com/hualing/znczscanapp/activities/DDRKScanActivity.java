@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.adapter.SimpleAdapter;
@@ -253,7 +255,7 @@ public class DDRKScanActivity extends BaseActivity {
                         rkztSpinner.setSelection(getValueIndexInList(rkzt,rkztAdapter.getList()));
 
                         jhysrqTV.setText(jhysrq);
-                        if(crksj!=null) {
+                        if(crksj!=null&&crksj!="null") {
                             String[] crksjArr = crksj.split(" ");
                             crkrqTV.setText(crksjArr[0]);
                             crksjTV.setText(crksjArr[1]);
@@ -399,7 +401,9 @@ public class DDRKScanActivity extends BaseActivity {
                 break;
             case R.id.saveBtn:
                 try {
-                    saveOrderRK();
+                    if(checkDDHValue()) {
+                        saveOrderRK();
+                    }
                 } catch (JSONException e) {
                     Log.e("error===",""+e.getMessage());
                     e.printStackTrace();
@@ -466,5 +470,19 @@ public class DDRKScanActivity extends BaseActivity {
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_ddrk_scan;
+    }
+
+    private boolean checkDDHValue(){
+        String ddh=ddhTV.getText().toString();
+        if(TextUtils.isEmpty(ddh)){
+            MyToast("请输入订单号");
+            return false;
+        }
+        else
+            return true;
+    }
+
+    public void MyToast(String s) {
+        Toast.makeText(DDRKScanActivity.this, s, Toast.LENGTH_SHORT).show();
     }
 }

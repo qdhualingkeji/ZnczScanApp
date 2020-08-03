@@ -25,6 +25,7 @@ public class MyHttpConfing {
     public static final String dqphDtmplNormal=baseUrl + "api2/meta/tmpl/"+dqphMenuId+"/dtmpl/normal/";
     public static final String zyddDtmplNormal=baseUrl + "api2/meta/tmpl/"+zyddMenuId+"/dtmpl/normal/";
     public static final String zyddDtmplRabc=baseUrl + "api2/meta/tmpl/"+zyddMenuId+"/dtmpl/rabc/";
+    public static final String dqphDtmplRabc=baseUrl + "api2/meta/tmpl/"+dqphMenuId+"/dtmpl/rabc/";
     public static final String dqphEntityListTmpl=baseUrl+"api2/entity/"+dqphMenuId+"/list/tmpl";
     public static final String zjbgEntityListTmpl=baseUrl+"api2/entity/"+zjbgMenuId+"/list/tmpl";
     public static final String zyddEntityListTmpl=baseUrl+"api2/entity/"+zyddMenuId+"/list/tmpl";

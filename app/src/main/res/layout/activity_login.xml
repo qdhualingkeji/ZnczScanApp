@@ -64,12 +64,20 @@
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"/>
 
+            <!--
             <EditText
                 android:id="@+id/username_et"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="请输入您的用户名"
                 android:text="admin"
+                android:layout_gravity="center_vertical"/>
+                -->
+            <EditText
+                android:id="@+id/username_et"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="请输入您的用户名"
                 android:layout_gravity="center_vertical"/>
 
         </LinearLayout>
@@ -93,12 +101,21 @@
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"/>
 
+            <!--
             <EditText
                 android:id="@+id/pwd_et"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="请输入您的密码"
                 android:text="123456"
+                android:inputType="textPassword"
+                android:layout_gravity="center_vertical"/>
+                -->
+            <EditText
+                android:id="@+id/pwd_et"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="请输入您的密码"
                 android:inputType="textPassword"
                 android:layout_gravity="center_vertical"/>
 
