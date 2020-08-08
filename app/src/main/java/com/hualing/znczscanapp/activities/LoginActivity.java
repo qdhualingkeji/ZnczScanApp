@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity {
         return R.layout.activity_login;
     }
 
-    @OnClick({R.id.loginBtn,R.id.registerBtn})
+    @OnClick({R.id.loginBtn})
     public void onViewClicked(View v){
         switch (v.getId()){
             case R.id.loginBtn:
@@ -72,14 +72,6 @@ public class LoginActivity extends BaseActivity {
                     return;
                 }
                 login(username,pwd);
-                break;
-            case R.id.registerBtn:
-                MyToast("此模块未开放");
-                /*
-                Intent intent = new Intent(this, RegisterActivity.class);
-                startActivity(intent);
-                AllActivitiesHolder.removeAct(this);
-                */
                 break;
         }
     }
@@ -104,6 +96,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
                 Log.e("rawJsonData======",""+rawJsonData);
+                MyToast("登录失败");
             }
 
             @Override
@@ -122,6 +115,8 @@ public class LoginActivity extends BaseActivity {
                         startActivity(intent);
                         AllActivitiesHolder.removeAct(LoginActivity.this);
                     }
+                    else
+                        MyToast("登录失败");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
