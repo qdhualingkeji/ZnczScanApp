@@ -7,206 +7,207 @@
     android:orientation="vertical"
     tools:context=".activities.PaiDuiChaXunActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="20dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/propertyNameText"
-            android:text="您的序号是："/>
-
-        <TextView
-            android:id="@+id/pdh_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:textColor="@color/divide_dark_gray_color"
-            android:textSize="36sp"
-            android:gravity="center_vertical" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="20dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/propertyNameText"
-            android:text="号"/>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dividerHeight"
-        android:background="@color/divide_gray_color"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="20dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/propertyNameText"
-            android:text="您的入场时间是："/>
-
-        <TextView
-            android:id="@+id/prsj_tv"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:textColor="@color/divide_dark_gray_color"
-            android:textSize="16sp"
-            android:gravity="center_vertical" />
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dividerHeight"
-        android:background="@color/divide_gray_color"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/propertyNameText"
+                    android:text="您的序号是："/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/pdh_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/divide_dark_gray_color"
+                    android:textSize="36sp"
+                    android:gravity="center_vertical" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="20dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/propertyNameText"
-            android:text="您的车辆信息"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/propertyNameText"
+                    android:text="号"/>
 
-    </LinearLayout>
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dividerHeight"
+                android:background="@color/divide_gray_color"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="20dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/propertyNameText"
-            android:text="车牌号："/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/chePaiHao_tv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:textColor="@color/divide_dark_gray_color"
-            android:textSize="16sp"
-            android:gravity="center_vertical" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/propertyNameText"
+                    android:text="您的入场时间是："/>
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/prsj_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/divide_dark_gray_color"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="20dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/propertyNameText"
-            android:text="车主信息："/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dividerHeight"
+                android:background="@color/divide_gray_color"/>
 
-        <TextView
-            android:id="@+id/cheZhuXinXi_tv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:textColor="@color/divide_dark_gray_color"
-            android:textSize="16sp"
-            android:gravity="center_vertical" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/propertyNameText"
+                    android:text="您的车辆信息"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="20dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/propertyNameText"
-            android:text="皮重："/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/piZhong_tv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:textColor="@color/divide_dark_gray_color"
-            android:textSize="16sp"
-            android:gravity="center_vertical" />
+                <ImageView
+                    android:id="@+id/zhaoPian_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
 
-    </LinearLayout>
+            </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="20dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/propertyNameText"
-            android:text="车辆类型："/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/propertyNameText"
+                    android:text="车牌号："/>
 
-        <TextView
-            android:id="@+id/cheLiangLeiXing_tv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:textColor="@color/divide_dark_gray_color"
-            android:textSize="16sp"
-            android:gravity="center_vertical" />
+                <TextView
+                    android:id="@+id/chePaiHao_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/divide_dark_gray_color"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical" />
 
-    </LinearLayout>
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="20dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/propertyNameText"
-            android:text="照片："/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/propertyNameText"
+                    android:text="车主信息："/>
 
-        <TextView
-            android:id="@+id/zhaoPian_tv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:textColor="@color/divide_dark_gray_color"
-            android:textSize="16sp"
-            android:gravity="center_vertical" />
+                <TextView
+                    android:id="@+id/cheZhuXinXi_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/divide_dark_gray_color"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical" />
 
-    </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/propertyNameText"
+                    android:text="皮重："/>
+
+                <TextView
+                    android:id="@+id/piZhong_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/divide_dark_gray_color"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/propertyNameText"
+                    android:text="车辆类型："/>
+
+                <TextView
+                    android:id="@+id/cheLiangLeiXing_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/divide_dark_gray_color"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

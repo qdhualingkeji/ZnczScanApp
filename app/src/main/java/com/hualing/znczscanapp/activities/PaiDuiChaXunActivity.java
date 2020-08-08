@@ -1,10 +1,17 @@
 package com.hualing.znczscanapp.activities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hualing.znczscanapp.R;
+import com.hualing.znczscanapp.global.TheApplication;
 import com.hualing.znczscanapp.utils.AsynClient;
 import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
@@ -13,6 +20,10 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import butterknife.BindView;
 
@@ -32,8 +43,8 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     TextView piZhongTV;
     @BindView(R.id.cheLiangLeiXing_tv)
     TextView cheLiangLeiXingTV;
-    @BindView(R.id.zhaoPian_tv)
-    TextView zhaoPianTV;
+    @BindView(R.id.zhaoPian_iv)
+    ImageView zhaoPianIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +55,11 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     protected void initLogic() {
         try {
             initZiDuanNameJO();
+            int width = (int)(TheApplication.getScreenWidth()/1.3);
+            int height=width;
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(width, height);
+            layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+            zhaoPianIV.setLayoutParams(layoutParams);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -328,7 +344,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
                     String czxx = fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("车主信息字段")));
                     String piZhong = fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("皮重字段")));
                     String cllx = fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("车辆类型字段")));
-                    String zhaoPian = fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("照片字段")));
+                    String zhaoPian = MyHttpConfing.baseUrl+fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("照片字段")));
                     Log.e("车牌号===",""+cph);
                     Log.e("车主信息===",""+czxx);
                     Log.e("皮重===",""+piZhong);
@@ -339,13 +355,50 @@ public class PaiDuiChaXunActivity extends BaseActivity {
                     cheZhuXinXiTV.setText(czxx);
                     piZhongTV.setText(piZhong);
                     cheLiangLeiXingTV.setText(cllx);
-                    zhaoPianTV.setText(zhaoPian);
+                    initPhoto(zhaoPian);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
     }
+
+    private void initPhoto(final String url){
+        new Thread(new Runnable(){
+
+            @Override
+            public void run() {
+                try {
+                    HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+                    // 设置请求方式和超时时间
+                    conn.setRequestMethod("GET");
+                    conn.setConnectTimeout(1000 * 10);
+                    conn.connect();
+                    int code = conn.getResponseCode();
+                    if (code == 200) {
+                        InputStream is = conn.getInputStream();
+                        Bitmap bitmap = BitmapFactory.decodeStream(is);
+
+                        //利用消息的方式把数据传送给handler
+                        Message msg = handler.obtainMessage();
+                        msg.obj = bitmap;
+                        handler.sendMessage(msg);
+                    }
+                } catch (Exception e) {
+                    Log.e("error===",""+e.toString());
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private Handler handler=new Handler(){
+        public void handleMessage(Message message) {
+            //Bitmap bitmap = (Bitmap) message.obj;
+            Bitmap bm=(Bitmap)message.obj;
+            zhaoPianIV.setImageBitmap(bm);
+        }
+    };
 
     private void initColumnsId(JSONArray columnsJA) throws JSONException {
         columnsIdJO=new JSONObject();
