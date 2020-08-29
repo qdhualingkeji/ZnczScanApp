@@ -29,8 +29,8 @@ import butterknife.BindView;
 
 public class PaiDuiChaXunActivity extends BaseActivity {
 
-    private String zyddCode,cyclCode;
-    private JSONObject columnsIdJO,criteriasIdJO,zyddGroupsIdJO,cyclFieldsIdJO,ziDuanNameJO;
+    private String wdddCode,cyclCode;
+    private JSONObject dqphColumnsIdJO,dqphCriteriasIdJO,wdddCriteriasIdJO,wdddGroupsIdJO,cyclFieldsIdJO,ziDuanNameJO;
     @BindView(R.id.pdh_tv)
     TextView pdhTV;
     @BindView(R.id.prsj_tv)
@@ -83,9 +83,10 @@ public class PaiDuiChaXunActivity extends BaseActivity {
         ziDuanNameJO.put("皮重字段","皮重");
         ziDuanNameJO.put("车辆类型字段","车辆类型");
         ziDuanNameJO.put("照片字段","照片");
+        ziDuanNameJO.put("执行状态字段","执行状态");
     }
 
-    private void initLtmplAttr(){
+    private void initDQPHLtmplAttr(){
         RequestParams params = AsynClient.getRequestParams();
         AsynClient.get(MyHttpConfing.dqphEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
@@ -108,9 +109,9 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
                     JSONArray columnsJA = ltmplJO.getJSONArray("columns");
 
-                    initCriteriasId(criteriasJA);
-                    initColumnsId(columnsJA);
-                    initQueryKey();
+                    initDQPHCriteriasId(criteriasJA);
+                    initDQPHColumnsId(columnsJA);
+                    initDQPHQueryKey();
                 } catch (JSONException e) {
                     Log.e("error===",e.getMessage());
                     e.printStackTrace();
@@ -119,27 +120,9 @@ public class PaiDuiChaXunActivity extends BaseActivity {
         });
     }
 
-    private void initCriteriasId(JSONArray criteriasJA) throws JSONException {
-        criteriasIdJO=new JSONObject();
-        for(int i=0;i<criteriasJA.length();i++){
-            JSONObject criteriaJO = (JSONObject)criteriasJA.get(i);
-            String title = criteriaJO.getString("title");
-            String id = criteriaJO.getString("id");
-            //Log.e("title1===",title);
-            //Log.e("id1===",id);
-            criteriasIdJO.put(title,id);
-        }
-    }
-
-    @Override
-    protected void getDataFormWeb() {
-        initLtmplAttr();
-        initZYDDQueryKey();
-    }
-
-    private void initZYDDQueryKey(){
+    private void initWDDDLtmplAttr(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.zyddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.wdddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -147,16 +130,80 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
-                Log.e("zyddELTFail======",""+rawJsonData+","+errorResponse);
+                Log.e("initWDDDLFail======",""+rawJsonData+","+errorResponse);
             }
 
             @Override
             public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
-                Log.e("zyddELTSuccess======",""+rawJsonResponse);
+                Log.e("initWDDDLSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo=new JSONObject(rawJsonResponse);
+                    JSONObject ltmplJO = jo.getJSONObject("ltmpl");
+                    JSONArray criteriasJA = ltmplJO.getJSONArray("criterias");
+
+                    JSONArray columnsJA = ltmplJO.getJSONArray("columns");
+
+                    initWDDDCriteriasId(criteriasJA);
+                    initWDDDQueryKey();
+                } catch (JSONException e) {
+                    Log.e("error===",e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initDQPHCriteriasId(JSONArray criteriasJA) throws JSONException {
+        dqphCriteriasIdJO=new JSONObject();
+        for(int i=0;i<criteriasJA.length();i++){
+            JSONObject criteriaJO = (JSONObject)criteriasJA.get(i);
+            String title = criteriaJO.getString("title");
+            String id = criteriaJO.getString("id");
+            Log.e("title1===",title);
+            Log.e("id1===",id);
+            dqphCriteriasIdJO.put(title,id);
+        }
+    }
+
+    private void initWDDDCriteriasId(JSONArray criteriasJA) throws JSONException {
+        wdddCriteriasIdJO=new JSONObject();
+        for(int i=0;i<criteriasJA.length();i++){
+            JSONObject criteriaJO = (JSONObject)criteriasJA.get(i);
+            String title = criteriaJO.getString("title");
+            String id = criteriaJO.getString("id");
+            Log.e("title2===",title);
+            Log.e("id2===",id);
+            wdddCriteriasIdJO.put(title,id);
+        }
+    }
+
+    @Override
+    protected void getDataFormWeb() {
+        initDQPHLtmplAttr();
+        initWDDDLtmplAttr();
+    }
+
+    private void initWDDDQueryKey() throws JSONException {
+        RequestParams params = AsynClient.getRequestParams();
+        String paramsStr="?criteria_"+wdddCriteriasIdJO.getString(ziDuanNameJO.getString("执行状态字段"))+"=待确认,排队中,待化验,待一检上磅,一检下磅,待入库,入库完成,待二检上磅,待离厂,一检称重中,二检称重中,编辑中,运输中";
+        AsynClient.get(MyHttpConfing.wdddEntityListTmpl+paramsStr, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("wdddELTFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("wdddELTSuccess======",""+rawJsonResponse);
                 try {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     String queryKey = jo.getString("queryKey");
-                    initZYDDCode(queryKey);
+                    initWDDDCode(queryKey);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -164,7 +211,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
         });
     }
 
-    private void initZYDDCode(String queryKey){
+    private void initWDDDCode(String queryKey){
         RequestParams params = AsynClient.getRequestParams();
         params.put("pageNo","1");
         AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
@@ -175,19 +222,19 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
-                Log.e("zYDDCodeFail======",""+rawJsonData+","+errorResponse);
+                Log.e("wDDDCodeFail======",""+rawJsonData+","+errorResponse);
             }
 
             @Override
             public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
-                Log.e("zYDDCodeSuccess======",""+rawJsonResponse);
+                Log.e("wDDDCodeSuccess======",""+rawJsonResponse);
                 try {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     JSONArray entitiesJA = jo.getJSONArray("entities");
                     JSONObject entitieJO = entitiesJA.getJSONObject(0);
-                    zyddCode = entitieJO.getString("code");
-                    Log.e("zyddCode===",""+zyddCode);
-                    initZYDDGroupsFieldId();
+                    wdddCode = entitieJO.getString("code");
+                    Log.e("wdddCode===",""+wdddCode);
+                    initWDDDGroupsId();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -195,9 +242,9 @@ public class PaiDuiChaXunActivity extends BaseActivity {
         });
     }
 
-    private void initZYDDGroupsFieldId() {
+    private void initWDDDGroupsId() {
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.zyddDtmplNormal, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.wdddDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -205,12 +252,12 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
-                Log.e("zyddFail======", "" + rawJsonData + "," + errorResponse);
+                Log.e("wdddFail======", "" + rawJsonData + "," + errorResponse);
             }
 
             @Override
             public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
-                Log.e("zyddSuccess======", "" + rawJsonResponse);
+                Log.e("wdddSuccess======", "" + rawJsonResponse);
 
                 try {
                     JSONObject jo = new JSONObject(rawJsonResponse);
@@ -221,15 +268,15 @@ public class PaiDuiChaXunActivity extends BaseActivity {
                     JSONObject dtmplJO = new JSONObject(dtmpl);
                     JSONArray groupsJA=new JSONArray(dtmplJO.getString("groups"));
 
-                    zyddGroupsIdJO=new JSONObject();
+                    wdddGroupsIdJO=new JSONObject();
                     for (int i=0;i<groupsJA.length();i++) {
                         JSONObject groupJO = groupsJA.getJSONObject(i);
                         String title = groupJO.getString("title");
                         String id = groupJO.getString("id");
                         Log.e("title===",""+title+",id==="+id);
-                        zyddGroupsIdJO.put(title,id);
+                        wdddGroupsIdJO.put(title,id);
                     }
-                    Log.e("zyddGroupsIdJO===",zyddGroupsIdJO.toString());
+                    Log.e("wdddGroupsIdJO===",wdddGroupsIdJO.toString());
                     initCYCLCode();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -240,7 +287,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
     private void initCYCLCode(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.getZYDDDetail+zyddCode, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getWDDDDetail+wdddCode, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -248,17 +295,17 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
-                Log.e("zyddDetailFail======",""+rawJsonData+","+errorResponse);
+                Log.e("wdddDetailFail======",""+rawJsonData+","+errorResponse);
             }
 
             @Override
             public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
-                Log.e("zyddDetailSuccess======",""+rawJsonResponse);
+                Log.e("wdddDetailSuccess======",""+rawJsonResponse);
                 try {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     JSONObject entityJO = jo.getJSONObject("entity");
                     JSONObject arrayMapJO = entityJO.getJSONObject("arrayMap");
-                    JSONArray cyclJA = arrayMapJO.getJSONArray(zyddGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段")));
+                    JSONArray cyclJA = arrayMapJO.getJSONArray(wdddGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段")));
                     JSONObject cyclJO = cyclJA.getJSONObject(0);
                     cyclCode = cyclJO.getString("code");
                     Log.e("cyclCode===",""+cyclCode);
@@ -273,8 +320,8 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
     private void initCYCLFieldsIdJO() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
-        String groupId=zyddGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段"));
-        AsynClient.get(MyHttpConfing.zyddDtmplRabc+groupId, this, params, new GsonHttpResponseHandler() {
+        String groupId=wdddGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段"));
+        AsynClient.get(MyHttpConfing.wdddDtmplRabc+groupId, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -282,12 +329,12 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
-                Log.e("zyddRabcFail======", "" + rawJsonData + "," + errorResponse);
+                Log.e("wdddRabcFail======", "" + rawJsonData + "," + errorResponse);
             }
 
             @Override
             public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
-                Log.e("zyddRabcSuccess======", "" + rawJsonResponse);
+                Log.e("wdddRabcSuccess======", "" + rawJsonResponse);
 
                 try {
                     JSONObject jo = new JSONObject(rawJsonResponse);
@@ -319,10 +366,10 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
     private void getCheLiangDetail() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
-        String groupId=zyddGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段"));
+        String groupId=wdddGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段"));
         Log.e("cyclCode===",""+cyclCode);
         params.put("fieldGroupId",groupId);
-        AsynClient.get(MyHttpConfing.getZYDDDetail+cyclCode, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getWDDDDetail+cyclCode, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -400,20 +447,20 @@ public class PaiDuiChaXunActivity extends BaseActivity {
         }
     };
 
-    private void initColumnsId(JSONArray columnsJA) throws JSONException {
-        columnsIdJO=new JSONObject();
+    private void initDQPHColumnsId(JSONArray columnsJA) throws JSONException {
+        dqphColumnsIdJO=new JSONObject();
         for (int i=0;i<columnsJA.length();i++){
             JSONObject columnJO = (JSONObject)columnsJA.get(i);
             String title = columnJO.getString("title");
             String id = columnJO.getString("id");
             //Log.e("title===",""+title+",id==="+id);
-            columnsIdJO.put(title,id);
+            dqphColumnsIdJO.put(title,id);
         }
-        //Log.e("columnsIdJO===",columnsIdJO.toString());
+        //Log.e("dqphColIdJO===",dqphColumnsIdJO.toString());
 
     }
 
-    private void initQueryKey() throws JSONException {
+    private void initDQPHQueryKey() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
         AsynClient.get(MyHttpConfing.dqphEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
@@ -464,8 +511,8 @@ public class PaiDuiChaXunActivity extends BaseActivity {
                     JSONArray entitiesJA = new JSONArray(entities);
                     JSONObject entityJO = (JSONObject)entitiesJA.get(0);
                     JSONObject cellMapJO = entityJO.getJSONObject("cellMap");
-                    String pdh = cellMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("排队号字段")));
-                    String prsj = cellMapJO.getString(columnsIdJO.getString(ziDuanNameJO.getString("排入时间字段")));
+                    String pdh = cellMapJO.getString(dqphColumnsIdJO.getString(ziDuanNameJO.getString("排队号字段")));
+                    String prsj = cellMapJO.getString(dqphColumnsIdJO.getString(ziDuanNameJO.getString("排入时间字段")));
                     pdhTV.setText(pdh);
                     prsjTV.setText(prsj);
                 } catch (JSONException e) {
