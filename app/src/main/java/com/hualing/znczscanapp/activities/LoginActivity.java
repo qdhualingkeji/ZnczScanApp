@@ -131,6 +131,7 @@ public class LoginActivity extends BaseActivity {
                         String token=jo.getString("token");
                         Log.e("changqu===",""+MyHttpConfing.getBaseUrl());
                         SharedPreferenceUtil.rememberUser(token,username,password);
+                        GlobalData.changqu=changqu;
                         GlobalData.userName=username;
                         getMenuBlocks();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

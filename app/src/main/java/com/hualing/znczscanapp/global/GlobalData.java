@@ -47,7 +47,7 @@ public class GlobalData {
     public static String packageName;
     public static int verCode;
     public static String verName;
-    public static String appId;
+    public static String changqu;
     public static String appName;
 
     //启动页的图片id

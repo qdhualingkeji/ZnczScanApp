@@ -35,6 +35,8 @@ import butterknife.OnClick;
 public class MainActivity extends BaseActivity {
 
     private JSONObject ziDuanNameJO;
+    @BindView(R.id.changqu_tv)
+    TextView changquTV;
     @BindView(R.id.userName_tv)
     TextView userNameTV;
     @BindView(R.id.zhiJian_cv)
@@ -94,6 +96,7 @@ public class MainActivity extends BaseActivity {
             mDrawerToggle.syncState();
             mDrawerLayout.addDrawerListener(mDrawerToggle);
 
+            changquTV.setText(GlobalData.changqu);
             userNameTV.setText(GlobalData.userName);
         } catch (JSONException e) {
             e.printStackTrace();

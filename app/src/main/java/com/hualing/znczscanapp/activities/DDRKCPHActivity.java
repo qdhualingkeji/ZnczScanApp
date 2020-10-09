@@ -90,7 +90,7 @@ public class DDRKCPHActivity extends BaseActivity {
 
     private void initDDRKCriteriaId(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.ddrkEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.ddrkEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -139,7 +139,7 @@ public class DDRKCPHActivity extends BaseActivity {
         String cph=cphET.getText().toString();
         params.put("criteria_"+ddrkCriteriasIdJO.getString(ziDuanNameJO.getString("执行状态字段")),"运输中");
         params.put("criteria_"+ddrkCriteriasIdJO.getString(ziDuanNameJO.getString("车牌号字段")),cph);
-        AsynClient.get(MyHttpConfing.ddrkEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.ddrkEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -168,7 +168,7 @@ public class DDRKCPHActivity extends BaseActivity {
     private void initDDRKCode(String queryKey) {
         RequestParams params = AsynClient.getRequestParams();
         params.put("pageNo", "1");
-        AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey", queryKey), this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getEntityListData.replaceAll("queryKey", queryKey), this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -204,7 +204,7 @@ public class DDRKCPHActivity extends BaseActivity {
 
     private void initGroupsFieldsId(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.ddrkDtmplNormal, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.ddrkDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -278,7 +278,7 @@ public class DDRKCPHActivity extends BaseActivity {
 
     private void getOrderDetail(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.getRKOrderDetail+ddrkCode, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getRKOrderDetail+ddrkCode, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -350,7 +350,7 @@ public class DDRKCPHActivity extends BaseActivity {
     private void initAdapterDataArr(final String fieldId, final SimpleAdapter adapter){
         RequestParams params = AsynClient.getRequestParams();
         params.put("fieldIds",fieldId);
-        AsynClient.get(MyHttpConfing.initFieldOptions, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.initFieldOptions, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -562,7 +562,7 @@ public class DDRKCPHActivity extends BaseActivity {
         params.put("系统用户80.$$flag$$", "true");
         params.put("系统用户74.$$flag$$", "true");
         */
-        AsynClient.post(MyHttpConfing.saveOrderRK, this, params, new GsonHttpResponseHandler() {
+        AsynClient.post(MyHttpConfing.getBaseUrl()+MyHttpConfing.saveOrderRK, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;

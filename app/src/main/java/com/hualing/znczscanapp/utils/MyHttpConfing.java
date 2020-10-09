@@ -23,7 +23,7 @@ public class MyHttpConfing {
     //public static final String baseUrl = "http://112.6.41.8:90/hydrocarbon/";
 
     public static String getBaseUrl(){
-        Log.e("ip===",""+SharedPreferenceUtil.getChangquIp());
+        //Log.e("ip===",""+SharedPreferenceUtil.getChangquIp());
         return "http://"+ SharedPreferenceUtil.getChangquIp()+"/hydrocarbon/";
     }
 
@@ -32,7 +32,7 @@ public class MyHttpConfing {
     public static final String login = "api2/auth/token";
     public static final String getMenuBlocks = "api2/meta/menu/get_blocks";
     public static final String zjddDtmplNormal= "api2/meta/tmpl/"+zjddMenuId+"/dtmpl/normal/";
-    public static final String ddrkDtmplNormal= getBaseUrl() + "api2/meta/tmpl/"+ddrkMenuId+"/dtmpl/normal/";
+    public static final String ddrkDtmplNormal= "api2/meta/tmpl/"+ddrkMenuId+"/dtmpl/normal/";
     public static final String zjbgDtmplNormal= "api2/meta/tmpl/"+zjbgMenuId+"/dtmpl/normal/";
     public static final String dqphDtmplNormal=getBaseUrl() + "api2/meta/tmpl/"+dqphMenuId+"/dtmpl/normal/";
     public static final String wdddDtmplNormal="api2/meta/tmpl/"+wdddMenuId+"/dtmpl/normal/";
@@ -42,15 +42,15 @@ public class MyHttpConfing {
     public static final String zjbgEntityListTmpl="api2/entity/"+zjbgMenuId+"/list/tmpl";
     public static final String wdddEntityListTmpl="api2/entity/"+wdddMenuId+"/list/tmpl";
     public static final String zjddEntityListTmpl="api2/entity/"+zjddMenuId+"/list/tmpl";
-    public static final String ddrkEntityListTmpl=getBaseUrl()+"api2/entity/"+ddrkMenuId+"/list/tmpl";
+    public static final String ddrkEntityListTmpl="api2/entity/"+ddrkMenuId+"/list/tmpl";
     /* 获得订单详情数据 */
     public static final String getZJOrderDetail = "api2/entity/"+zjddMenuId+"/detail/";
-    public static final String getRKOrderDetail = getBaseUrl() + "api2/entity/"+ddrkMenuId+"/detail/";
+    public static final String getRKOrderDetail = "api2/entity/"+ddrkMenuId+"/detail/";
     public static final String getDQPHDetail = getBaseUrl() + "api2/entity/"+dqphMenuId+"/detail/";
     public static final String getWDDDDetail = "api2/entity/"+wdddMenuId+"/detail/";
     public static final String getEntityListData="api2/entity/list/queryKey/data";
     public static final String saveZhiJianBaoGao = "api2/entity/"+zjbgMenuId+"/detail/normal";
-    public static final String saveOrderRK = getBaseUrl() + "api2/entity/"+ddrkMenuId+"/detail/normal";
+    public static final String saveOrderRK = "api2/entity/"+ddrkMenuId+"/detail/normal";
     public static final String initFieldOptions = "api2/meta/dict/field_options";
 
     /* 用户注册 */
