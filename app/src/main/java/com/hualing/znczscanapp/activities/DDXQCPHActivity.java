@@ -77,7 +77,7 @@ public class DDXQCPHActivity extends BaseActivity {
 
     private void initZJBGCriteriaId(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.zjbgEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.zjbgEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -126,7 +126,7 @@ public class DDXQCPHActivity extends BaseActivity {
         String cph=cphET.getText().toString();
         //params.put("criteria_"+zjbgCriteriasIdJO.getString(ziDuanNameJO.getString("执行状态字段")),"运输中");
         params.put("criteria_"+zjbgCriteriasIdJO.getString(ziDuanNameJO.getString("车牌号字段")),cph);
-        AsynClient.get(MyHttpConfing.zjbgEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.zjbgEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -158,7 +158,7 @@ public class DDXQCPHActivity extends BaseActivity {
         //params.put("criteria_"+zjbgCriteriasIdJO.getString(ziDuanNameJO.getString("执行状态字段")),"运输中");
         params.put("criteria_"+zjbgCriteriasIdJO.getString(ziDuanNameJO.getString("车牌号字段")),cph);
         params.put("pageNo","1");
-        AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -192,7 +192,7 @@ public class DDXQCPHActivity extends BaseActivity {
 
     private void initZJDDCriteriaId(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.zjddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.zjddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -230,7 +230,7 @@ public class DDXQCPHActivity extends BaseActivity {
         String cph=cphET.getText().toString();
         params.put("criteria_"+zjddCriteriasIdJO.getString(ziDuanNameJO.getString("车牌号字段")),cph);
         //params.put("criteria_"+zjddCriteriasIdJO.getString(ziDuanNameJO.getString("订单状态字段")),"运输中");
-        AsynClient.get(MyHttpConfing.zjddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.zjddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -259,7 +259,7 @@ public class DDXQCPHActivity extends BaseActivity {
     private void initZJDDCode(String queryKey){
         RequestParams params = AsynClient.getRequestParams();
         params.put("pageNo","1");
-        AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -292,7 +292,7 @@ public class DDXQCPHActivity extends BaseActivity {
 
     private void initZJDDGroupsFieldsId(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.zjddDtmplNormal, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.zjddDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -356,7 +356,7 @@ public class DDXQCPHActivity extends BaseActivity {
 
     private void getOrderDetail(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.getZJOrderDetail+zjddCode, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getZJOrderDetail+zjddCode, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -422,7 +422,7 @@ public class DDXQCPHActivity extends BaseActivity {
 
     private void initZJBGGroupsFieldId(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.zjbgDtmplNormal, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.zjbgDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -492,7 +492,7 @@ public class DDXQCPHActivity extends BaseActivity {
     private void initAdapterDataArr(final String fieldId, final SimpleAdapter adapter){
         RequestParams params = AsynClient.getRequestParams();
         params.put("fieldIds",fieldId);
-        AsynClient.get(MyHttpConfing.initFieldOptions, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.initFieldOptions, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -644,7 +644,7 @@ public class DDXQCPHActivity extends BaseActivity {
         //data["%fuseMode%"]=false;
         //data["货运订单48.$$flag$$"]=true;
 
-        AsynClient.post(MyHttpConfing.saveZhiJianBaoGao, this, params, new GsonHttpResponseHandler() {
+        AsynClient.post(MyHttpConfing.getBaseUrl()+MyHttpConfing.saveZhiJianBaoGao, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;

@@ -89,7 +89,7 @@ public class ShowQrcodeActivity extends BaseActivity {
 
     private void initWDDDLtmplAttr() {
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.wdddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.wdddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -135,7 +135,7 @@ public class ShowQrcodeActivity extends BaseActivity {
     private void initWDDDQueryKey() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
         String paramsStr="?criteria_"+wdddCriteriasIdJO.getString(ziDuanNameJO.getString("执行状态字段"))+"=待确认,排队中,待化验,待一检上磅,一检下磅,待入库,入库完成,待二检上磅,待离厂,一检称重中,二检称重中,编辑中,运输中";
-        AsynClient.get(MyHttpConfing.wdddEntityListTmpl+paramsStr, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.wdddEntityListTmpl+paramsStr, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -164,7 +164,7 @@ public class ShowQrcodeActivity extends BaseActivity {
     private void initWDDDCode(String queryKey){
         RequestParams params = AsynClient.getRequestParams();
         params.put("pageNo","1");
-        AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -196,7 +196,7 @@ public class ShowQrcodeActivity extends BaseActivity {
 
     private void initWDDDGroupsId(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.wdddDtmplNormal, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.wdddDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -261,7 +261,7 @@ public class ShowQrcodeActivity extends BaseActivity {
     private void getWDDDJBXX() {
         RequestParams params = AsynClient.getRequestParams();
         Log.e("wdddCode===",""+wdddCode);
-        AsynClient.get(MyHttpConfing.getWDDDDetail+wdddCode, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getWDDDDetail+wdddCode, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -285,7 +285,7 @@ public class ShowQrcodeActivity extends BaseActivity {
                     String bjsj = fieldMapJO.getString(wdddJbxxFieldIdJO.getString(ziDuanNameJO.getString("编辑时间字段")));
                     String sjzl = fieldMapJO.getString(wdddJbxxFieldIdJO.getString(ziDuanNameJO.getString("实际重量字段")));
                     String zlceb = fieldMapJO.getString(wdddJbxxFieldIdJO.getString(ziDuanNameJO.getString("重量差额比字段")));
-                    String qrcodeUrl = toURLString(MyHttpConfing.baseUrl+fieldMapJO.getString(wdddJbxxFieldIdJO.getString(ziDuanNameJO.getString("二维码字段"))));
+                    String qrcodeUrl = toURLString(MyHttpConfing.getBaseUrl()+fieldMapJO.getString(wdddJbxxFieldIdJO.getString(ziDuanNameJO.getString("二维码字段"))));
 
                     Log.e("订单号===",""+ddh);
                     Log.e("预装卸重量===",""+yzxzl);

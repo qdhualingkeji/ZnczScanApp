@@ -52,10 +52,11 @@ public class LaunchActivity extends BaseActivity {
 
     private void toLogin(){
         RequestParams params = AsynClient.getRequestParams();
+        final String changquIp = SharedPreferenceUtil.getChangquIp();
         final String username = SharedPreferenceUtil.getUser()[1];
         final String password = SharedPreferenceUtil.getUser()[2];
         String paramsStr="?username="+username+"&password="+password;
-        AsynClient.post(MyHttpConfing.login+paramsStr, this, params, new GsonHttpResponseHandler() {
+        AsynClient.post(MyHttpConfing.getBaseUrl()+MyHttpConfing.login+paramsStr, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -75,6 +76,7 @@ public class LaunchActivity extends BaseActivity {
                     String status=jo.getString("status");
                     if("suc".equals(status)){
                         String token=jo.getString("token");
+                        SharedPreferenceUtil.rememberChangquIp(changquIp);
                         SharedPreferenceUtil.rememberUser(token,username,password);
                         GlobalData.userName=username;
                         getMenuBlocks();

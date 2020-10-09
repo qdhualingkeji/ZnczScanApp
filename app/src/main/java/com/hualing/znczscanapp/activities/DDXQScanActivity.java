@@ -77,7 +77,7 @@ public class DDXQScanActivity extends BaseActivity {
 
     private void initCriteriaId(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.zjbgEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.zjbgEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -127,7 +127,7 @@ public class DDXQScanActivity extends BaseActivity {
         //Log.e("criteriaId===",criteriasIdJO.getString(ziDuanNameJO.getString("订单号字段")));
         //params.put("criteria_105935359844361","DD109221984123887616");
         params.put("criteria_"+criteriasIdJO.getString(ziDuanNameJO.getString("订单号字段")),orderNum);
-        AsynClient.get(MyHttpConfing.zjbgEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.zjbgEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -156,7 +156,7 @@ public class DDXQScanActivity extends BaseActivity {
     private void initZJBGId(String queryKey){
         RequestParams params = AsynClient.getRequestParams();
         params.put("pageNo","1");
-        AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -188,7 +188,7 @@ public class DDXQScanActivity extends BaseActivity {
 
     private void initZJDDGroupsFieldsId(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.zjddDtmplNormal, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.zjddDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -253,7 +253,7 @@ public class DDXQScanActivity extends BaseActivity {
 
     private void initZJBGGroupsFieldsId(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.zjbgDtmplNormal, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.zjbgDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -323,7 +323,7 @@ public class DDXQScanActivity extends BaseActivity {
     private void initAdapterDataArr(final String fieldId, final SimpleAdapter adapter){
         RequestParams params = AsynClient.getRequestParams();
         params.put("fieldIds",fieldId);
-        AsynClient.get(MyHttpConfing.initFieldOptions, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.initFieldOptions, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -359,7 +359,7 @@ public class DDXQScanActivity extends BaseActivity {
 
     private void getOrderDetail(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.getZJOrderDetail+orderCode, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getZJOrderDetail+orderCode, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -493,7 +493,7 @@ public class DDXQScanActivity extends BaseActivity {
         //data["货运订单48[1].重量差额比"]=1;
         //data["%fuseMode%"]=false;
         //data["货运订单48.$$flag$$"]=true;
-        AsynClient.post(MyHttpConfing.saveZhiJianBaoGao, this, params, new GsonHttpResponseHandler() {
+        AsynClient.post(MyHttpConfing.getBaseUrl()+MyHttpConfing.saveZhiJianBaoGao, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;

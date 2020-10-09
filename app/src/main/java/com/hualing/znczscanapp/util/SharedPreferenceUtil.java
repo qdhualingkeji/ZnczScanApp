@@ -28,6 +28,13 @@ public class SharedPreferenceUtil {
         editor.commit();
     }
 
+    public static void rememberChangquIp(String changquIp){
+        SharedPreferences preferences = TheApplication.getSharedPreferences() ;
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("changquIp",changquIp);
+        editor.commit();
+    }
+
     /**
      * 记住用户名、密码
      * @param tokenName
@@ -44,12 +51,19 @@ public class SharedPreferenceUtil {
 
     public static boolean ifHasLocalUser(){
         SharedPreferences preferences = TheApplication.getSharedPreferences() ;
-        if (TextUtils.isEmpty(preferences.getString("tokenName",null))
+        if (TextUtils.isEmpty(preferences.getString("changquIp",null))
+                ||TextUtils.isEmpty(preferences.getString("tokenName",null))
                 ||TextUtils.isEmpty(preferences.getString("username",null))
                 ||TextUtils.isEmpty(preferences.getString("password",null))) {
             return false;
         }
         return true;
+    }
+
+    public static String getChangquIp(){
+        SharedPreferences preferences = TheApplication.getSharedPreferences() ;
+        String changquIp = preferences.getString("changquIp",null);
+        return changquIp;
     }
 
     /**
@@ -71,6 +85,8 @@ public class SharedPreferenceUtil {
     public static void logout(){
         SharedPreferences preferences = TheApplication.getSharedPreferences() ;
         SharedPreferences.Editor editor = preferences.edit();
+        Log.e("logout===","logout");
+        editor.putString("changquIp","");
         editor.putString("tokenName","");
         editor.putString("username","");
         editor.putString("password","");

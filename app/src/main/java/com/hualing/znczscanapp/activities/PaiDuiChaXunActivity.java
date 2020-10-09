@@ -88,7 +88,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
     private void initDQPHLtmplAttr(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.dqphEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.dqphEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -122,7 +122,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
     private void initWDDDLtmplAttr(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.wdddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.wdddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -186,7 +186,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     private void initWDDDQueryKey() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
         String paramsStr="?criteria_"+wdddCriteriasIdJO.getString(ziDuanNameJO.getString("执行状态字段"))+"=待确认,排队中,待化验,待一检上磅,一检下磅,待入库,入库完成,待二检上磅,待离厂,一检称重中,二检称重中,编辑中,运输中";
-        AsynClient.get(MyHttpConfing.wdddEntityListTmpl+paramsStr, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.wdddEntityListTmpl+paramsStr, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -214,7 +214,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     private void initWDDDCode(String queryKey){
         RequestParams params = AsynClient.getRequestParams();
         params.put("pageNo","1");
-        AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -244,7 +244,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
     private void initWDDDGroupsId() {
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.wdddDtmplNormal, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.wdddDtmplNormal, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -287,7 +287,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
     private void initCYCLCode(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.getWDDDDetail+wdddCode, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getWDDDDetail+wdddCode, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -321,7 +321,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     private void initCYCLFieldsIdJO() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
         String groupId=wdddGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段"));
-        AsynClient.get(MyHttpConfing.wdddDtmplRabc+groupId, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.wdddDtmplRabc+groupId, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -369,7 +369,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
         String groupId=wdddGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段"));
         Log.e("cyclCode===",""+cyclCode);
         params.put("fieldGroupId",groupId);
-        AsynClient.get(MyHttpConfing.getWDDDDetail+cyclCode, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getWDDDDetail+cyclCode, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -391,7 +391,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
                     String czxx = fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("车主信息字段")));
                     String piZhong = fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("皮重字段")));
                     String cllx = fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("车辆类型字段")));
-                    String zhaoPian = MyHttpConfing.baseUrl+fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("照片字段")));
+                    String zhaoPian = MyHttpConfing.getBaseUrl()+fieldMapJO.getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("照片字段")));
                     Log.e("车牌号===",""+cph);
                     Log.e("车主信息===",""+czxx);
                     Log.e("皮重===",""+piZhong);
@@ -462,7 +462,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
     private void initDQPHQueryKey() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.dqphEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.dqphEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -491,7 +491,7 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     private void initListData(String queryKey) {
         RequestParams params = AsynClient.getRequestParams();
         params.put("pageNo","1");
-        AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
