@@ -8,14 +8,14 @@ public class MyHttpConfing {
 
     public static final String tag = "TAG-->";
 
-    public static final String zjddMenuId="106298257317913";
-    public static final String zjbgMenuId="104985599549464";
+    public static final String zjddMenuId="113345755488276";
+    public static final String zjbgMenuId="113345755488274";
     public static final String ddrkMenuId="104990439776282";
     //public static final String pdcxMenuId="104809539444749";
     public static final String dqphMenuId="104977020100626";
     public static final String wdddMenuId="104981851938837";//我的订单菜单id
-    //public static final String baseUrl = "http://121.196.184.205:96/hydrocarbon/";
-    public static final String baseUrl = "http://112.6.41.8:90/hydrocarbon/";
+    public static final String baseUrl = "http://121.196.184.205:96/hydrocarbon/";
+    //public static final String baseUrl = "http://112.6.41.8:90/hydrocarbon/";
 
     /* 用户登录 */
     public static final String login = baseUrl + "api2/auth/token";

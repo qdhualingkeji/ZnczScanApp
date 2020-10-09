@@ -124,7 +124,7 @@ public class DDXQCPHActivity extends BaseActivity {
     private void initZJBGQueryKey() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
         String cph=cphET.getText().toString();
-        params.put("criteria_"+zjbgCriteriasIdJO.getString(ziDuanNameJO.getString("执行状态字段")),"运输中");
+        //params.put("criteria_"+zjbgCriteriasIdJO.getString(ziDuanNameJO.getString("执行状态字段")),"运输中");
         params.put("criteria_"+zjbgCriteriasIdJO.getString(ziDuanNameJO.getString("车牌号字段")),cph);
         AsynClient.get(MyHttpConfing.zjbgEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
@@ -152,8 +152,11 @@ public class DDXQCPHActivity extends BaseActivity {
         });
     }
 
-    private void initZJBGCode(String queryKey){
+    private void initZJBGCode(String queryKey) throws JSONException{
         RequestParams params = AsynClient.getRequestParams();
+        String cph=cphET.getText().toString();
+        //params.put("criteria_"+zjbgCriteriasIdJO.getString(ziDuanNameJO.getString("执行状态字段")),"运输中");
+        params.put("criteria_"+zjbgCriteriasIdJO.getString(ziDuanNameJO.getString("车牌号字段")),cph);
         params.put("pageNo","1");
         AsynClient.get(MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
             @Override
@@ -226,7 +229,7 @@ public class DDXQCPHActivity extends BaseActivity {
         RequestParams params = AsynClient.getRequestParams();
         String cph=cphET.getText().toString();
         params.put("criteria_"+zjddCriteriasIdJO.getString(ziDuanNameJO.getString("车牌号字段")),cph);
-        params.put("criteria_"+zjddCriteriasIdJO.getString(ziDuanNameJO.getString("订单状态字段")),"运输中");
+        //params.put("criteria_"+zjddCriteriasIdJO.getString(ziDuanNameJO.getString("订单状态字段")),"运输中");
         AsynClient.get(MyHttpConfing.zjddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
@@ -640,6 +643,7 @@ public class DDXQCPHActivity extends BaseActivity {
         //data["货运订单48[1].重量差额比"]=1;
         //data["%fuseMode%"]=false;
         //data["货运订单48.$$flag$$"]=true;
+
         AsynClient.post(MyHttpConfing.saveZhiJianBaoGao, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
