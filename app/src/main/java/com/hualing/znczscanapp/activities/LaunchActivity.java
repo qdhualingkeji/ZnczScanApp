@@ -78,6 +78,7 @@ public class LaunchActivity extends BaseActivity {
                         String token=jo.getString("token");
                         SharedPreferenceUtil.rememberChangquIp(changquIp);
                         SharedPreferenceUtil.rememberUser(token,username,password);
+                        GlobalData.changqu=changquIp;
                         GlobalData.userName=username;
                         getMenuBlocks();
                         Intent intent = new Intent(LaunchActivity.this, MainActivity.class);
@@ -97,7 +98,7 @@ public class LaunchActivity extends BaseActivity {
     private void getMenuBlocks(){
         RequestParams params = AsynClient.getRequestParams();
 
-        AsynClient.post(MyHttpConfing.getMenuBlocks, this, params, new GsonHttpResponseHandler() {
+        AsynClient.post(MyHttpConfing.getBaseUrl()+MyHttpConfing.getMenuBlocks, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;

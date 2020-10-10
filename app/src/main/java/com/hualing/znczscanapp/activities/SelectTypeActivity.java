@@ -6,11 +6,17 @@ import android.view.View;
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.global.GlobalData;
 import com.hualing.znczscanapp.model.FunctionType;
+import com.hualing.znczscanapp.util.AllActivitiesHolder;
 import com.hualing.znczscanapp.util.IntentUtil;
+import com.hualing.znczscanapp.widget.TitleBar;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 
 public class SelectTypeActivity extends BaseActivity {
+
+    @BindView(R.id.title)
+    TitleBar mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +25,17 @@ public class SelectTypeActivity extends BaseActivity {
 
     @Override
     protected void initLogic() {
+        mTitle.setEvents(new TitleBar.AddClickEvents() {
+            @Override
+            public void clickLeftButton() {
+                AllActivitiesHolder.removeAct(SelectTypeActivity.this);
+            }
 
+            @Override
+            public void clickRightButton() {
+
+            }
+        });
     }
 
     @Override

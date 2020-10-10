@@ -18,6 +18,7 @@ import com.hualing.znczscanapp.global.GlobalData;
 import com.hualing.znczscanapp.global.TheApplication;
 import com.hualing.znczscanapp.model.FunctionType;
 import com.hualing.znczscanapp.util.AllActivitiesHolder;
+import com.hualing.znczscanapp.util.DoubleClickExitUtil;
 import com.hualing.znczscanapp.util.IntentUtil;
 import com.hualing.znczscanapp.util.SharedPreferenceUtil;
 import com.hualing.znczscanapp.utils.AsynClient;
@@ -196,6 +197,11 @@ public class MainActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        DoubleClickExitUtil.tryExit();
     }
 
     private void loginout(){
