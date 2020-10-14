@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.hualing.znczscanapp.activities.BaseActivity;
 
+//https://blog.csdn.net/atgcu26/article/details/68593868?from=singlemessage
 public class ScreenUtil {
 
+    public static final int MAX_SCREEN_BRIGHTNESS=255;
     /**
      * 设置当前屏幕亮度的模式
      * SCREEN_BRIGHTNESS_MODE_AUTOMATIC=1 为自动调节屏幕亮度
@@ -36,6 +38,18 @@ public class ScreenUtil {
     }
 
     /**
+     * 设置当前屏幕亮度值  0--255
+     */
+    public static void setScreenBrightness(BaseActivity context,int paramInt){
+        try{
+            android.provider.Settings.System.putInt(context.getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS, paramInt);
+        }
+        catch (Exception localException){
+            localException.printStackTrace();
+        }
+    }
+
+    /**
      * 获得当前屏幕亮度值  0--255
      */
     public static int getScreenBrightness(BaseActivity context){
@@ -48,18 +62,6 @@ public class ScreenUtil {
 
         }
         return screenBrightness;
-    }
-
-    /**
-     * 设置当前屏幕亮度值  0--255
-     */
-    public static void setScreenBrightness(BaseActivity context,int paramInt){
-        try{
-            android.provider.Settings.System.putInt(context.getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS, paramInt);
-        }
-        catch (Exception localException){
-            localException.printStackTrace();
-        }
     }
 
     /**

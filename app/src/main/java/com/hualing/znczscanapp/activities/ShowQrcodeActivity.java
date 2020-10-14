@@ -104,7 +104,7 @@ public class ShowQrcodeActivity extends BaseActivity {
     @Override
     protected void getDataFormWeb() {
         currentScreenBrightness= ScreenUtil.getScreenBrightness(ShowQrcodeActivity.this);//获得屏幕当前亮度
-        ScreenUtil.setScreenBrightness(ShowQrcodeActivity.this,255);//设置屏幕最大亮度
+        ScreenUtil.setScreenBrightness(ShowQrcodeActivity.this,ScreenUtil.MAX_SCREEN_BRIGHTNESS);//设置屏幕最大亮度
 
         initWDDDLtmplAttr();
     }
