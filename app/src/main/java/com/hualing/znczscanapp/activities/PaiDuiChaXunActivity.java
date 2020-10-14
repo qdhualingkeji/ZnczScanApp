@@ -12,9 +12,11 @@ import android.widget.TextView;
 
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.global.TheApplication;
+import com.hualing.znczscanapp.util.AllActivitiesHolder;
 import com.hualing.znczscanapp.utils.AsynClient;
 import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
+import com.hualing.znczscanapp.widget.TitleBar;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
@@ -31,6 +33,8 @@ public class PaiDuiChaXunActivity extends BaseActivity {
 
     private String wdddCode,cyclCode;
     private JSONObject dqphColumnsIdJO,dqphCriteriasIdJO,wdddCriteriasIdJO,wdddGroupsIdJO,cyclFieldsIdJO,ziDuanNameJO;
+    @BindView(R.id.title)
+    TitleBar mTitle;
     @BindView(R.id.pdh_tv)
     TextView pdhTV;
     @BindView(R.id.prsj_tv)
@@ -54,6 +58,18 @@ public class PaiDuiChaXunActivity extends BaseActivity {
     @Override
     protected void initLogic() {
         try {
+            mTitle.setEvents(new TitleBar.AddClickEvents() {
+                @Override
+                public void clickLeftButton() {
+                    AllActivitiesHolder.removeAct(PaiDuiChaXunActivity.this);
+                }
+
+                @Override
+                public void clickRightButton() {
+
+                }
+            });
+
             initZiDuanNameJO();
             int width = (int)(TheApplication.getScreenWidth()/1.3);
             int height=width;

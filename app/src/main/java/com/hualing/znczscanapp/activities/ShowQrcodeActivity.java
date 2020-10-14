@@ -12,9 +12,12 @@ import android.widget.TextView;
 
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.global.TheApplication;
+import com.hualing.znczscanapp.util.AllActivitiesHolder;
+import com.hualing.znczscanapp.util.ScreenUtil;
 import com.hualing.znczscanapp.utils.AsynClient;
 import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
+import com.hualing.znczscanapp.widget.TitleBar;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
@@ -32,6 +35,9 @@ public class ShowQrcodeActivity extends BaseActivity {
 
     private String wdddCode;
     private JSONObject wdddJbxxFieldIdJO,wdddCriteriasIdJO,ziDuanNameJO;
+    private int currentScreenBrightness;
+    @BindView(R.id.title)
+    TitleBar mTitle;
     @BindView(R.id.qrcode_iv)
     ImageView qrcodeIV;
     @BindView(R.id.ddh_tv)
@@ -55,6 +61,19 @@ public class ShowQrcodeActivity extends BaseActivity {
     @Override
     protected void initLogic() {
         try {
+            mTitle.setEvents(new TitleBar.AddClickEvents() {
+                @Override
+                public void clickLeftButton() {
+                    AllActivitiesHolder.removeAct(ShowQrcodeActivity.this);
+                    ScreenUtil.setScreenBrightness(ShowQrcodeActivity.this, currentScreenBrightness);
+                }
+
+                @Override
+                public void clickRightButton() {
+
+                }
+            });
+
             initZiDuanNameJO();
             int width = (int)(TheApplication.getScreenWidth()/1.3);
             int height=width;
@@ -84,6 +103,9 @@ public class ShowQrcodeActivity extends BaseActivity {
 
     @Override
     protected void getDataFormWeb() {
+        currentScreenBrightness= ScreenUtil.getScreenBrightness(ShowQrcodeActivity.this);//获得屏幕当前亮度
+        ScreenUtil.setScreenBrightness(ShowQrcodeActivity.this,255);//设置屏幕最大亮度
+
         initWDDDLtmplAttr();
     }
 
@@ -373,5 +395,11 @@ public class ShowQrcodeActivity extends BaseActivity {
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_show_qrcode;
+    }
+
+    @Override
+    public void onBackPressed() {
+        AllActivitiesHolder.removeAct(ShowQrcodeActivity.this);
+        ScreenUtil.setScreenBrightness(ShowQrcodeActivity.this, currentScreenBrightness);
     }
 }

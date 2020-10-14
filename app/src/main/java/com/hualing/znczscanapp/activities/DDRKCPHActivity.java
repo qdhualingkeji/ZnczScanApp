@@ -22,6 +22,7 @@ import com.hualing.znczscanapp.util.AllActivitiesHolder;
 import com.hualing.znczscanapp.utils.AsynClient;
 import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
+import com.hualing.znczscanapp.widget.TitleBar;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
@@ -40,6 +41,8 @@ public class DDRKCPHActivity extends BaseActivity {
     private JSONObject groupsIdJO,groupsFieldsJO,groupsFieldsFieldIdJO,groupsFieldsNameJO,ddrkColumnsIdJO,ddrkCriteriasIdJO,ziDuanNameJO;
     private SimpleAdapter lxlxAdapter,zxztAdapter,rkztAdapter;
     private String lxlx,zxzt,rkzt;
+    @BindView(R.id.title)
+    TitleBar mTitle;
     @BindView(R.id.cph_et)
     EditText cphET;
     @BindView(R.id.ddh_tv)
@@ -73,6 +76,18 @@ public class DDRKCPHActivity extends BaseActivity {
     @Override
     protected void initLogic() {
         try {
+            mTitle.setEvents(new TitleBar.AddClickEvents() {
+                @Override
+                public void clickLeftButton() {
+                    AllActivitiesHolder.removeAct(DDRKCPHActivity.this);
+                }
+
+                @Override
+                public void clickRightButton() {
+
+                }
+            });
+
             initZiDuanNameJO();
             initLLLXSpinner();
             initZXZTSpinner();

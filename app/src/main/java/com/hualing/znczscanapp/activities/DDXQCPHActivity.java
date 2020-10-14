@@ -18,6 +18,7 @@ import com.hualing.znczscanapp.util.AllActivitiesHolder;
 import com.hualing.znczscanapp.utils.AsynClient;
 import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
+import com.hualing.znczscanapp.widget.TitleBar;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
@@ -36,6 +37,8 @@ public class DDXQCPHActivity extends BaseActivity {
     private JSONObject zjddGroupsFieldsJO,zjjeColumnsIdJO,zjbgGroupsIdJO,zjddGroupsIdJO,zjbgGroupsFieldFieldIdJO,zjbgGroupsFieldNameJO,zjbgCriteriasIdJO,zjddCriteriasIdJO,ziDuanNameJO;
     private SimpleAdapter jieLunAdapter;
     private String jielun;
+    @BindView(R.id.title)
+    TitleBar mTitle;
     @BindView(R.id.cph_et)
     EditText cphET;
     @BindView(R.id.ddh_tv)
@@ -61,6 +64,18 @@ public class DDXQCPHActivity extends BaseActivity {
     @Override
     protected void initLogic() {
         try {
+            mTitle.setEvents(new TitleBar.AddClickEvents() {
+                @Override
+                public void clickLeftButton() {
+                    AllActivitiesHolder.removeAct(DDXQCPHActivity.this);
+                }
+
+                @Override
+                public void clickRightButton() {
+
+                }
+            });
+
             initZiDuanNameJO();
             initJieLunSpinner();
         } catch (JSONException e) {

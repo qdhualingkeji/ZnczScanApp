@@ -7,6 +7,19 @@
     android:orientation="vertical"
     tools:context=".activities.ShowQrcodeActivity">
 
+    <com.hualing.znczscanapp.widget.TitleBar
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/titleBar_Height"
+        app:background_color="@color/colorPrimary"
+        app:leftButton_size="20dp"
+        app:left_img="@drawable/last"
+        app:rightButton_size="20dp"
+        app:text_content="出示二维码"
+        app:title_textColor="@color/titleBar_textColor"
+        app:title_textSize="@dimen/titleBar_textSize">
+    </com.hualing.znczscanapp.widget.TitleBar>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
