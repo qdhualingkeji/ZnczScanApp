@@ -34,6 +34,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 这个类是根据车牌号查询订单，入库操作时用的。因后台逻辑简化了，这个类暂时用不到
+ */
 public class DDRKCPHOldActivity extends BaseActivity {
 
     private String ddrkCode;
