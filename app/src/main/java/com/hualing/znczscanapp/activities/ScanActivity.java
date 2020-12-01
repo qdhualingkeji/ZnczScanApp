@@ -282,7 +282,7 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
                         AllActivitiesHolder.removeAct(ScanActivity.this);
                     }
                     else{
-                        doAction(MyHttpConfing.zjtgAction,orderCode);
+                        doAction(MyHttpConfing.doAction.replaceAll("menuId",MyHttpConfing.bqglWgjcYbwjMenuId).replaceAll("actionId",MyHttpConfing.zjtgActionId),orderCode);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -361,7 +361,7 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
                     String status=jo.getString("status");
                     if("suc".equals(status)){
                         Intent intent = null;
-                        if(MyHttpConfing.zjtgAction.equals(actionUrl)) {
+                        if(actionUrl.contains(MyHttpConfing.zjtgActionId)) {
                             MyToast("质检完毕");
                             intent = new Intent(ScanActivity.this, MainActivity.class);
                         }

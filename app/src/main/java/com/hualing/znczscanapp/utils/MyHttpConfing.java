@@ -60,6 +60,7 @@ public class MyHttpConfing {
 
     public static final String zjtgAction="api2/entity/"+bqglWgjcYbwjMenuId+"/action/"+zjtgActionId;
     public static final String ywczxAction="api2/entity/"+bqglWgjcEbwjMenuId+"/action/"+ywczxActionId;
+    public static final String doAction="api2/entity/menuId/action/actionId";
     public static final String getEntityListTmpl="api2/entity/menuId/list/tmpl";
     public static final String getEntityListData="api2/entity/list/queryKey/data";
 
