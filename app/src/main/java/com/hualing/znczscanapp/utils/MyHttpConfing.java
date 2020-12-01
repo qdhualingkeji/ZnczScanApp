@@ -19,8 +19,10 @@ public class MyHttpConfing {
     //public static final String pdcxMenuId="104809539444749";
     public static final String dqphMenuId="104977020100626";
     public static final String wdddMenuId="104981851938837";//我的订单菜单id
-    public static final String zjtgMenuId="121024849682450";//质检通过菜单id
-    public static final String ywczxMenuId="128740148158480";//已完成装卸菜单id
+
+    public static final String bqglWgjcYbwjMenuId="121024849682450";//一磅外检菜单id
+    public static final String bqglWgjcEbwjMenuId="128740148158480";//二磅外检菜单id
+
     public static final String zjtgActionId="121012354850818";//质检通过actionId
     public static final String ywczxActionId="121027374653442";//已完成装卸actionId
     //public static final String baseUrl = "http://121.196.184.205:96/hydrocarbon/";
@@ -52,12 +54,14 @@ public class MyHttpConfing {
     public static final String getRKOrderDetail = "api2/entity/"+ddrkMenuId+"/detail/";
     public static final String getDQPHDetail = getBaseUrl() + "api2/entity/"+dqphMenuId+"/detail/";
     public static final String getWDDDDetail = "api2/entity/"+wdddMenuId+"/detail/";
-    public static final String getEntityListData="api2/entity/list/queryKey/data";
     public static final String saveZhiJianBaoGao = "api2/entity/"+zjbgMenuId+"/detail/normal";
     public static final String saveOrderRK = "api2/entity/"+ddrkMenuId+"/detail/normal";
     public static final String initFieldOptions = "api2/meta/dict/field_options";
-    public static final String zjtgAction="api2/entity/"+zjtgMenuId+"/action/"+zjtgActionId;
-    public static final String ywczxAction="api2/entity/"+ywczxMenuId+"/action/"+ywczxActionId;
+
+    public static final String zjtgAction="api2/entity/"+bqglWgjcYbwjMenuId+"/action/"+zjtgActionId;
+    public static final String ywczxAction="api2/entity/"+bqglWgjcEbwjMenuId+"/action/"+ywczxActionId;
+    public static final String getEntityListTmpl="api2/entity/menuId/list/tmpl";
+    public static final String getEntityListData="api2/entity/list/queryKey/data";
 
     /* 用户注册 */
     public static final String registered = getBaseUrl() + "register";

@@ -21,6 +21,7 @@ import com.hualing.znczscanapp.utils.MyHttpConfing;
 import com.hualing.znczscanapp.widget.TitleBar;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,6 +34,7 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
 public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
 
+    private JSONObject ziDuanNameJO,ybwjCriteriasIdJO;
     @BindView(R.id.title)
     TitleBar mTitle;
     @BindView(R.id.zxingview)
@@ -67,6 +69,19 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
         }
 
         mZxingview.setDelegate(this);
+
+        try {
+            initZiDuanNameJO();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    /*
+     *设置字段键名称
+     */
+    private void initZiDuanNameJO() throws JSONException {
+        ziDuanNameJO=new JSONObject();
+        ziDuanNameJO.put("订单号字段","订单号");
     }
 
     @Override
@@ -168,7 +183,112 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
 
     @Override
     protected void getDataFormWeb() {
+        initYbwjCriteriaId();
+    }
 
+    private void initYbwjCriteriaId(){
+        RequestParams params = AsynClient.getRequestParams();
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getEntityListTmpl.replaceAll("menuId",MyHttpConfing.bqglWgjcYbwjMenuId), this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("criteriaIdFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("criteriaIdSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    JSONObject ltmplJO = jo.getJSONObject("ltmpl");
+                    JSONArray criteriasJA = ltmplJO.getJSONArray("criterias");
+                    ybwjCriteriasIdJO=new JSONObject();
+                    for(int i=0;i<criteriasJA.length();i++){
+                        JSONObject criteriaJO = criteriasJA.getJSONObject(i);
+                        String title = criteriaJO.getString("title");
+                        String id = criteriaJO.getString("id");
+                        ybwjCriteriasIdJO.put(title,id);
+                    }
+                    Log.e("ybwjCritIdJO===",""+ybwjCriteriasIdJO.toString());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void initYbwjQueryKey(String orderNum, final String orderCode) throws JSONException {
+        RequestParams params = AsynClient.getRequestParams();
+        //Log.e("criteriaId===",criteriasIdJO.getString(ziDuanNameJO.getString("订单号字段")));
+        //params.put("criteria_105935359844361","DD109221984123887616");
+        params.put("criteria_"+ybwjCriteriasIdJO.getString(ziDuanNameJO.getString("订单号字段")),orderNum);
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getEntityListTmpl.replaceAll("menuId",MyHttpConfing.bqglWgjcYbwjMenuId), this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("queryKeyFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("queryKeySuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String queryKey = jo.getString("queryKey");
+                    Log.e("queryKey======",""+queryKey);
+
+                    checkYbwjOrderExist(queryKey,orderCode);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void checkYbwjOrderExist(String queryKey, final String orderCode){
+        RequestParams params = AsynClient.getRequestParams();
+        params.put("pageNo","1");
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getEntityListData.replaceAll("queryKey",queryKey), this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("Fail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("Success======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    JSONArray entitiesJA = jo.getJSONArray("entities");
+                    if(entitiesJA.length()==0){
+                        MyToast("没有找到匹配订单");
+                        Intent intent = new Intent(ScanActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        AllActivitiesHolder.removeAct(ScanActivity.this);
+                    }
+                    else{
+                        doAction(MyHttpConfing.zjtgAction,orderCode);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
@@ -184,7 +304,7 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
     @Override
     public void onScanQRCodeSuccess(String result) {
         try {
-            Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, result, Toast.LENGTH_LONG).show();
             Intent intent = null;
             //JSONObject jo = new JSONObject("{'订单编码':'108473798673440770','订单号':'999999','司机身份证':'12345678'}");
             JSONObject jo = new JSONObject(result);
@@ -195,7 +315,7 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
                     intent.putExtra("orderCode",jo.getString("订单编码"));//订单化验那边既要查询订单详情，也要根据订单号查询质检报告id，因此两个参数都要传过去
                     intent.putExtra("orderNum",jo.getString("订单号"));
                     */
-                    doAction(MyHttpConfing.zjtgAction,jo.getString("订单编码"));
+                    initYbwjQueryKey(jo.getString("订单号"),jo.getString("订单编码"));
                     break;
                 case FunctionType.KU_GUAN:
                     /*
@@ -220,7 +340,6 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
     }
 
     private void doAction(final String actionUrl, String codes){
-        //MyHttpConfing.saveZhiJianBaoGao
         RequestParams params = AsynClient.getRequestParams();
         params.put("codes",codes);
         AsynClient.post(MyHttpConfing.getBaseUrl()+actionUrl, this, params, new GsonHttpResponseHandler() {
