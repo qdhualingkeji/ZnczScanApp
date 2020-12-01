@@ -8,13 +8,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.global.GlobalData;
 import com.hualing.znczscanapp.model.FunctionType;
 import com.hualing.znczscanapp.util.AllActivitiesHolder;
+import com.hualing.znczscanapp.utils.AsynClient;
+import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
+import com.hualing.znczscanapp.utils.MyHttpConfing;
 import com.hualing.znczscanapp.widget.TitleBar;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -185,13 +190,19 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
             JSONObject jo = new JSONObject(result);
             switch (GlobalData.currentFunctionType){
                 case FunctionType.ZHI_JIAN_YUAN:
+                    /*
                     intent = new Intent(ScanActivity.this, DDXQScanActivity.class);
                     intent.putExtra("orderCode",jo.getString("订单编码"));//订单化验那边既要查询订单详情，也要根据订单号查询质检报告id，因此两个参数都要传过去
                     intent.putExtra("orderNum",jo.getString("订单号"));
+                    */
+                    doAction(MyHttpConfing.zjtgAction,jo.getString("订单编码"));
                     break;
                 case FunctionType.KU_GUAN:
+                    /*
                     intent = new Intent(ScanActivity.this, DDRKScanActivity.class);
                     intent.putExtra("orderCode",jo.getString("订单编码"));
+                    */
+                    doAction(MyHttpConfing.ywczxAction,jo.getString("订单编码"));
                     break;
                     /*
                 case FunctionType.PAI_DUI_CHA_XUN:
@@ -206,6 +217,51 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+    }
+
+    private void doAction(final String actionUrl, String codes){
+        //MyHttpConfing.saveZhiJianBaoGao
+        RequestParams params = AsynClient.getRequestParams();
+        params.put("codes",codes);
+        AsynClient.post(MyHttpConfing.getBaseUrl()+actionUrl, this, params, new GsonHttpResponseHandler() {
+            @Override
+            protected Object parseResponse(String rawJsonData) throws Throwable {
+                return null;
+            }
+
+            @Override
+            public void onFailure(int statusCode, String rawJsonData, Object errorResponse) {
+                Log.e("actionFail======",""+rawJsonData+","+errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, String rawJsonResponse, Object response) {
+                Log.e("actionSuccess======",""+rawJsonResponse);
+                try {
+                    JSONObject jo = new JSONObject(rawJsonResponse);
+                    String status=jo.getString("status");
+                    if("suc".equals(status)){
+                        Intent intent = null;
+                        if(MyHttpConfing.zjtgAction.equals(actionUrl)) {
+                            MyToast("质检完毕");
+                            intent = new Intent(ScanActivity.this, MainActivity.class);
+                        }
+                        else{
+                            MyToast("入库完毕");
+                            intent = new Intent(ScanActivity.this, MainActivity.class);
+                        }
+                        startActivity(intent);
+                        AllActivitiesHolder.removeAct(ScanActivity.this);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void MyToast(String s) {
+        Toast.makeText(ScanActivity.this, s, Toast.LENGTH_SHORT).show();
     }
 
     @Override

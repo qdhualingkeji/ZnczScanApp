@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity {
 
     private void initZiDuanNameJO() throws JSONException {
         ziDuanNameJO=new JSONObject();
-        ziDuanNameJO.put("质检入库字段","质检入库");
+        ziDuanNameJO.put("磅前管理字段","磅前管理");
         ziDuanNameJO.put("我是司机字段","我是司机");
     }
 
@@ -136,7 +136,7 @@ public class MainActivity extends BaseActivity {
         try {
             switch (v.getId()){
                 case R.id.zhiJian_cv:
-                    if(GlobalData.checkQXGroup.contains(ziDuanNameJO.getString("质检入库字段"))) {
+                    if(GlobalData.checkQXGroup.contains(ziDuanNameJO.getString("磅前管理字段"))) {
                         GlobalData.currentFunctionType = FunctionType.ZHI_JIAN_YUAN;
                         //IntentUtil.openActivity(this, ScanActivity.class);
                         IntentUtil.openActivity(this, SelectTypeActivity.class);
@@ -146,7 +146,7 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case R.id.ruKu_cv:
-                    if(GlobalData.checkQXGroup.contains(ziDuanNameJO.getString("质检入库字段"))) {
+                    if(GlobalData.checkQXGroup.contains(ziDuanNameJO.getString("磅前管理字段"))) {
                         GlobalData.currentFunctionType = FunctionType.KU_GUAN;
                         //IntentUtil.openActivity(this, ScanActivity.class);
                         IntentUtil.openActivity(this, SelectTypeActivity.class);

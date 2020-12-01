@@ -28,7 +28,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-//这个类是扫码后查询订单详情，用来化验订单是否合格的
+/*
+*这个类是扫码后查询订单详情，用来化验订单是否合格的
+* 现在系统改进优化了，可以一键质检通过，这个类暂时不用了
+*/
 public class DDXQScanActivity extends BaseActivity {
 
     private String zjbgCode,orderCode,orderNum;

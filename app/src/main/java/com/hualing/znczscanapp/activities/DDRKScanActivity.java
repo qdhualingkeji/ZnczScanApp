@@ -33,6 +33,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/*
+* 这个类是起初入库时使用的，现在可以一键入库了，这个类暂时不需要了
+* */
 public class DDRKScanActivity extends BaseActivity {
 
     private String orderCode;
