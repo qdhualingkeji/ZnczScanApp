@@ -60,13 +60,13 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".activities.DDXQScanActivity" />
-        <activity android:name=".activities.DDRKScanActivity" />
+        <activity android:name=".activities.DDXQScanOldActivity" />
+        <activity android:name=".activities.DDRKScanOldActivity" />
         <activity android:name=".activities.PaiDuiChaXunActivity" />
         <activity android:name=".activities.ShowQrcodeActivity" />
         <activity android:name=".activities.SelectTypeActivity" />
-        <activity android:name=".activities.DDXQCPHActivity" />
-        <activity android:name=".activities.DDRKCPHActivity" />
+        <activity android:name=".activities.DDXQCPHOldActivity" />
+        <activity android:name=".activities.DDRKCPHOldActivity" />
         <activity android:name=".activities.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

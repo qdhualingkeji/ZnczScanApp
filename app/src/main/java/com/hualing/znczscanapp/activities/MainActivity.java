@@ -184,7 +184,7 @@ public class MainActivity extends BaseActivity {
                     intent.putExtra("orderCode","108473798673440770");
                     break;
                 case R.id.kgScanBut:
-                    intent = new Intent(MainActivity.this, DDRKScanActivity.class);
+                    intent = new Intent(MainActivity.this, DDRKScanOldActivity.class);
                     intent.putExtra("orderCode","108473798673440770");
                     break;
                 case R.id.pdcxBut:

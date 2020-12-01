@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.DDXQCPHActivity">
+    tools:context=".activities.DDXQCPHOldActivity">
 
     <com.hualing.znczscanapp.widget.TitleBar
         android:id="@+id/title"

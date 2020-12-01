@@ -103,6 +103,8 @@ public class ShowQrcodeActivity extends BaseActivity {
 
     @Override
     protected void getDataFormWeb() {
+        initQrcode("http://www.qrcodesy.com:8080/GoodsPublic/upload/jfdhjp/20200425173001.jpg");
+
         currentScreenBrightness= ScreenUtil.getScreenBrightness(ShowQrcodeActivity.this);//获得屏幕当前亮度
         ScreenUtil.setScreenBrightness(ShowQrcodeActivity.this,ScreenUtil.MAX_SCREEN_BRIGHTNESS);//设置屏幕最大亮度
 
@@ -111,7 +113,7 @@ public class ShowQrcodeActivity extends BaseActivity {
 
     private void initWDDDLtmplAttr() {
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.wdddEntityListTmpl, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getEntityListTmpl.replaceAll("menuId",MyHttpConfing.wdddMenuId), this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -157,7 +159,7 @@ public class ShowQrcodeActivity extends BaseActivity {
     private void initWDDDQueryKey() throws JSONException {
         RequestParams params = AsynClient.getRequestParams();
         String paramsStr="?criteria_"+wdddCriteriasIdJO.getString(ziDuanNameJO.getString("执行状态字段"))+"=待确认,排队中,待化验,待一检上磅,一检下磅,待入库,入库完成,待二检上磅,待离厂,一检称重中,二检称重中,编辑中,运输中";
-        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.wdddEntityListTmpl+paramsStr, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getEntityListTmpl.replaceAll("menuId",MyHttpConfing.wdddMenuId)+paramsStr, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -218,7 +220,7 @@ public class ShowQrcodeActivity extends BaseActivity {
 
     private void initWDDDGroupsId(){
         RequestParams params = AsynClient.getRequestParams();
-        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.wdddDtmplNormal, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.doDtmplNormal.replaceAll("menuId",MyHttpConfing.wdddMenuId), this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;
@@ -283,7 +285,7 @@ public class ShowQrcodeActivity extends BaseActivity {
     private void getWDDDJBXX() {
         RequestParams params = AsynClient.getRequestParams();
         Log.e("wdddCode===",""+wdddCode);
-        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getWDDDDetail+wdddCode, this, params, new GsonHttpResponseHandler() {
+        AsynClient.get(MyHttpConfing.getBaseUrl()+MyHttpConfing.getEntityDetail.replaceAll("menuId",MyHttpConfing.wdddMenuId)+wdddCode, this, params, new GsonHttpResponseHandler() {
             @Override
             protected Object parseResponse(String rawJsonData) throws Throwable {
                 return null;

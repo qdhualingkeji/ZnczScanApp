@@ -62,10 +62,10 @@ public class SelectTypeActivity extends BaseActivity {
             case R.id.cphcxBut:
                 switch (GlobalData.currentFunctionType){
                     case FunctionType.ZHI_JIAN_YUAN:
-                        IntentUtil.openActivity(this, DDXQCPHActivity.class);
+                        IntentUtil.openActivity(this, DDXQCPHOldActivity.class);
                         break;
                     case FunctionType.KU_GUAN:
-                        IntentUtil.openActivity(this, DDRKCPHActivity.class);
+                        IntentUtil.openActivity(this, DDRKCPHOldActivity.class);
                         break;
                 }
                 break;
