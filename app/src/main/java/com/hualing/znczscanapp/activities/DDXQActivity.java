@@ -16,7 +16,7 @@ import org.json.JSONObject;
 public class DDXQActivity extends BaseActivity {
 
     private String orderCode="132735811812368398";
-    private JSONObject zhcxGroupsIdJO,jbxxFieldsIdJO,yssFieldsIdJO,wlxxFieldsIdJO,ziDuanNameJO;
+    private JSONObject zhcxGroupsIdJO,jbxxFieldsIdJO,yssFieldsIdJO,wlxxFieldsIdJO,fhdwFieldsIdJO,shdwFieldsIdJO,cyclFieldsIdJO,cysjFieldsIdJO,jybgFieldsIdJO,xdzxtzhFieldsIdJO,cysjxtzhFieldsIdJO,phxxFieldsIdJO,pzgbxxFieldsIdJO,mzgbxxFieldsIdJO,ziDuanNameJO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,33 @@ public class DDXQActivity extends BaseActivity {
         ziDuanNameJO.put("运输商字段","运输商");
         ziDuanNameJO.put("名称字段","名称");
         ziDuanNameJO.put("物料信息字段","物料信息");
+        ziDuanNameJO.put("发货单位字段","发货单位");
+        ziDuanNameJO.put("单位名称字段","单位名称");
+        ziDuanNameJO.put("收货单位字段","收货单位");
+        ziDuanNameJO.put("承运车辆字段","承运车辆");
+        ziDuanNameJO.put("车牌号字段","车牌号");
+        ziDuanNameJO.put("承运司机字段","承运司机");
+        ziDuanNameJO.put("姓名字段","姓名");
+        ziDuanNameJO.put("手机号字段","手机号");
+        ziDuanNameJO.put("身份证字段","身份证");
+        ziDuanNameJO.put("检验报告字段","检验报告");
+        ziDuanNameJO.put("结论字段","结论");
+        ziDuanNameJO.put("下单者系统账户字段","下单者系统账户");
+        ziDuanNameJO.put("实名字段","实名");
+        ziDuanNameJO.put("承运司机系统账户字段","承运司机系统账户");
+        ziDuanNameJO.put("用户名字段","用户名");
+        ziDuanNameJO.put("简述字段","简述");
+        ziDuanNameJO.put("排号信息字段","排号信息");
+        ziDuanNameJO.put("排队号字段","排队号");
+        ziDuanNameJO.put("排入时间字段","排入时间");
+        ziDuanNameJO.put("开始叫号时间字段","开始叫号时间");
+        ziDuanNameJO.put("状态字段","状态");
+        ziDuanNameJO.put("皮重过磅信息字段","皮重过磅信息");
+        ziDuanNameJO.put("过磅车辆字段","过磅车辆");
+        ziDuanNameJO.put("过磅时间字段","过磅时间");
+        ziDuanNameJO.put("过磅重量字段","过磅重量");
+        ziDuanNameJO.put("过磅状态字段","过磅状态");
+        ziDuanNameJO.put("毛重过磅信息字段","毛重过磅信息");
     }
 
     @Override
@@ -109,12 +136,122 @@ public class DDXQActivity extends BaseActivity {
                                 wlxxFieldsIdJO.put( wlxxTitle, wlxxId);
                             }
                         }
+                        else if(ziDuanNameJO.getString("发货单位字段").equals(title)){
+                            fhdwFieldsIdJO=new JSONObject();
+                            JSONArray  fhdwFieldsJA=groupJO.getJSONArray("fields");
+                            for(int j=0;j< fhdwFieldsJA.length();j++){
+                                JSONObject  fhdwFieldsJO= fhdwFieldsJA.getJSONObject(j);
+                                String  fhdwTitle =  fhdwFieldsJO.getString("title");
+                                String  fhdwId =  fhdwFieldsJO.getString("id");
+                                fhdwFieldsIdJO.put( fhdwTitle, fhdwId);
+                            }
+                        }
+                        else if(ziDuanNameJO.getString("收货单位字段").equals(title)){
+                            shdwFieldsIdJO=new JSONObject();
+                            JSONArray  shdwFieldsJA=groupJO.getJSONArray("fields");
+                            for(int j=0;j< shdwFieldsJA.length();j++){
+                                JSONObject  shdwFieldsJO= shdwFieldsJA.getJSONObject(j);
+                                String  shdwTitle =  shdwFieldsJO.getString("title");
+                                String  shdwId =  shdwFieldsJO.getString("id");
+                                shdwFieldsIdJO.put( shdwTitle, shdwId);
+                            }
+                        }
+                        else if(ziDuanNameJO.getString("承运车辆字段").equals(title)){
+                            cyclFieldsIdJO=new JSONObject();
+                            JSONArray  cyclFieldsJA=groupJO.getJSONArray("fields");
+                            for(int j=0;j< cyclFieldsJA.length();j++){
+                                JSONObject  cyclFieldsJO= cyclFieldsJA.getJSONObject(j);
+                                String  cyclTitle =  cyclFieldsJO.getString("title");
+                                String  cyclId =  cyclFieldsJO.getString("id");
+                                cyclFieldsIdJO.put( cyclTitle, cyclId);
+                            }
+                        }
+                        else if(ziDuanNameJO.getString("承运司机字段").equals(title)){
+                            cysjFieldsIdJO=new JSONObject();
+                            JSONArray  cysjFieldsJA=groupJO.getJSONArray("fields");
+                            for(int j=0;j< cysjFieldsJA.length();j++){
+                                JSONObject  cysjFieldsJO= cysjFieldsJA.getJSONObject(j);
+                                String  cysjTitle =  cysjFieldsJO.getString("title");
+                                String  cysjId =  cysjFieldsJO.getString("id");
+                                cysjFieldsIdJO.put( cysjTitle, cysjId);
+                            }
+                        }
+                        else if(ziDuanNameJO.getString("检验报告字段").equals(title)){
+                            jybgFieldsIdJO=new JSONObject();
+                            JSONArray  jybgFieldsJA=groupJO.getJSONArray("fields");
+                            for(int j=0;j< jybgFieldsJA.length();j++){
+                                JSONObject  jybgFieldsJO= jybgFieldsJA.getJSONObject(j);
+                                String  jybgTitle =  jybgFieldsJO.getString("title");
+                                String  jybgId =  jybgFieldsJO.getString("id");
+                                jybgFieldsIdJO.put( jybgTitle, jybgId);
+                            }
+                        }
+                        else if(ziDuanNameJO.getString("下单者系统账户字段").equals(title)){
+                            xdzxtzhFieldsIdJO=new JSONObject();
+                            JSONArray  xdzxtzhFieldsJA=groupJO.getJSONArray("fields");
+                            for(int j=0;j< xdzxtzhFieldsJA.length();j++){
+                                JSONObject  xdzxtzhFieldsJO= xdzxtzhFieldsJA.getJSONObject(j);
+                                String  xdzxtzhTitle =  xdzxtzhFieldsJO.getString("title");
+                                String  xdzxtzhId =  xdzxtzhFieldsJO.getString("id");
+                                xdzxtzhFieldsIdJO.put( xdzxtzhTitle, xdzxtzhId);
+                            }
+                        }
+                        else if(ziDuanNameJO.getString("承运司机系统账户字段").equals(title)){
+                            cysjxtzhFieldsIdJO=new JSONObject();
+                            JSONArray  cysjxtzhFieldsJA=groupJO.getJSONArray("fields");
+                            for(int j=0;j< cysjxtzhFieldsJA.length();j++){
+                                JSONObject  cysjxtzhFieldsJO= cysjxtzhFieldsJA.getJSONObject(j);
+                                String  cysjxtzhTitle =  cysjxtzhFieldsJO.getString("title");
+                                String  cysjxtzhId =  cysjxtzhFieldsJO.getString("id");
+                                cysjxtzhFieldsIdJO.put( cysjxtzhTitle, cysjxtzhId);
+                            }
+                        }
+                        else if(ziDuanNameJO.getString("排号信息字段").equals(title)){
+                            phxxFieldsIdJO=new JSONObject();
+                            JSONArray  phxxFieldsJA=groupJO.getJSONArray("fields");
+                            for(int j=0;j< phxxFieldsJA.length();j++){
+                                JSONObject  phxxFieldsJO= phxxFieldsJA.getJSONObject(j);
+                                String  phxxTitle =  phxxFieldsJO.getString("title");
+                                String  phxxId =  phxxFieldsJO.getString("id");
+                                phxxFieldsIdJO.put( phxxTitle, phxxId);
+                            }
+                        }
+                        else if(ziDuanNameJO.getString("皮重过磅信息字段").equals(title)){
+                            pzgbxxFieldsIdJO=new JSONObject();
+                            JSONArray  pzgbxxFieldsJA=groupJO.getJSONArray("fields");
+                            for(int j=0;j< pzgbxxFieldsJA.length();j++){
+                                JSONObject  pzgbxxFieldsJO= pzgbxxFieldsJA.getJSONObject(j);
+                                String  pzgbxxTitle =  pzgbxxFieldsJO.getString("title");
+                                String  pzgbxxId =  pzgbxxFieldsJO.getString("id");
+                                pzgbxxFieldsIdJO.put( pzgbxxTitle, pzgbxxId);
+                            }
+                        }
+                        else if(ziDuanNameJO.getString("毛重过磅信息字段").equals(title)){
+                            mzgbxxFieldsIdJO=new JSONObject();
+                            JSONArray  mzgbxxFieldsJA=groupJO.getJSONArray("fields");
+                            for(int j=0;j< mzgbxxFieldsJA.length();j++){
+                                JSONObject  mzgbxxFieldsJO= mzgbxxFieldsJA.getJSONObject(j);
+                                String  mzgbxxTitle =  mzgbxxFieldsJO.getString("title");
+                                String  mzgbxxId =  mzgbxxFieldsJO.getString("id");
+                                mzgbxxFieldsIdJO.put( mzgbxxTitle, mzgbxxId);
+                            }
+                        }
                         zhcxGroupsIdJO.put(title,id);
                     }
                     Log.e("zhcxGroupsIdJO===",zhcxGroupsIdJO.toString());
                     Log.e("jbxxFieldsIdJO===",jbxxFieldsIdJO.toString());
                     Log.e("yssFieldsIdJO===",yssFieldsIdJO.toString());
                     Log.e("wlxxFieldsIdJO===",wlxxFieldsIdJO.toString());
+                    Log.e("fhdwFieldsIdJO===",fhdwFieldsIdJO.toString());
+                    Log.e("shdwFieldsIdJO===",shdwFieldsIdJO.toString());
+                    Log.e("cyclFieldsIdJO===",cyclFieldsIdJO.toString());
+                    Log.e("cysjFieldsIdJO===",cysjFieldsIdJO.toString());
+                    Log.e("jybgFieldsIdJO===",jybgFieldsIdJO.toString());
+                    Log.e("xdzxtzhFieldsIdJO===",xdzxtzhFieldsIdJO.toString());
+                    Log.e("cysjxtzhFieldsIdJO===",cysjxtzhFieldsIdJO.toString());
+                    Log.e("phxxFieldsIdJO===",phxxFieldsIdJO.toString());
+                    Log.e("pzgbxxFieldsIdJO===",pzgbxxFieldsIdJO.toString());
+                    Log.e("mzgbxxFieldsIdJO===",pzgbxxFieldsIdJO.toString());
 
                     initZHCXDetail();
                 } catch (JSONException e) {
@@ -144,7 +281,17 @@ public class DDXQActivity extends BaseActivity {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     JSONObject entityJO = jo.getJSONObject("entity");
                     JSONObject arrayMapJO = entityJO.getJSONObject("arrayMap");
-                    initYSSDetail(arrayMapJO);
+                    //initYSSDetail(arrayMapJO);
+                    //initWLXXDetail(arrayMapJO);
+                    //initSHDWDetail(arrayMapJO);
+                    //initCYCLDetail(arrayMapJO);
+                    //initCYSJDetail(arrayMapJO);
+                    //initJYBGDetail(arrayMapJO);
+                    //initXDZXTZHDetail(arrayMapJO);
+                    //initCYSJXTZHDetail(arrayMapJO);
+                    //initPHXXDetail(arrayMapJO);
+                    //initPZGBXXDetail(arrayMapJO);
+                    initMZGBXXDetail(arrayMapJO);
                 } catch (JSONException e) {
                     Log.e("error===",""+e.getMessage());
                     e.printStackTrace();
@@ -159,6 +306,123 @@ public class DDXQActivity extends BaseActivity {
         Log.e("yssJO===",""+yssJO.toString());
         String mc=yssJO.getJSONObject("fieldMap").getString(yssFieldsIdJO.getString(ziDuanNameJO.getString("名称字段")));
         Log.e("mc===",mc);
+    }
+
+    private void initWLXXDetail(JSONObject arrayMapJO) throws JSONException {
+        JSONArray wlxxJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("物料信息字段")));
+        JSONObject wlxxJO = wlxxJA.getJSONObject(0);
+        Log.e("wlxxJO===",""+wlxxJO.toString());
+        String mc=wlxxJO.getJSONObject("fieldMap").getString(wlxxFieldsIdJO.getString(ziDuanNameJO.getString("名称字段")));
+        Log.e("mc===",mc);
+    }
+
+    private void initFHDWDetail(JSONObject arrayMapJO) throws JSONException {
+        JSONArray fhdwJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("发货单位字段")));
+        JSONObject fhdwJO = fhdwJA.getJSONObject(0);
+        Log.e("fhdwJO===",""+fhdwJO.toString());
+        String dwmc=fhdwJO.getJSONObject("fieldMap").getString(fhdwFieldsIdJO.getString(ziDuanNameJO.getString("单位名称字段")));
+        Log.e("dwmc===",dwmc);
+    }
+
+    private void initSHDWDetail(JSONObject arrayMapJO) throws JSONException {
+        JSONArray shdwJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("收货单位字段")));
+        JSONObject shdwJO = shdwJA.getJSONObject(0);
+        Log.e("shdwJO===",""+shdwJO.toString());
+        String dwmc=shdwJO.getJSONObject("fieldMap").getString(shdwFieldsIdJO.getString(ziDuanNameJO.getString("单位名称字段")));
+        Log.e("dwmc===",dwmc);
+    }
+
+    private void initCYCLDetail(JSONObject arrayMapJO) throws JSONException {
+        JSONArray cyclJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段")));
+        JSONObject cyclJO = cyclJA.getJSONObject(0);
+        Log.e("cyclJO===",""+cyclJO.toString());
+        String cph=cyclJO.getJSONObject("fieldMap").getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("车牌号字段")));
+        Log.e("cph===",cph);
+    }
+
+    private void initCYSJDetail(JSONObject arrayMapJO) throws JSONException {
+        JSONArray cysjJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("承运司机字段")));
+        JSONObject cysjJO = cysjJA.getJSONObject(0);
+        Log.e("cysjJO===",""+cysjJO.toString());
+        String xm=cysjJO.getJSONObject("fieldMap").getString(cysjFieldsIdJO.getString(ziDuanNameJO.getString("姓名字段")));
+        String sjh=cysjJO.getJSONObject("fieldMap").getString(cysjFieldsIdJO.getString(ziDuanNameJO.getString("手机号字段")));
+        String sfzh=cysjJO.getJSONObject("fieldMap").getString(cysjFieldsIdJO.getString(ziDuanNameJO.getString("身份证字段")));
+        Log.e("xm===",xm);
+        Log.e("sjh===",sjh);
+        Log.e("sfzh===",sfzh);
+    }
+
+    private void initJYBGDetail(JSONObject arrayMapJO) throws JSONException {
+        JSONArray jybgJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("检验报告字段")));
+        JSONObject jybgJO = jybgJA.getJSONObject(0);
+        Log.e("jybgJO===",""+jybgJO.toString());
+        String jl=jybgJO.getJSONObject("fieldMap").getString(jybgFieldsIdJO.getString(ziDuanNameJO.getString("结论字段")));
+        Log.e("jl===",jl);
+    }
+
+    private void initXDZXTZHDetail(JSONObject arrayMapJO) throws JSONException {
+        JSONArray xdzxtzhJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("下单者系统账户字段")));
+        JSONObject xdzxtzhJO = xdzxtzhJA.getJSONObject(0);
+        Log.e("xdzxtzhJO===",""+xdzxtzhJO.toString());
+        String sm=xdzxtzhJO.getJSONObject("fieldMap").getString(xdzxtzhFieldsIdJO.getString(ziDuanNameJO.getString("实名字段")));
+        Log.e("sm===",sm);
+    }
+
+    private void initCYSJXTZHDetail(JSONObject arrayMapJO) throws JSONException {
+        JSONArray cysjxtzhJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("承运司机系统账户字段")));
+        JSONObject cysjxtzhJO = cysjxtzhJA.getJSONObject(0);
+        Log.e("cysjxtzhJO===",""+cysjxtzhJO.toString());
+        String sm=cysjxtzhJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("实名字段")));
+        String yhm=cysjxtzhJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("用户名字段")));
+        String js=cysjxtzhJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("简述字段")));
+        Log.e("sm===",sm);
+        Log.e("yhm===",yhm);
+        Log.e("js===",js);
+    }
+
+    private void initPHXXDetail(JSONObject arrayMapJO) throws JSONException {
+        JSONArray phxxJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("排号信息字段")));
+        Log.e("phxxJA===",""+phxxJA.toString());
+        JSONObject phxxJO = phxxJA.getJSONObject(0);
+        Log.e("phxxJO===",""+phxxJO.toString());
+        String bm=phxxJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("编码字段")));
+        String pdh=phxxJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("排队号字段")));
+        String prsj=phxxJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("排入时间字段")));
+        String ksjhsj=phxxJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("开始叫号时间字段")));
+        String zt=phxxJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("状态字段")));
+        Log.e("bm===",bm);
+        Log.e("pdh===",pdh);
+        Log.e("prsj===",prsj);
+        Log.e("ksjhsj===",ksjhsj);
+        Log.e("zt===",zt);
+    }
+
+    private void initPZGBXXDetail(JSONObject arrayMapJO) throws JSONException {
+        JSONArray pzgbxxJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("皮重过磅信息字段")));
+        JSONObject pzgbxxJO = pzgbxxJA.getJSONObject(0);
+        Log.e("pzgbxxJO===",""+pzgbxxJO.toString());
+        String gbcl=pzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅车辆字段")));
+        String gbsj=pzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅时间字段")));
+        String gbzl=pzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅重量字段")));
+        String gbzt=pzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅状态字段")));
+        Log.e("gbcl===",gbcl);
+        Log.e("gbsj===",gbsj);
+        Log.e("gbzl===",gbzl);
+        Log.e("gbzt===",gbzt);
+    }
+
+    private void initMZGBXXDetail(JSONObject arrayMapJO) throws JSONException {
+        JSONArray mzgbxxJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("毛重过磅信息字段")));
+        JSONObject mzgbxxJO = mzgbxxJA.getJSONObject(0);
+        Log.e("mzgbxxJO===",""+mzgbxxJO.toString());
+        String gbcl=mzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅车辆字段")));
+        String gbsj=mzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅时间字段")));
+        String gbzl=mzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅重量字段")));
+        String gbzt=mzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅状态字段")));
+        Log.e("gbcl===",gbcl);
+        Log.e("gbsj===",gbsj);
+        Log.e("gbzl===",gbzl);
+        Log.e("gbzt===",gbzt);
     }
 
     @Override
