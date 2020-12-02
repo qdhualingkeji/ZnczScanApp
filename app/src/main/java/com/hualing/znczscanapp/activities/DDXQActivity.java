@@ -2,6 +2,7 @@ package com.hualing.znczscanapp.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.hualing.znczscanapp.R;
 import com.hualing.znczscanapp.utils.AsynClient;
@@ -13,10 +14,74 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import butterknife.BindView;
+
 public class DDXQActivity extends BaseActivity {
 
     private String orderCode="132735811812368398";
     private JSONObject zhcxGroupsIdJO,jbxxFieldsIdJO,yssFieldsIdJO,wlxxFieldsIdJO,fhdwFieldsIdJO,shdwFieldsIdJO,cyclFieldsIdJO,cysjFieldsIdJO,jybgFieldsIdJO,xdzxtzhFieldsIdJO,cysjxtzhFieldsIdJO,phxxFieldsIdJO,pzgbxxFieldsIdJO,mzgbxxFieldsIdJO,ziDuanNameJO;
+    @BindView(R.id.jbxx_ddh_tv)
+    TextView jbxxDdhTV;
+    @BindView(R.id.jbxx_yzxzl_tv)
+    TextView jbxxYzxzlTV;
+    @BindView(R.id.jbxx_lxlx_tv)
+    TextView jbxxLxlxTV;
+    @BindView(R.id.jbxx_bjsj_tv)
+    TextView jbxxBjsjTV;
+    @BindView(R.id.jbxx_sjzl_tv)
+    TextView jbxxSjzlTV;
+    @BindView(R.id.jbxx_zlceb_tv)
+    TextView jbxxZlcebTV;
+    @BindView(R.id.jbxx_ddzt_tv)
+    TextView jbxxDdztTV;
+    @BindView(R.id.jbxx_jhysrq_tv)
+    TextView jbxxJhysrqTV;
+    @BindView(R.id.jbxx_bz_tv)
+    TextView jbxxBzTV;
+    @BindView(R.id.jbxx_jszl_tv)
+    TextView jbxxJszlTV;
+    @BindView(R.id.jbxx_bs_tv)
+    TextView jbxxBsTV;
+    @BindView(R.id.jbxx_ks_tv)
+    TextView jbxxKsTV;
+    @BindView(R.id.jbxx_dfgbjz_tv)
+    TextView jbxxDfgbjzTV;
+    @BindView(R.id.jbxx_dfgbpz_tv)
+    TextView jbxxDfgbpzTV;
+    @BindView(R.id.jbxx_dfgbmz_tv)
+    TextView jbxxDfgbmzTV;
+    @BindView(R.id.jbxx_dfbdzp_tv)
+    TextView jbxxDfbdzpTV;
+    @BindView(R.id.jbxx_dfgbsj_tv)
+    TextView jbxxDfgbsjTV;
+    @BindView(R.id.yss_gx_tv)
+    TextView yssGxTV;
+    @BindView(R.id.yss_mc_tv)
+    TextView yssMcTV;
+    @BindView(R.id.wlxx_gx_tv)
+    TextView wlxxGxTV;
+    @BindView(R.id.wlxx_mc_tv)
+    TextView wlxxMcTV;
+    @BindView(R.id.fhdw_gx_tv)
+    TextView fhdwGxTV;
+    @BindView(R.id.fhdw_dwmc_tv)
+    TextView fhdwDwmcTV;
+    @BindView(R.id.shdw_gx_tv)
+    TextView shdwGxTV;
+    @BindView(R.id.shdw_dwmc_tv)
+    TextView shdwDwmcTV;
+    @BindView(R.id.cycl_gx_tv)
+    TextView cyclGxTV;
+    @BindView(R.id.cycl_cph_tv)
+    TextView cyclCphTV;
+    @BindView(R.id.cysj_gx_tv)
+    TextView cysjGxTV;
+    @BindView(R.id.cysj_xm_tv)
+    TextView cysjXmTV;
+    @BindView(R.id.cysj_sjh_tv)
+    TextView cysjSjhTV;
+    @BindView(R.id.cysj_sfzh_tv)
+    TextView cysjSfzhTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +103,25 @@ public class DDXQActivity extends BaseActivity {
     private void initZiDuanNameJO() throws JSONException {
         ziDuanNameJO=new JSONObject();
         ziDuanNameJO.put("基本信息字段","基本信息");
+        ziDuanNameJO.put("订单号字段","订单号");
+        ziDuanNameJO.put("预装卸重量字段","预装卸重量");
+        ziDuanNameJO.put("流向类型字段","流向类型");
+        ziDuanNameJO.put("编辑时间字段","编辑时间");
+        ziDuanNameJO.put("实际重量字段","实际重量");
+        ziDuanNameJO.put("重量差额比字段","重量差额比");
+        ziDuanNameJO.put("订单状态字段","订单状态");
+        ziDuanNameJO.put("计划运输日期字段","计划运输日期");
+        ziDuanNameJO.put("备注字段","备注");
+        ziDuanNameJO.put("结算重量字段","结算重量");
+        ziDuanNameJO.put("包数字段","包数");
+        ziDuanNameJO.put("块数字段","块数");
+        ziDuanNameJO.put("对方过磅净重字段","对方过磅净重");
+        ziDuanNameJO.put("对方过磅皮重字段","对方过磅皮重");
+        ziDuanNameJO.put("对方过磅毛重字段","对方过磅毛重");
+        ziDuanNameJO.put("对方榜单照片字段","对方榜单照片");
+        ziDuanNameJO.put("对方过磅时间字段","对方过磅时间");
         ziDuanNameJO.put("运输商字段","运输商");
+        ziDuanNameJO.put("关系字段","relationLabel");
         ziDuanNameJO.put("名称字段","名称");
         ziDuanNameJO.put("物料信息字段","物料信息");
         ziDuanNameJO.put("发货单位字段","发货单位");
@@ -280,18 +363,21 @@ public class DDXQActivity extends BaseActivity {
                 try {
                     JSONObject jo = new JSONObject(rawJsonResponse);
                     JSONObject entityJO = jo.getJSONObject("entity");
+                    JSONObject fieldMapJO = entityJO.getJSONObject("fieldMap");
+                    initJBXXDetail(fieldMapJO);
                     JSONObject arrayMapJO = entityJO.getJSONObject("arrayMap");
-                    //initYSSDetail(arrayMapJO);
-                    //initWLXXDetail(arrayMapJO);
-                    //initSHDWDetail(arrayMapJO);
-                    //initCYCLDetail(arrayMapJO);
-                    //initCYSJDetail(arrayMapJO);
+                    initYSSDetail(arrayMapJO);
+                    initWLXXDetail(arrayMapJO);
+                    initFHDWDetail(arrayMapJO);
+                    initSHDWDetail(arrayMapJO);
+                    initCYCLDetail(arrayMapJO);
+                    initCYSJDetail(arrayMapJO);
                     //initJYBGDetail(arrayMapJO);
                     //initXDZXTZHDetail(arrayMapJO);
                     //initCYSJXTZHDetail(arrayMapJO);
                     //initPHXXDetail(arrayMapJO);
                     //initPZGBXXDetail(arrayMapJO);
-                    initMZGBXXDetail(arrayMapJO);
+                    //initMZGBXXDetail(arrayMapJO);
                 } catch (JSONException e) {
                     Log.e("error===",""+e.getMessage());
                     e.printStackTrace();
@@ -300,56 +386,118 @@ public class DDXQActivity extends BaseActivity {
         });
     }
 
+    private void initJBXXDetail(JSONObject jbxxJO) throws JSONException {
+        String ddh=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("订单号字段")));
+        String yzxzl=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("预装卸重量字段")));
+        String lxlx=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("流向类型字段")));
+        String bjsj=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("编辑时间字段")));
+        String sjzl=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("实际重量字段")));
+        String zlceb=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("重量差额比字段")));
+        String ddzt=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("订单状态字段")));
+        String jhysrq=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("计划运输日期字段")));
+        String bz=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("备注字段")));
+        String jszl=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("结算重量字段")));
+        String bs=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("包数字段")));
+        String ks=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("块数字段")));
+        String dfgbjz=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("对方过磅净重字段")));
+        String dfgbpz=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("对方过磅皮重字段")));
+        String dfgbmz=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("对方过磅毛重字段")));
+        String dfbdzp=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("对方榜单照片字段")));
+        String dfgbsj=jbxxJO.getString(jbxxFieldsIdJO.getString(ziDuanNameJO.getString("对方过磅时间字段")));
+        Log.e("ddh===",ddh);
+        Log.e("yzxzl===",yzxzl);
+        Log.e("lxlx===",lxlx);
+        Log.e("bjsj===",bjsj);
+        jbxxDdhTV.setText(ddh);
+        jbxxYzxzlTV.setText(yzxzl);
+        jbxxLxlxTV.setText(lxlx);
+        jbxxBjsjTV.setText(bjsj);
+        jbxxSjzlTV.setText(sjzl);
+        jbxxZlcebTV.setText(zlceb);
+        jbxxDdztTV.setText(ddzt);
+        jbxxJhysrqTV.setText(jhysrq);
+        jbxxBzTV.setText(bz);
+        jbxxJszlTV.setText(jszl);
+        jbxxBsTV.setText(bs);
+        jbxxKsTV.setText(ks);
+        jbxxDfgbjzTV.setText(dfgbjz);
+        jbxxDfgbpzTV.setText(dfgbpz);
+        jbxxDfgbmzTV.setText(dfgbmz);
+        jbxxDfbdzpTV.setText(dfbdzp);
+        jbxxDfgbsjTV.setText(dfgbsj);
+    }
+
     private void initYSSDetail(JSONObject arrayMapJO) throws JSONException {
         JSONArray yssJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("运输商字段")));
         JSONObject yssJO = yssJA.getJSONObject(0);
         Log.e("yssJO===",""+yssJO.toString());
+        String gx=yssJO.getString(ziDuanNameJO.getString("关系字段"));
         String mc=yssJO.getJSONObject("fieldMap").getString(yssFieldsIdJO.getString(ziDuanNameJO.getString("名称字段")));
+        Log.e("gx===",gx);
         Log.e("mc===",mc);
+        yssGxTV.setText(gx);
+        yssMcTV.setText(mc);
     }
 
     private void initWLXXDetail(JSONObject arrayMapJO) throws JSONException {
         JSONArray wlxxJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("物料信息字段")));
         JSONObject wlxxJO = wlxxJA.getJSONObject(0);
         Log.e("wlxxJO===",""+wlxxJO.toString());
+        String gx=wlxxJO.getString(ziDuanNameJO.getString("关系字段"));
         String mc=wlxxJO.getJSONObject("fieldMap").getString(wlxxFieldsIdJO.getString(ziDuanNameJO.getString("名称字段")));
         Log.e("mc===",mc);
+        wlxxGxTV.setText(gx);
+        wlxxMcTV.setText(mc);
     }
 
     private void initFHDWDetail(JSONObject arrayMapJO) throws JSONException {
         JSONArray fhdwJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("发货单位字段")));
         JSONObject fhdwJO = fhdwJA.getJSONObject(0);
         Log.e("fhdwJO===",""+fhdwJO.toString());
+        String gx=fhdwJO.getString(ziDuanNameJO.getString("关系字段"));
         String dwmc=fhdwJO.getJSONObject("fieldMap").getString(fhdwFieldsIdJO.getString(ziDuanNameJO.getString("单位名称字段")));
         Log.e("dwmc===",dwmc);
+        fhdwGxTV.setText(gx);
+        fhdwDwmcTV.setText(dwmc);
     }
 
     private void initSHDWDetail(JSONObject arrayMapJO) throws JSONException {
         JSONArray shdwJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("收货单位字段")));
         JSONObject shdwJO = shdwJA.getJSONObject(0);
         Log.e("shdwJO===",""+shdwJO.toString());
+        String gx=shdwJO.getString(ziDuanNameJO.getString("关系字段"));
         String dwmc=shdwJO.getJSONObject("fieldMap").getString(shdwFieldsIdJO.getString(ziDuanNameJO.getString("单位名称字段")));
         Log.e("dwmc===",dwmc);
+        shdwGxTV.setText(gx);
+        shdwDwmcTV.setText(dwmc);
     }
 
     private void initCYCLDetail(JSONObject arrayMapJO) throws JSONException {
         JSONArray cyclJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("承运车辆字段")));
         JSONObject cyclJO = cyclJA.getJSONObject(0);
         Log.e("cyclJO===",""+cyclJO.toString());
+        String gx=cyclJO.getString(ziDuanNameJO.getString("关系字段"));
         String cph=cyclJO.getJSONObject("fieldMap").getString(cyclFieldsIdJO.getString(ziDuanNameJO.getString("车牌号字段")));
         Log.e("cph===",cph);
+        cyclGxTV.setText(gx);
+        cyclCphTV.setText(cph);
     }
 
     private void initCYSJDetail(JSONObject arrayMapJO) throws JSONException {
         JSONArray cysjJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("承运司机字段")));
         JSONObject cysjJO = cysjJA.getJSONObject(0);
         Log.e("cysjJO===",""+cysjJO.toString());
+        String gx=cysjJO.getString(ziDuanNameJO.getString("关系字段"));
         String xm=cysjJO.getJSONObject("fieldMap").getString(cysjFieldsIdJO.getString(ziDuanNameJO.getString("姓名字段")));
         String sjh=cysjJO.getJSONObject("fieldMap").getString(cysjFieldsIdJO.getString(ziDuanNameJO.getString("手机号字段")));
         String sfzh=cysjJO.getJSONObject("fieldMap").getString(cysjFieldsIdJO.getString(ziDuanNameJO.getString("身份证字段")));
         Log.e("xm===",xm);
         Log.e("sjh===",sjh);
         Log.e("sfzh===",sfzh);
+        cysjGxTV.setText(gx);
+        cysjXmTV.setText(xm);
+        cysjSjhTV.setText(sjh);
+        cysjSfzhTV.setText(sfzh);
     }
 
     private void initJYBGDetail(JSONObject arrayMapJO) throws JSONException {
