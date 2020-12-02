@@ -22,6 +22,7 @@ public class MyHttpConfing {
 
     public static final String bqglWgjcYbwjMenuId="121024849682450";//一磅外检菜单id
     public static final String bqglWgjcEbwjMenuId="128740148158480";//二磅外检菜单id
+    public static final String bqglDdcxZhcxMenuId="128746672398357";//磅前管理-订单查询-综合查询菜单id
 
     public static final String zjtgActionId="121012354850818";//质检通过actionId
     public static final String ywczxActionId="121027374653442";//已完成装卸actionId
