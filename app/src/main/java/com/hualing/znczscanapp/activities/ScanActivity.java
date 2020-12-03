@@ -457,7 +457,7 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
         }
     }
 
-    private void doAction(final String actionUrl, String codes){
+    private void doAction(final String actionUrl, final String codes){
         RequestParams params = AsynClient.getRequestParams();
         params.put("codes",codes);
         AsynClient.post(MyHttpConfing.getBaseUrl()+actionUrl, this, params, new GsonHttpResponseHandler() {
@@ -481,12 +481,12 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
                         Intent intent = null;
                         if(actionUrl.contains(MyHttpConfing.zjtgActionId)) {
                             MyToast("质检完毕");
-                            intent = new Intent(ScanActivity.this, MainActivity.class);
                         }
                         else{
                             MyToast("入库完毕");
-                            intent = new Intent(ScanActivity.this, MainActivity.class);
                         }
+                        intent = new Intent(ScanActivity.this, DDXQActivity.class);
+                        intent.putExtra("orderCode",codes);
                         startActivity(intent);
                         AllActivitiesHolder.removeAct(ScanActivity.this);
                     }

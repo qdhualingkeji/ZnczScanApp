@@ -5,9 +5,11 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.hualing.znczscanapp.R;
+import com.hualing.znczscanapp.util.AllActivitiesHolder;
 import com.hualing.znczscanapp.utils.AsynClient;
 import com.hualing.znczscanapp.utils.GsonHttpResponseHandler;
 import com.hualing.znczscanapp.utils.MyHttpConfing;
+import com.hualing.znczscanapp.widget.TitleBar;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
@@ -18,8 +20,11 @@ import butterknife.BindView;
 
 public class DDXQActivity extends BaseActivity {
 
-    private String orderCode="132735811812368398";
+    //private String orderCode="132735811812368398";
+    private String orderCode;
     private JSONObject zhcxGroupsIdJO,jbxxFieldsIdJO,yssFieldsIdJO,wlxxFieldsIdJO,fhdwFieldsIdJO,shdwFieldsIdJO,cyclFieldsIdJO,cysjFieldsIdJO,jybgFieldsIdJO,xdzxtzhFieldsIdJO,cysjxtzhFieldsIdJO,phxxFieldsIdJO,pzgbxxFieldsIdJO,mzgbxxFieldsIdJO,ziDuanNameJO;
+    @BindView(R.id.title)
+    TitleBar mTitle;
     @BindView(R.id.jbxx_ddh_tv)
     TextView jbxxDdhTV;
     @BindView(R.id.jbxx_yzxzl_tv)
@@ -82,6 +87,54 @@ public class DDXQActivity extends BaseActivity {
     TextView cysjSjhTV;
     @BindView(R.id.cysj_sfzh_tv)
     TextView cysjSfzhTV;
+    @BindView(R.id.jybg_gx_tv)
+    TextView jybgGxTV;
+    @BindView(R.id.jybg_jl_tv)
+    TextView jybgJlTV;
+    @BindView(R.id.xdzxtzh_gx_tv)
+    TextView xdzxtzhGxTV;
+    @BindView(R.id.xdzxtzh_sm_tv)
+    TextView xdzxtzhSmTV;
+    @BindView(R.id.cysjxtzh_gx_tv)
+    TextView cysjxtzhGxTV;
+    @BindView(R.id.cysjxtzh_sm_tv)
+    TextView cysjxtzhSmTV;
+    @BindView(R.id.cysjxtzh_yhm_tv)
+    TextView cysjxtzhYhmTV;
+    @BindView(R.id.cysjxtzh_js_tv)
+    TextView cysjxtzhJsTV;
+    @BindView(R.id.phxx_gx_tv)
+    TextView phxxGxTV;
+    @BindView(R.id.phxx_bm_tv)
+    TextView phxxBmTV;
+    @BindView(R.id.phxx_pdh_tv)
+    TextView phxxPdhTV;
+    @BindView(R.id.phxx_prsj_tv)
+    TextView phxxPrsjTV;
+    @BindView(R.id.phxx_ksjhsj_tv)
+    TextView phxxKsjhsjTV;
+    @BindView(R.id.phxx_zt_tv)
+    TextView phxxZtTV;
+    @BindView(R.id.pzgbxx_gx_tv)
+    TextView pzgbxxGxTV;
+    @BindView(R.id.pzgbxx_gbcl_tv)
+    TextView pzgbxxGbclTV;
+    @BindView(R.id.pzgbxx_gbsj_tv)
+    TextView pzgbxxGbsjTV;
+    @BindView(R.id.pzgbxx_gbzl_tv)
+    TextView pzgbxxGbzlTV;
+    @BindView(R.id.pzgbxx_gbzt_tv)
+    TextView pzgbxxGbztTV;
+    @BindView(R.id.mzgbxx_gx_tv)
+    TextView mzgbxxGxTV;
+    @BindView(R.id.mzgbxx_gbcl_tv)
+    TextView mzgbxxGbclTV;
+    @BindView(R.id.mzgbxx_gbsj_tv)
+    TextView mzgbxxGbsjTV;
+    @BindView(R.id.mzgbxx_gbzl_tv)
+    TextView mzgbxxGbzlTV;
+    @BindView(R.id.mzgbxx_gbzt_tv)
+    TextView mzgbxxGbztTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +144,19 @@ public class DDXQActivity extends BaseActivity {
     @Override
     protected void initLogic() {
         try {
+            mTitle.setEvents(new TitleBar.AddClickEvents() {
+                @Override
+                public void clickLeftButton() {
+                    AllActivitiesHolder.removeAct(DDXQActivity.this);
+                }
+
+                @Override
+                public void clickRightButton() {
+
+                }
+            });
+
+            orderCode = getIntent().getStringExtra("orderCode");
             initZiDuanNameJO();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -372,12 +438,12 @@ public class DDXQActivity extends BaseActivity {
                     initSHDWDetail(arrayMapJO);
                     initCYCLDetail(arrayMapJO);
                     initCYSJDetail(arrayMapJO);
-                    //initJYBGDetail(arrayMapJO);
-                    //initXDZXTZHDetail(arrayMapJO);
-                    //initCYSJXTZHDetail(arrayMapJO);
-                    //initPHXXDetail(arrayMapJO);
-                    //initPZGBXXDetail(arrayMapJO);
-                    //initMZGBXXDetail(arrayMapJO);
+                    initJYBGDetail(arrayMapJO);
+                    initXDZXTZHDetail(arrayMapJO);
+                    initCYSJXTZHDetail(arrayMapJO);
+                    initPHXXDetail(arrayMapJO);
+                    initPZGBXXDetail(arrayMapJO);
+                    initMZGBXXDetail(arrayMapJO);
                 } catch (JSONException e) {
                     Log.e("error===",""+e.getMessage());
                     e.printStackTrace();
@@ -504,28 +570,39 @@ public class DDXQActivity extends BaseActivity {
         JSONArray jybgJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("检验报告字段")));
         JSONObject jybgJO = jybgJA.getJSONObject(0);
         Log.e("jybgJO===",""+jybgJO.toString());
+        String gx=jybgJO.getString(ziDuanNameJO.getString("关系字段"));
         String jl=jybgJO.getJSONObject("fieldMap").getString(jybgFieldsIdJO.getString(ziDuanNameJO.getString("结论字段")));
         Log.e("jl===",jl);
+        jybgGxTV.setText(gx);
+        jybgJlTV.setText(jl);
     }
 
     private void initXDZXTZHDetail(JSONObject arrayMapJO) throws JSONException {
         JSONArray xdzxtzhJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("下单者系统账户字段")));
         JSONObject xdzxtzhJO = xdzxtzhJA.getJSONObject(0);
         Log.e("xdzxtzhJO===",""+xdzxtzhJO.toString());
+        String gx=xdzxtzhJO.getString(ziDuanNameJO.getString("关系字段"));
         String sm=xdzxtzhJO.getJSONObject("fieldMap").getString(xdzxtzhFieldsIdJO.getString(ziDuanNameJO.getString("实名字段")));
         Log.e("sm===",sm);
+        xdzxtzhGxTV.setText(gx);
+        xdzxtzhSmTV.setText(sm);
     }
 
     private void initCYSJXTZHDetail(JSONObject arrayMapJO) throws JSONException {
         JSONArray cysjxtzhJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("承运司机系统账户字段")));
         JSONObject cysjxtzhJO = cysjxtzhJA.getJSONObject(0);
         Log.e("cysjxtzhJO===",""+cysjxtzhJO.toString());
+        String gx=cysjxtzhJO.getString(ziDuanNameJO.getString("关系字段"));
         String sm=cysjxtzhJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("实名字段")));
         String yhm=cysjxtzhJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("用户名字段")));
         String js=cysjxtzhJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("简述字段")));
         Log.e("sm===",sm);
         Log.e("yhm===",yhm);
         Log.e("js===",js);
+        cysjxtzhGxTV.setText(gx);
+        cysjxtzhSmTV.setText(sm);
+        cysjxtzhYhmTV.setText(yhm);
+        cysjxtzhJsTV.setText(js);
     }
 
     private void initPHXXDetail(JSONObject arrayMapJO) throws JSONException {
@@ -533,6 +610,7 @@ public class DDXQActivity extends BaseActivity {
         Log.e("phxxJA===",""+phxxJA.toString());
         JSONObject phxxJO = phxxJA.getJSONObject(0);
         Log.e("phxxJO===",""+phxxJO.toString());
+        String gx=phxxJO.getString(ziDuanNameJO.getString("关系字段"));
         String bm=phxxJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("编码字段")));
         String pdh=phxxJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("排队号字段")));
         String prsj=phxxJO.getJSONObject("fieldMap").getString(cysjxtzhFieldsIdJO.getString(ziDuanNameJO.getString("排入时间字段")));
@@ -543,12 +621,18 @@ public class DDXQActivity extends BaseActivity {
         Log.e("prsj===",prsj);
         Log.e("ksjhsj===",ksjhsj);
         Log.e("zt===",zt);
+        phxxGxTV.setText(gx);
+        phxxPdhTV.setText(pdh);
+        phxxPrsjTV.setText(prsj);
+        phxxKsjhsjTV.setText(ksjhsj);
+        phxxZtTV.setText(zt);
     }
 
     private void initPZGBXXDetail(JSONObject arrayMapJO) throws JSONException {
         JSONArray pzgbxxJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("皮重过磅信息字段")));
         JSONObject pzgbxxJO = pzgbxxJA.getJSONObject(0);
         Log.e("pzgbxxJO===",""+pzgbxxJO.toString());
+        String gx=pzgbxxJO.getString(ziDuanNameJO.getString("关系字段"));
         String gbcl=pzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅车辆字段")));
         String gbsj=pzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅时间字段")));
         String gbzl=pzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅重量字段")));
@@ -557,12 +641,18 @@ public class DDXQActivity extends BaseActivity {
         Log.e("gbsj===",gbsj);
         Log.e("gbzl===",gbzl);
         Log.e("gbzt===",gbzt);
+        pzgbxxGxTV.setText(gx);
+        pzgbxxGbclTV.setText(gbcl);
+        pzgbxxGbsjTV.setText(gbsj);
+        pzgbxxGbzlTV.setText(gbzl);
+        pzgbxxGbztTV.setText(gbzt);
     }
 
     private void initMZGBXXDetail(JSONObject arrayMapJO) throws JSONException {
         JSONArray mzgbxxJA = arrayMapJO.getJSONArray(zhcxGroupsIdJO.getString(ziDuanNameJO.getString("毛重过磅信息字段")));
         JSONObject mzgbxxJO = mzgbxxJA.getJSONObject(0);
         Log.e("mzgbxxJO===",""+mzgbxxJO.toString());
+        String gx=mzgbxxJO.getString(ziDuanNameJO.getString("关系字段"));
         String gbcl=mzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅车辆字段")));
         String gbsj=mzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅时间字段")));
         String gbzl=mzgbxxJO.getJSONObject("fieldMap").getString(pzgbxxFieldsIdJO.getString(ziDuanNameJO.getString("过磅重量字段")));
@@ -571,6 +661,11 @@ public class DDXQActivity extends BaseActivity {
         Log.e("gbsj===",gbsj);
         Log.e("gbzl===",gbzl);
         Log.e("gbzt===",gbzt);
+        mzgbxxGxTV.setText(gx);
+        mzgbxxGbclTV.setText(gbcl);
+        mzgbxxGbsjTV.setText(gbsj);
+        mzgbxxGbzlTV.setText(gbzl);
+        mzgbxxGbztTV.setText(gbzt);
     }
 
     @Override
